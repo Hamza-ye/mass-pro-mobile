@@ -26,6 +26,7 @@ class FormInstanceService {
 
     return switch (userAttributeType) {
       AttributeType.username => currentUser?.username,
+      AttributeType.userUid => currentUser?.uid,
       AttributeType.phoneNumber => currentUser?.phoneNumber,
       AttributeType.userInfo => currentUser?.firstName,
       _ => null
@@ -50,6 +51,8 @@ class FormInstanceService {
             DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()),
         AttributeType.username =>
           initialValue ?? await getUserAttribute(AttributeType.username),
+        AttributeType.userUid =>
+          initialValue ?? await getUserAttribute(AttributeType.userUid),
         AttributeType.phoneNumber =>
           initialValue ?? await getUserAttribute(AttributeType.phoneNumber),
         AttributeType.userInfo =>
@@ -61,11 +64,12 @@ class FormInstanceService {
         AttributeType.form => initialValue ?? formMetadata.form,
         AttributeType.team => initialValue ??
             (await D2Remote.teamModuleD.team
+                    .where(attribute: 'disabled', value: false)
                     .byActivity(formMetadata.activity)
                     .getOne())
                 ?.uid,
         AttributeType.activity => initialValue ?? formMetadata.activity,
-        AttributeType.version => initialValue ?? formMetadata.version,
+        AttributeType.version => initialValue ?? formMetadata.version
       };
 
   Future<Map<String, Object?>> formAttributesControls(initialValue) async {
@@ -79,8 +83,8 @@ class FormInstanceService {
       //     value: initialValue['_dataUid'] ?? formMetadata.submission),
 
       // /// submission uid
-      '_${formUid}':
-          initialValue['_${formUid}'] ?? CodeGenerator.generateCompositeUid(),
+      // '_${formUid}':
+      //     initialValue['_${formUid}'] ?? CodeGenerator.generateCompositeUid(),
 
       /// phoneNumber
       '_${AttributeType.phoneNumber.name}': await attributeControl(
@@ -91,6 +95,11 @@ class FormInstanceService {
       '_${AttributeType.username.name}': await attributeControl(
           AttributeType.username,
           initialValue: initialValue['_${AttributeType.username.name}']),
+
+      /// username
+      '_${AttributeType.userUid.name}': await attributeControl(
+          AttributeType.userUid,
+          initialValue: initialValue['_${AttributeType.userUid.name}']),
 
       /// user first last name
       '_${AttributeType.userInfo.name}': await attributeControl(

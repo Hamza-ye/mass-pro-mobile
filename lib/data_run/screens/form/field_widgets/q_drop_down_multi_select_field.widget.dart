@@ -25,9 +25,9 @@ class QDropDownMultiSelectWithSearchField extends HookConsumerWidget {
           as FormControl<List<String>>,
       validationMessages: validationMessages(context),
       // clearButtonProps: const ClearButtonProps(isVisible: true),
-      valueAccessor: NameToLabelValueAccessor(options: element.visibleOption),
+      // valueAccessor: NameToLabelValueAccessor(options: element.visibleOption),
       dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
+        decoration: InputDecoration(
           labelText: element.label,
           contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
           border: OutlineInputBorder(),
@@ -37,10 +37,12 @@ class QDropDownMultiSelectWithSearchField extends HookConsumerWidget {
         showSelectedItems: false,
       ),
       compareFn: (item, selectedItem) => item == selectedItem,
-      items: element.visibleOption
-          .map((option) => getItemLocalString(option.label.unlockView))
-          .toSet()
-          .toList(),
+      items: (String filter, LoadProps? loadProps) {
+        return element.visibleOption
+            .map((option) => getItemLocalString(option.label.unlockView))
+            .toSet()
+            .toList();
+      },
       // showClearButton: true,
     );
   }

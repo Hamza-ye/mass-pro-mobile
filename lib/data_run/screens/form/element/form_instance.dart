@@ -11,7 +11,7 @@ import 'package:datarun/data_run/screens/form/element/providers/form_instance.pr
 import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-const formUid = 'formDataUid';
+// const formUid = 'formDataUid';
 const orgUnitControlName = 'orgUnit';
 const formAttributesGroupName = 'attributes';
 const formDataGroupName = 'formData';
@@ -31,8 +31,8 @@ class FormInstance {
       Map<String, FormElementInstance<dynamic>> elements = const {},
       required this.enabled})
       : _ref = ref,
-        _formDataUid =
-            initialValue['_${formUid}'] ?? CodeGenerator.generateCompositeUid(),
+      /*  _formDataUid =
+            initialValue['_${formUid}'] ?? CodeGenerator.generateCompositeUid(),*/
         _formSection = rootSection {
     var formElementMap = {
       for (var x
@@ -41,7 +41,7 @@ class FormInstance {
         x.elementPath!: x
     };
     _forElementMap.addAll(formElementMap);
-    _initialValue.addAll({...initialValue, '_${formUid}': _formDataUid});
+    _initialValue.addAll({...initialValue});
     if (!enabled) {
       form.markAsDisabled();
     }
@@ -49,7 +49,7 @@ class FormInstance {
 
   Map<String, Object?> _initialValue = {};
 
-  final Object _formDataUid;
+  // final Object _formDataUid;
   final FormGroup form;
   final FormFlatTemplate formFlatTemplate;
   final bool enabled;
@@ -76,6 +76,9 @@ class FormInstance {
     final formSubmission =
         await formSubmissionList.getSubmission(submissionUid!);
 
+    final value =  form.value;
+    final value2 = _formSection.value;
+
     formSection.value.forEach((key, value) {
       _initialValue.update(
         key,
@@ -99,7 +102,7 @@ class FormInstance {
 
     final itemInstance = FormElementBuilder.buildRepeatItem(
         form, formFlatTemplate, parent.template,
-        parentUid: _formDataUid as String);
+        /*parentUid: _formDataUid as String*/);
     parent
       ..add(itemInstance)
       ..resolveDependencies()

@@ -34,7 +34,7 @@ dependencies:
   expressions: ^0.2.3
   flutter_sticky_header: ^0.7.0
   collection: ^1.18.0
-  reactive_dropdown_search: ^4.0.0
+  reactive_dropdown_search: ^5.0.5
   sliver_tools: ^0.2.12
   flutter_fancy_tree_view: ^1.6.0
   gs1_barcode_parser: ^1.1.0
@@ -44,6 +44,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.1
 #  image_picker: ^1.1.2
   sentry_flutter: ^8.10.1
+  dropdown_search: ^6.0.1
 #  flutter_barcode_scanner: ^2.0.0
 
 #  sentry_flutter: ^8.3.0
@@ -67,6 +68,7 @@ flutter:
   assets:
     - lib/l10n/
     - assets/launcher_icon/
+#    - assets/images/
 # analyzer:
 #   strong-mode: true
 #   language:

@@ -69,13 +69,13 @@ class FormElementBuilder {
 
   static RepeatItemInstance buildRepeatItem(FormGroup rootFormControl,
       FormFlatTemplate formFlatTemplate, SectionTemplate template,
-      {Map<String, Object?>? initialFormValue, required String parentUid}) {
+      {Map<String, Object?>? initialFormValue/*, required String parentUid*/}) {
     final Map<String, FormElementInstance<dynamic>> elements = {};
 
     final repeatedSection = RepeatItemInstance(
         template: template,
         form: rootFormControl,
-        parentUid: parentUid,
+        // parentUid: parentUid,
         uid: initialFormValue?['repeatUid'] as String?);
     for (var childTemplate
         in template.fields.sort((a, b) => (a.order).compareTo(b.order))) {
@@ -125,7 +125,7 @@ class FormElementBuilder {
             ?.map((value) => buildRepeatItem(
                 rootFormControl, formFlatTemplate, template,
                 initialFormValue: value,
-                parentUid: value['parentUid'] as String))
+                /*parentUid: value['parentUid'] as String*/))
             .toList() ??
         [];
 
@@ -235,7 +235,9 @@ class FormElementBuilder {
         return FieldInstance<String>(
           form: rootFormControl,
           elementProperties: FieldElementState<String>(
-              readOnly: true, value: initialFormValue, mandatory: false),
+              readOnly: templateElement.readOnly,
+              value: initialFormValue,
+              mandatory: templateElement.mandatory),
           template: templateElement,
         );
       case ValueType.ScannedCode:

@@ -28,11 +28,11 @@ class QDropDownWithSearchField extends HookConsumerWidget {
     return ReactiveDropdownSearch<String, String>(
       formControl: formInstance.form.control(element.elementPath!)
           as FormControl<String>,
-      clearButtonProps: const ClearButtonProps(isVisible: true),
+      // clearButtonProps: const ClearButtonProps(isVisible: true),
       validationMessages: validationMessages(context),
       valueAccessor: NameToLabelValueAccessor(options),
       dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
+        decoration: InputDecoration(
           labelText: element.label,
           contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
           border: OutlineInputBorder(),
@@ -41,11 +41,10 @@ class QDropDownWithSearchField extends HookConsumerWidget {
       popupProps: PopupProps.menu(
         showSelectedItems: true,
       ),
-      items: options
+      items: (filter, prop) => options
           .map((option) => getItemLocalString(option.label.unlockView))
           .toSet()
           .toList(),
-      showClearButton: true,
     );
   }
 }

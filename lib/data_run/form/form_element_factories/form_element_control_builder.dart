@@ -131,7 +131,8 @@ class FormElementControlBuilder {
                     : <String>[initialValue]
                 : <String>[]);
       case ValueType.Reference:
-        return FormControl<String>(disabled: true);
+        return FormControl<String>(
+            value: initialValue ?? fieldTemplate.defaultValue/*, disabled: true*/);
       case ValueType.ScannedCode:
         return FormControl<String>(
           value: initialValue ?? fieldTemplate.defaultValue,

@@ -124,7 +124,9 @@ class FormSubmissions extends _$FormSubmissions {
   }
 
   Future<void> syncEntities(List<String> uids) async {
-    await D2Remote.formModule.formSubmission.byIds(uids).upload();
+    await D2Remote.formModule.formSubmission
+        // .byIds(uids)
+        .upload();
 
     ref.invalidateSelf();
     await future;
