@@ -30,12 +30,12 @@ ensure accurate and timely data transmission to support malaria control efforts.
 
 ## Screenshots
 
-| ![1](screenshots/1.png)   | ![2](screenshots/2.png)  | ![3](screenshots/3.png)   |
+| ![1](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/1.png)   | ![2](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/2.png)  | ![3](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/3.png)   |
 |---------------------------|--------------------------|---------------------------|
-| ![4](screenshots/4.png)   | ![5](screenshots/5.png)  | ![6](screenshots/6.png)   |
-| ![7](screenshots/7.png)   | ![8](screenshots/8.png)  | ![9](screenshots/9.png)   |
-| ![10](screenshots/10.png) | ![11](screenshots/11.png) | ![12](screenshots/12.png) |
-| ![13](screenshots/13.png) |                          |                           |
+| ![4](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/4.png)   | ![5](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/5.png)  | ![6](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/6.png)   |
+| ![7](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/7.png)   | ![8](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/8.png)  | ![9](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/9.png)   |
+| ![10](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/10.png) | ![11](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/11.png) | ![12](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/12.png) |
+| ![13](https://raw.githubusercontent.com/Hamza-ye/images-uploads/refs/heads/main/datarun-screenshots/13.png) |                          |                           |
 
 ## Installation
 
@@ -60,505 +60,253 @@ To install Data-Run-Mobile on your device, follow these steps:
 
 ## Usage
 
-1. **Login**: Enter your credentials to access the app.
-2. **Download Forms**: Navigate to the forms section to download the latest forms from the backend.
-3. **Data Entry**: Fill out the forms with the required data. The forms can include various types of
-   questions:
-    - **Text**: Enter textual information.
-    - **Number**: Enter numerical data.
-    - **Date**: Select dates from a date picker.
-    - **Multi Answer**: Select multiple options from a list.
-    - **Single Answer**: Select one option from a list.
-    - **Image**: Capture or upload images.
-    - **File**: Upload files.
-4. **User Management**: Create users and assign them to specific teams.
-5. **Sync Data**: Ensure your device is connected to the internet and use the sync feature to upload
-   data to the Data-run-Api.
-6. **View and Edit Submissions**: Check previous submissions and their sync status.
+We manage **field activities** involving teams and assignments, where data collection is a core task. Activities may target specific entities such as **locations, health facilities, or people**, and could involve tasks like distributing items (e.g., ITNs, medicines) or supervising teams. Each team has **planned locations** and **allocated quantities** for their assignments.
 
-## Sample Form:
+### **Current Design**:
 
-A sample of the form returned from the API end point:
+1. **Assignments**: Link an activity, orgUnit, team, and day.
+2. **Activity**: Groups assignments, teams, and tasks within a defined time frame.
+3. **Teams**: A "person entity" created before linking a user, allowing assignment distribution. Later, a user can be linked to a person to gain permissions and configurations upon login,
+4. **Users**: Store login info (username, password, etc.).
+5. **DataForm Templates**: Templates for data collection, varying per team/task, DataForm Templates can be linked to an assignment/ or just a general form to collect data with no particular assignment, when linked they are used to submit data for the assignment progress.
+6. **Data Submission**: Stores submitted data linked to teams with context related attributes such as user, team, assignment...etc
+--- 
+
+### **Current Approach**
+
+### **Assignments**
+
+- **Definition**:
+    
+    Assignments link an activity, organization unit (orgUnit), assigned team, day, and a map of dynamic attributes (e.g., `ITNs`, `Population`):
+    
+    ```json
+    { "attributeName": "attributeValue" }
+    
+    ```
+    
+    - Assignments are implemented hierarchically, allowing parent-child relationships. For example:
+        - **Supervisor Assignment**:
+            - **Activity**: ITNs Supervision.
+            - **OrgUnit**: District supervised.
+            - **Team**: Supervisor team.
+            - **StartDay**: 1.
+            - **Allocated Resources**: Total district ITNs and population.
+        - **Child Assignment**:
+            - **Activity**: ITNs Distribution.
+            - **OrgUnit**: Village within the district.
+            - **Team**: Field distribution team.
+            - **StartDay**: 1.
+            - **Allocated Resources**: Village ITNs and population.
+
+### **Forms Template and submissions**
+- **Templates**:
+    - Data collection templates vary based on team or assignment needs.
+    - Forms may be general or linked to specific assignments for tracking progress.
+- **Submissions**:
+    - Store collected data, including metadata like timestamps, GPS coordinates, assignment reference if the template is linked to an assignment, and user identifiers.
+
+1. **Form templates linked to an assignment/task**:
+    - Assignments can have one or more **DataForms** linked to it and with the right permission assigned teams/users can access these forms to collect data about the assignment if they have this assignment assigned to them or is a sub assignment of their assignement.
+    - Example assignment for a team:
+        
+        ```json
+        {
+          "uid": "llm1EHPJ5kh",
+          "entityScope": "Assigned",
+          "activity": { "uid": "RHl5bdmYXVr" },
+          "startDay": 1,
+          "orgUnit": { "uid": "HgWpVtC10fF" },
+          "team": { "uid": "YFNLJEoYpfy" },
+          "allocatedResources": { "ITNs": 899, "Population": 89 },
+          "parent": { "uid": "rSBRh6eofeH" },
+          "forms": [
+            "Tcf3Ks9ZRpB",
+            "RtnmK39VXTY"
+          ]
+        }
+        
+        ```
+---
+
+## **Goal, Mobile App (First Release)**
+### Modular Forms Integration
+
+- Create **Form Templates** that dynamically adapt to the context:
+    - Fields can reference **Tasks** or **Assignments** (e.g., `targetedOrgUnit`, `population`, `resourcesUsed`).
+    - Some forms are independent of tasks/assignments for surveys or general reporting.
+    - Allow flexible linking between forms and entities, enabling progress tracking, summaries, or data validation.
+
+### **Example Configuring ITNs Distribution Campaigns**
+**Task**:
 
 ```json
 {
-  "paging": true,
-  "page": 0,
-  "pageCount": 1,
-  "total": 4,
-  "pageSize": 20,
-  "dataForms": [
-    {
-      "createdBy": "admin",
-      "createdDate": "2024-08-05T02:37:40.535Z",
-      "lastModifiedBy": "admin",
-      "lastModifiedDate": "2024-08-05T02:37:40.535Z",
-      "id": "66b03af41327d612461a6aac",
-      "uid": "KcsA3KETRbY",
-      "code": "CHV_PATIENTS_FORM",
-      "displayName": "CHV cases registering form",
-      "disabled": false,
-      "activity": "oBne891mA9n",
-      "version": 9,
-      "defaultLocal": "en",
-      "label": {
-        "en": "CHV cases registering form",
-        "ar": "تسجيل حالات chv"
-      },
-      "fields": [
-        {
-          "uid": "qR5sT6uV7W8",
-          "code": null,
-          "name": "locationName",
-          "description": null,
-          "type": "Text",
-          "mandatory": true,
-          "mainField": true,
-          "rules": [
-          ],
-          "listName": null,
-          "label": {
-            "en": "Village Name",
-            "ar": "اسم القرية"
-          }
-        },
-        {
-          "uid": "cD7eF8gH9I0",
-          "code": null,
-          "name": "name",
-          "description": "Name of the patient",
-          "type": "Text",
-          "mandatory": true,
-          "mainField": true,
-          "rules": [
-            {
-              "uid": "eF6676iJ5K6",
-              "field": "name",
-              "expression": "name.length >= 9",
-              "action": "Error",
-              "message": {
-                "en": "Name is not complete",
-                "ar": "ادخل الاسم الرباعي"
-              },
-              "filterInfo": null
-            }
-          ],
-          "listName": null,
-          "label": {
-            "en": "Patient name",
-            "ar": "اسم المريض"
-          }
-        },
-        {
-          "uid": "vW3xY4zA5B6",
-          "code": null,
-          "name": "visitDate",
-          "description": null,
-          "type": "Date",
-          "mandatory": true,
-          "mainField": false,
-          "rules": [
-          ],
-          "listName": null,
-          "label": {
-            "en": "Visit Date",
-            "ar": "تاريخ الزيارة"
-          }
-        },
-        {
-          "uid": "jK1lM2nO3P4",
-          "code": null,
-          "name": "age",
-          "description": "Age in Years and (months for age less than 1 year)",
-          "type": "Age",
-          "mandatory": true,
-          "mainField": false,
-          "rules": [
-            {
-              "uid": "eF66H6iJ5K6",
-              "field": "age",
-              "expression": "age <= 0 || age > 100",
-              "action": "Error",
-              "message": {
-                "en": "Age is greater than normal",
-                "ar": "العمر كبير جدا تأكد"
-              },
-              "filterInfo": null
-            }
-          ],
-          "listName": null,
-          "label": {
-            "en": "Age",
-            "ar": "العمر"
-          }
-        },
-        {
-          "uid": "xY9zA0bC1D2",
-          "code": null,
-          "name": "gender",
-          "description": null,
-          "type": "SelectOne",
-          "mandatory": true,
-          "mainField": false,
-          "rules": [
-          ],
-          "listName": "genders",
-          "label": {
-            "en": "Gender",
-            "ar": "الجنس"
-          }
-        },
-        {
-          "uid": "eF3gH4iJ5K6",
-          "code": null,
-          "name": "pregnant",
-          "description": null,
-          "type": "Boolean",
-          "mandatory": true,
-          "mainField": false,
-          "rules": [
-            {
-              "uid": "eF5gH6iJ5K6",
-              "field": "pregnant",
-              "expression": "gender == 'FEMALE' && age >= 14",
-              "action": "Show",
-              "message": null,
-              "filterInfo": null
-            }
-          ],
-          "listName": null,
-          "label": {
-            "en": "Is pregnant?",
-            "ar": "هل هي حامل؟"
-          }
-        },
-        {
-          "uid": "lM7nO8pQ9R0",
-          "code": null,
-          "name": "testResult",
-          "description": null,
-          "type": "SelectOne",
-          "mandatory": true,
-          "mainField": false,
-          "rules": [
-          ],
-          "listName": "testResults",
-          "label": {
-            "en": "Test Result",
-            "ar": "نتيجة الفحص"
-          }
-        },
-        {
-          "uid": "z33bC6dE7F8",
-          "code": null,
-          "name": "detectionType",
-          "description": null,
-          "type": "SelectOne",
-          "mandatory": true,
-          "mainField": false,
-          "rules": [
-            {
-              "uid": "eF3gH8iJ5K9",
-              "field": "detectionType",
-              "expression": "testResult == 'PF' || testResult == 'PV' || testResult == 'MIX'",
-              "action": "Show",
-              "message": null,
-              "filterInfo": null
-            }
-          ],
-          "listName": "detectionTypes",
-          "label": {
-            "en": "Detection Type",
-            "ar": "نوع الاكتشاف"
-          }
-        },
-        {
-          "uid": "zA5bDDdE7F8",
-          "code": null,
-          "name": "severity",
-          "description": null,
-          "type": "SelectOne",
-          "mandatory": true,
-          "mainField": false,
-          "rules": [
-            {
-              "uid": "eF9gH8iJ5K9",
-              "field": "severity",
-              "expression": "testResult == 'PF' || testResult == 'PV' || testResult == 'MIX'",
-              "action": "Show",
-              "message": null,
-              "filterInfo": null
-            }
-          ],
-          "listName": "severities",
-          "label": {
-            "en": "Severity",
-            "ar": "تصنيف الحالة"
-          }
-        },
-        {
-          "uid": "gH9iJ0kL1M2",
-          "code": null,
-          "name": "treatment",
-          "description": null,
-          "type": "SelectOne",
-          "mandatory": true,
-          "mainField": false,
-          "rules": [
-            {
-              "uid": "gH99J1kL1M2",
-              "field": "treatment",
-              "expression": "pregnant && (testResult == 'PF' || testResult == 'PV' || testResult == 'MIX')",
-              "action": "Filter",
-              "message": null,
-              "filterInfo": {
-                "fieldToFilter": "treatment",
-                "optionsToHide": [
-                  "TREATED",
-                  "FIRST_DOSE",
-                  "FIRST_DOSE_REFERRAL"
-                ],
-                "optionsToShow": null
-              }
-            },
-            {
-              "uid": "gH1011kL1M2",
-              "field": "treatment",
-              "expression": "severity == 'SEVERE'",
-              "action": "Filter",
-              "message": null,
-              "filterInfo": {
-                "fieldToFilter": "treatment",
-                "optionsToHide": null,
-                "optionsToShow": [
-                  "FIRST_DOSE_REFERRAL",
-                  "REFERRAL"
-                ]
-              }
-            },
-            {
-              "uid": "gH10J1kL1M2",
-              "field": "treatment",
-              "expression": "testResult == 'PF' || testResult == 'PV' || testResult == 'MIX'",
-              "action": "Show",
-              "message": null,
-              "filterInfo": null
-            }
-          ],
-          "listName": "treatments",
-          "label": {
-            "en": "Treatment",
-            "ar": "تدبير الحالة"
-          }
-        },
-        {
-          "uid": "nO3pQ4rS5T6",
-          "code": null,
-          "name": "comment",
-          "description": null,
-          "type": "LongText",
-          "mandatory": null,
-          "mainField": false,
-          "rules": [
-          ],
-          "listName": null,
-          "label": {
-            "en": "Comments",
-            "ar": "ملاحظات وتعليقات"
-          }
-        }
-      ],
-      "options": [
-        {
-          "uid": "xY1200bC1D2",
-          "form": null,
-          "listName": "genders",
-          "name": "FEMALE",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Female",
-            "ar": "أنثى"
-          }
-        },
-        {
-          "uid": "5Y1200dC5D1",
-          "form": null,
-          "listName": "genders",
-          "name": "MALE",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Male",
-            "ar": "ذكر"
-          }
-        },
-        {
-          "uid": "688888BC7D1",
-          "form": null,
-          "listName": "testResults",
-          "name": "INVALID",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Invalid",
-            "ar": "غير صالح"
-          }
-        },
-        {
-          "uid": "6Y1288dC5D1",
-          "form": null,
-          "listName": "testResults",
-          "name": "NEGATIVE",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Negative",
-            "ar": "سلبي"
-          }
-        },
-        {
-          "uid": "6Y3338dC5D1",
-          "form": null,
-          "listName": "testResults",
-          "name": "PF",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Plasmodium falciparum",
-            "ar": "بلاسموديوم فالسيباروم"
-          }
-        },
-        {
-          "uid": "10CDF77C7D1",
-          "form": null,
-          "listName": "detectionTypes",
-          "name": "ACTIVE",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Active",
-            "ar": "بحث نشط"
-          }
-        },
-        {
-          "uid": "555288dC5D1",
-          "form": null,
-          "listName": "testResults",
-          "name": "PV",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Plasmodium vivax",
-            "ar": "بلاسموديوم فيفاكس"
-          }
-        },
-        {
-          "uid": "1CD8FEBC7D1",
-          "form": null,
-          "listName": "treatments",
-          "name": "TREATED",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Treated",
-            "ar": "معالج"
-          }
-        },
-        {
-          "uid": "10CDF8BC7D1",
-          "form": null,
-          "listName": "severities",
-          "name": "SEVERE",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Severe",
-            "ar": "وخيمة"
-          }
-        },
-        {
-          "uid": "9CC8F8BC7D1",
-          "form": null,
-          "listName": "severities",
-          "name": "SIMPLE",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Simple",
-            "ar": "بسيطة"
-          }
-        },
-        {
-          "uid": "666288dC5D1",
-          "form": null,
-          "listName": "testResults",
-          "name": "MIX",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Mixed",
-            "ar": "مختلط"
-          }
-        },
-        {
-          "uid": "9CC8F66C7D1",
-          "form": null,
-          "listName": "detectionTypes",
-          "name": "REACTIVE",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Reactive",
-            "ar": "زيارة روتينية"
-          }
-        },
-        {
-          "uid": "ECDYFEBC8D1",
-          "form": null,
-          "listName": "treatments",
-          "name": "FIRST_DOSE",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "First Dose",
-            "ar": "الجرعة الأولى"
-          }
-        },
-        {
-          "uid": "ECDYF9628D1",
-          "form": null,
-          "listName": "treatments",
-          "name": "FIRST_DOSE_REFERRAL",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "First Dose & Referral",
-            "ar": "الجرعة الأولى وإحالة"
-          }
-        },
-        {
-          "uid": "9RD8FEFC7D0",
-          "form": null,
-          "listName": "treatments",
-          "name": "REFERRAL",
-          "description": null,
-          "order": 0,
-          "label": {
-            "en": "Referral",
-            "ar": "إحالة"
-          }
-        }
-      ],
-      "orgUnits": [
-        "...",
-        "..."
-      ]
-    }
-  ]
+  "id": "task_001",
+  "name": "Distribute ITNs in Village A",
+  "description": "Daily path for team A",
+  "startDate": "2024-01-01",
+  "endDate": "2024-01-01",
+  "allocatedResources": ["ITNs"],
+  "targetedOrgUnits": ["village_a", "school_b"],
+  "metadata": { "population": 1000, "ITNs": 500 }
 }
 
 ```
+
+**Assignment**:
+
+```json
+{
+  "id": "assign_001",
+  "taskId": "task_001",
+  "assignee": "team_a",
+  "assignedForms": ["form_001"],
+  "status": "active"
+}
+
+```
+
+### **Teams**
+
+- **Dynamic Configuration**:
+    - Teams can be formed for specific projects and dissolved afterward.
+    - Teams are hierarchical, with supervisors managing subordinate teams.
+    - teams can be assigned to one or more assignments and a team can manage or report about the assignment of their managed teams
+- Example of Team:
+
+```json
+{
+    "uid": "P5fjmw0elDV",
+    "code": "317",
+    "name": "team-317",
+    "disabled": false,
+    "activity": { "uid": "RHl5bdmYXVr" },
+    "users": [ { "uid": "qqHQA2BFJJf" } ],
+    "assignments": [
+        { "uid": "DDl4bimW3Vr" },
+        { "uid": "ERT5bd4Y6Vr" }
+    ],
+    "managedTeams": [],
+    "formPermissions": [
+        { "form": "form_001", "permissions": ["VIEW_TRACK_SUMMARY"] },
+        { "form": "form_002", "permissions": ["ADD_SUBMISSIONS"] }
+    ]
+}
+
+```
+
+**Form Templates**:
+
+```json
+[
+    {
+    "id": "form_001",
+    "name": "assigned location resource distribution data",
+    "fields": [
+        { "name": "orgUnit", "type": "reference", "ref": "orgUnit" },
+        { "name": "resourcesUsed", "type": "number" },
+        { "name": "population", "type": "number" },
+    ]
+    },
+    {
+    "id": "form_002",
+    "name": "teams allocated resource movement transactions",
+    "fields": [
+        { "name": "orgUnit/centeral wh location", "type": "reference", "ref": "orgUnit" },
+        {"id": "transactions", "name": "resource to teams transactions details", "type": "table" , 
+        "fields": [
+            { "name": "team", "type": "reference", "ref": "managedTeams" },
+            { "name": "resourcesDispensedToTeam", "type": "number" }
+        ]
+       }     
+    ]
+    }
+]
+```
+---
+
+## Modules
+Different modules based on the user context.
+ 
+### 1. Activities
+
+Available when user have a team that is part of activities/assignment workflow, and include the following:
+- **Assignment Explorer**
+**Purpose**: Facilitate management of Assignments.
+
+- **Features**:
+**1. Assignments View**:
+- List Assignments with attributes like start date, end date, allocated resources, and status.
+- Filters for Assignment type, date range, or completion status:
+  * **Elements:**
+      * **Assignment Title:** (e.g., "Distribute ITNs in Village A")
+      * **Due Date/Time:** (visual indicator for overdue tasks)
+      * **Status:** (e.g., "In Progress," "Completed," "Reassigned")
+      * **Assignee:** (Team name or individual user)
+      * **Priority:** (Optional: High, Medium, Low)
+      * **Actions:** 
+          * "View Details" 
+          * "Mark as Complete"
+          * "Reassign" 
+          * "Reschedule"
+          * "report progress"
+          * "View Reports" 
+          
+**2. Assignment Details**
+    * **Component:** A modal or expanded view when "View Details" is clicked.
+    * **Elements:**
+        * **Detailed Description:** (Expanded view of the task description)
+        * **Attributes:** (Display key-value pairs of task attributes)
+            * Example: "Population": 1000, "Allocated ITNs": 500
+        * **Subtasks:** (If applicable, display a nested list of subtasks)
+        * **Assigned Forms:** (List of forms associated with the assignment)
+        * **Progress Bar:** (Visual representation of assignment completion)
+        * **Comments Section:** (For team communication)
+
+**3. Assignments Map**
+
+* **Component:** An interactive map integrated within the app.
+* **Functionality:**
+    * Display assignments on a map (if applicable).
+    * Allow users to filter assignments by location, status, or other criteria.
+    * Potentially integrate GPS location tracking for field workers.
+
+### 2. Forms Management**
+this section is available for users that are part of activity workflow, or users that are not part of any activity or assignment workflow.
+
+* Introduce a dedicated "Forms" tab or section within the app.
+* This tab would list all available forms that the user has permission to access.
+* Users can filter forms by type (e.g., "General Surveys, activity, assignment progress forms, ...etc").
+* Each form card would display the form name, description, and a "Start Form" button.
+* **Flexible Form Linking:** If the form is also associated with an assignment assigned to the user Allow the users to link the form to existing assignment when adding/opening a new form.
+**UI Indicators:** Clearly distinguish between assignment-linked forms and standalone forms within the UI.
+* For example:
+    * Use different icons or colors to differentiate form types.
+    * Display a clear indication if a form is linked to a specific assignment.
+
+### 3. Team Management
+
+* **Component:** A dedicated section for managing teams.
+* **Elements:**
+    * **Team Roster:** (List of team members)
+    * **Team Assignments:** (View and manage assignments for the team)
+    * **Team Performance:** (Track team progress and identify potential bottlenecks)
+
+### 4. Dashboard
+
+* **Component:** A personalized overview of a user's assignments.
+* **Elements:**
+    * **Key Performance Indicators (KPIs):** (e.g., number of completed tasks, overdue tasks, progress percentage)
+    * **Charts and Graphs:** (Visualize task completion rates, resource usage, etc.)
+    * **Customizable Widgets:** (Allow users to add/remove widgets based on their preferences)
+
+### 5. Notifications
+
+* **Component:** In-app notifications or push notifications.
+* **Functionality:**
+    * Alert users of new assignments, task updates, or urgent issues.
+
 ## Contributing
 
 We welcome contributions to enhance Data-Run-Mobile. Please follow these steps:
