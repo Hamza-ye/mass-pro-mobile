@@ -1,7 +1,7 @@
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
-import 'package:datarun/commons/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
 import 'package:datarun/data_run/form/form_template/field_template_traverse.extension.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';

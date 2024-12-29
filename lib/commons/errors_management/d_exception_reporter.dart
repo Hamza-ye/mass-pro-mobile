@@ -1,6 +1,6 @@
 import 'package:d2_remote/core/datarun/exception/exception.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/commons/errors_management/d_error_localization.dart';
-import 'package:datarun/commons/logging/new_app_logging.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:datarun/utils/navigator_key.dart';
 import 'package:flutter/material.dart';

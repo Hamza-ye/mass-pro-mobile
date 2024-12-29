@@ -1,6 +1,6 @@
 import 'package:d2_remote/modules/datarun_shared/sync/call/d2_progress.dart';
 import 'package:d2_remote/modules/datarun_shared/sync/sync_metadata.dart';
-import 'package:datarun/commons/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:datarun/utils/user_preferences/preference.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

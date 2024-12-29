@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AssignmentsCardView extends ConsumerWidget {
-  const AssignmentsCardView({super.key});
+  const AssignmentsCardView({super.key, required this.onViewDetails});
+
+  final void Function(AssignmentModel) onViewDetails;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,14 +23,7 @@ class AssignmentsCardView extends ConsumerWidget {
             final assignment = assignments[index];
             return AssignmentOverviewItem(
                 assignment: assignment,
-                onViewDetails: () {
-                  // Navigator.of(context).push(
-                  //   MaterialPageRoute(
-                  //     builder: (context) =>
-                  //         AssignmentPage(assignment: assignment),
-                  //   ),
-                  // );
-                },
+                onViewDetails: () => onViewDetails(assignment),
                 onSubmitForm: () {},
                 onChangeStatus: (AssignmentStatus newStatus) {
                   // ref.read(assignmentStatusProvider(assignment.id!)).state =

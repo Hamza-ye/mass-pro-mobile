@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:d2_remote/core/datarun/exception/d_exception.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/scanned_code_properties.dart';
-import 'package:datarun/commons/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/code_scanner/scanned_items_table.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/code_scanner/scanner_button_widgets.dart';

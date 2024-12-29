@@ -1,6 +1,6 @@
 import 'package:d2_remote/modules/datarun/form/shared/rule/action.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/rule_action.dart';
-import 'package:datarun/commons/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
 import 'package:datarun/data_run/screens/form_module/form_element_model/form_element_model.dart';
 import 'package:datarun/data_run/screens/form_module/form_template/form_element_template.dart';

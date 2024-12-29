@@ -10,7 +10,7 @@ import 'package:d2_remote/modules/datarun/form/shared/rule/choice_filter.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/rule_parse_extension.dart';
 import 'package:d2_remote/modules/datarun/form/shared/template_extensions/form_traverse_extension.dart';
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
-import 'package:datarun/commons/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/data_run/screens/form_module/form/code_generator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

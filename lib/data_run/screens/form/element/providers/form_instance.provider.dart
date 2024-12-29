@@ -52,11 +52,11 @@ Future<FormInstanceService> formInstanceService(FormInstanceServiceRef ref,
 @riverpod
 Future<FormInstance> formInstance(FormInstanceRef ref,
     {required FormMetadata formMetadata}) async {
-  final enabled = await D2Remote.formModule.formSubmission
+  final enabled = await D2Remote.formModule.dataFormSubmission
       .byId(formMetadata.submission!)
       .canEdit();
 
-  final submission = await D2Remote.formModule.formSubmission
+  final submission = await D2Remote.formModule.dataFormSubmission
       .byId(formMetadata.submission!)
       .getOne();
 

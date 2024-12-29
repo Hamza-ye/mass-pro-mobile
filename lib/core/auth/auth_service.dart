@@ -3,7 +3,7 @@ import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/datarun_shared/utilities/authenticated_user.dart';
 import 'package:datarun/commons/constants.dart';
 import 'package:datarun/commons/errors_management/d_exception_reporter.dart';
-import 'package:datarun/commons/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/core/auth/user_session_manager.dart';
 import 'package:datarun/data_run/screens/login_screen/login_page.dart';
 import 'package:datarun/utils/navigator_key.dart';

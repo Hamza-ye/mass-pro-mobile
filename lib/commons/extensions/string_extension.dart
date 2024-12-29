@@ -1,7 +1,7 @@
 // ignore_for_file: strict_raw_type
 
 import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
-import 'package:datarun/commons/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 
 extension StringNullExtension on String? {
   DateTime? toDate() {

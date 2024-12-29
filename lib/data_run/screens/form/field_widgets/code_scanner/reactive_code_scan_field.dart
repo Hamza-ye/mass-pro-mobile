@@ -1,4 +1,4 @@
-import 'package:datarun/commons/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/code_scanner/barcode_scanner_widget.dart';
 import 'package:datarun/data_run/screens/form_module/form/code_generator.dart';
 import 'package:flutter/material.dart';
