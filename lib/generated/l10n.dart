@@ -1703,6 +1703,226 @@ class S {
       args: [],
     );
   }
+
+  /// `dueDate`
+  String get dueDate {
+    return Intl.message(
+      'dueDate',
+      name: 'dueDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `dueDay`
+  String get dueDay {
+    return Intl.message(
+      'dueDay',
+      name: 'dueDay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scope`
+  String get scope {
+    return Intl.message(
+      'Scope',
+      name: 'scope',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forms`
+  String get formsAssigned {
+    return Intl.message(
+      'Forms',
+      name: 'formsAssigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View Details`
+  String get viewDetails {
+    return Intl.message(
+      'View Details',
+      name: 'viewDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resources`
+  String get resources {
+    return Intl.message(
+      'Resources',
+      name: 'resources',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Team`
+  String get team {
+    return Intl.message(
+      'Team',
+      name: 'team',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Started`
+  String get not_started {
+    return Intl.message(
+      'Not Started',
+      name: 'not_started',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `In Progress`
+  String get in_progress {
+    return Intl.message(
+      'In Progress',
+      name: 'in_progress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancelled`
+  String get cancelled {
+    return Intl.message(
+      'Cancelled',
+      name: 'cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completed`
+  String get completed {
+    return Intl.message(
+      'Completed',
+      name: 'completed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rescheduled`
+  String get rescheduled {
+    return Intl.message(
+      'Rescheduled',
+      name: 'rescheduled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Merged`
+  String get merged {
+    return Intl.message(
+      'Merged',
+      name: 'merged',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reassigned`
+  String get reassigned {
+    return Intl.message(
+      'Reassigned',
+      name: 'reassigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Entity`
+  String get entity {
+    return Intl.message(
+      'Entity',
+      name: 'entity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forms`
+  String get forms {
+    return Intl.message(
+      'Forms',
+      name: 'forms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assignment Detail`
+  String get assignmentDetail {
+    return Intl.message(
+      'Assignment Detail',
+      name: 'assignmentDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activity`
+  String get activity {
+    return Intl.message(
+      'Activity',
+      name: 'activity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status`
+  String get status {
+    return Intl.message(
+      'Status',
+      name: 'status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allocated Resources`
+  String get allocatedResources {
+    return Intl.message(
+      'Allocated Resources',
+      name: 'allocatedResources',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reported Resources`
+  String get reportedResources {
+    return Intl.message(
+      'Reported Resources',
+      name: 'reportedResources',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error Opening Form`
+  String get errorOpeningForm {
+    return Intl.message(
+      'Error Opening Form',
+      name: 'errorOpeningForm',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

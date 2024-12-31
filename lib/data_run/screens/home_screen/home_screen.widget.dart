@@ -3,6 +3,7 @@ import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/core/auth/internet_aware_screen.dart';
 import 'package:datarun/core/auth/user_session_manager.dart';
 import 'package:datarun/core/sync_manager/sync_service.dart';
+import 'package:datarun/data_run/d_assignment/test_/assignment_page.dart';
 import 'package:datarun/data_run/screens/home_screen/drawer/settings_page.dart';
 import 'package:datarun/data_run/screens/home_screen/home_deck/home_deck.widget.dart';
 import 'package:datarun/data_run/screens/sync_screen/sync_screen.widget.dart';
@@ -82,7 +83,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-          body: const HomeDeck(), // Main content
+          // body: const HomeDeck(), // Main content
+          body: const AssignmentPage(), // Main content
         );
       },
     );

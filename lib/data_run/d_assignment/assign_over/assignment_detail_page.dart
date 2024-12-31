@@ -1,9 +1,9 @@
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:intl/intl.dart';
 
 class AssignmentDetailPage extends StatelessWidget {
   const AssignmentDetailPage({super.key, required this.assignment});
@@ -13,15 +13,17 @@ class AssignmentDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Assignment Detail')),
+      appBar: AppBar(title: Text(S.of(context).assignmentDetail)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildHeader(context),
+            Divider(height: 20,),
             const SizedBox(height: 16),
             _buildDetails(context),
+            Divider(height: 20,),
             const SizedBox(height: 16),
             _buildResourcesComparison(context),
             const SizedBox(height: 16),
@@ -51,16 +53,16 @@ class AssignmentDetailPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildDetailRow(context, 'Entity',
+        _buildDetailRow(context, S.of(context).entity,
             '${assignment.entityCode} - ${assignment.entityName}'),
         _buildDetailRow(
-            context, 'Team', '${assignment.teamCode} - ${assignment.teamName}'),
-        _buildDetailRow(context, 'Scope', assignment.scope.name),
-        _buildDetailRow(context, 'Due Date', assignment.dueDate.toString()),
+            context, S.of(context).team, '${assignment.teamCode}'),
+        _buildDetailRow(context, S.of(context).scope, assignment.scope.name),
+        _buildDetailRow(context, S.of(context).dueDate, assignment.dueDate.toString()),
         if (assignment.rescheduledDate != null)
-          _buildDetailRow(context, 'Rescheduled Date',
+          _buildDetailRow(context, S.of(context).rescheduled,
               assignment.rescheduledDate.toString()),
-        _buildDetailRow(context, 'Forms', assignment.forms.length.toString()),
+        _buildDetailRow(context, S.of(context).forms, assignment.forms.length.toString()),
       ],
     );
   }
@@ -82,7 +84,7 @@ class AssignmentDetailPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Resources', style: Theme.of(context).textTheme.labelLarge),
+        Text(S.of(context).resources, style: Theme.of(context).textTheme.labelLarge),
         const SizedBox(height: 8),
         ...assignment.allocatedResources.keys.map((key) {
           final allocated = assignment.allocatedResources[key] ?? 0;
@@ -108,7 +110,7 @@ class AssignmentDetailPage extends StatelessWidget {
             // Handle form submission
           },
           icon: const Icon(Icons.send),
-          label: const Text('Submit Form'),
+          label: Text(S.of(context).openNewForm),
         ),
         const SizedBox(height: 8),
         DropdownButton<AssignmentStatus>(
@@ -121,7 +123,7 @@ class AssignmentDetailPage extends StatelessWidget {
           items: AssignmentStatus.values.map((status) {
             return DropdownMenuItem<AssignmentStatus>(
               value: status,
-              child: Text(status.name),
+              child: Text(Intl.message(status.name.toLowerCase())),
             );
           }).toList(),
         ),
@@ -137,7 +139,7 @@ class AssignmentDetailPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        assignment.status.name,
+        Intl.message(assignment.status.name.toLowerCase()),
         style: const TextStyle(color: Colors.white),
       ),
     );

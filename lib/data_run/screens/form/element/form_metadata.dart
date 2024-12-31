@@ -1,38 +1,50 @@
+import 'package:datarun/data_run/d_assignment/model/assignment_form.dart';
 import 'package:equatable/equatable.dart';
 
 class FormMetadata with EquatableMixin {
   const FormMetadata({
-    required this.form,
-    required this.formLabel,
-    required this.activity,
-    required this.version,
+    // required this.formId,
+    // required this.formLabel,
+    // required this.activity,
+    required this.assignmentForm,
+    // this.version,
     this.submission,
   });
 
-  final String form;
-  final String formLabel;
-  final int version;
-  final String activity;
+  // final String formId;
+
+  // final String activity;
+  // final String formLabel;
+  final AssignmentForm assignmentForm;
+
+  // final int? version;
   final String? submission;
 
   FormMetadata copyWith({
-    String? form,
-    String? formLabel,
-    String? activity,
-    int? version,
+    String? formId,
+    // String? formLabel,
+    // String? activity,
+    AssignmentForm? assignmentForm,
+    // int? version,
     String? submission,
   }) {
     return FormMetadata(
-        form: form ?? this.form,
-        formLabel: formLabel ?? this.formLabel,
-        submission: submission ?? this.submission,
-        activity: activity ?? this.activity,
-        version: version ?? this.version);
+      // formId: formId ?? this.formId,
+      // formLabel: formLabel ?? this.formLabel,
+      // activity: activity ?? this.activity,
+      assignmentForm: assignmentForm ?? this.assignmentForm,
+      // version: version ?? this.version,
+      submission: submission ?? this.submission,
+    );
   }
 
   @override
   bool? get stringify => true;
 
   @override
-  List<Object?> get props => [form, formLabel, submission, activity, version];
+  List<Object?> get props => [
+        submission,
+        // version,
+        assignmentForm, /*formId, formLabel, activity*/
+      ];
 }

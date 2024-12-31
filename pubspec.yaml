@@ -61,12 +61,13 @@ dev_dependencies:
   custom_lint: ^0.5.11
 #  injectable_generator: ^2.6.2
 #  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.13.1
 
 #flutter_launcher_icons:
 #  android: "launcher_icon"
 #  adaptive_icon_background: "assets/launcher_icon/ic_launcher.png"
 #  image_path: "assets/launcher_icon/ic_launcher.png"
-#  min_sdk_android: 34 # android min sdk min:16, default 21
+#  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:
   uses-material-design: true

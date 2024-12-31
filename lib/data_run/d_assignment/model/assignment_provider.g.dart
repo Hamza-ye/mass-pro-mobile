@@ -23,23 +23,7 @@ final filterAssignmentsProvider =
 
 typedef FilterAssignmentsRef
     = AutoDisposeFutureProviderRef<List<AssignmentModel>>;
-String _$assignmentsHash() => r'c198ca5969302bc819153095004493241849be37';
-
-/// See also [Assignments].
-@ProviderFor(Assignments)
-final assignmentsProvider = AutoDisposeAsyncNotifierProvider<Assignments,
-    List<AssignmentModel>>.internal(
-  Assignments.new,
-  name: r'assignmentsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$assignmentsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$Assignments = AutoDisposeAsyncNotifier<List<AssignmentModel>>;
-String _$assignmentSubmissionsHash() =>
-    r'f52fb43fb987076c3e02bbec5216374c31b10188';
+String _$assignmentFormsHash() => r'b7f55727c4e55efc249f4f534723d1960a4f475f';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -61,6 +45,195 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [assignmentForms].
+@ProviderFor(assignmentForms)
+const assignmentFormsProvider = AssignmentFormsFamily();
+
+/// See also [assignmentForms].
+class AssignmentFormsFamily extends Family {
+  /// See also [assignmentForms].
+  const AssignmentFormsFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'assignmentFormsProvider';
+
+  /// See also [assignmentForms].
+  AssignmentFormsProvider call(
+    String assignmentId,
+  ) {
+    return AssignmentFormsProvider(
+      assignmentId,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  AssignmentFormsProvider getProviderOverride(
+    covariant AssignmentFormsProvider provider,
+  ) {
+    return call(
+      provider.assignmentId,
+    );
+  }
+
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(
+      FutureOr<List<FormVersion>> Function(AssignmentFormsRef ref) create) {
+    return _$AssignmentFormsFamilyOverride(this, create);
+  }
+}
+
+class _$AssignmentFormsFamilyOverride implements FamilyOverride {
+  _$AssignmentFormsFamilyOverride(this.overriddenFamily, this.create);
+
+  final FutureOr<List<FormVersion>> Function(AssignmentFormsRef ref) create;
+
+  @override
+  final AssignmentFormsFamily overriddenFamily;
+
+  @override
+  AssignmentFormsProvider getProviderOverride(
+    covariant AssignmentFormsProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
+}
+
+/// See also [assignmentForms].
+class AssignmentFormsProvider
+    extends AutoDisposeFutureProvider<List<FormVersion>> {
+  /// See also [assignmentForms].
+  AssignmentFormsProvider(
+    String assignmentId,
+  ) : this._internal(
+          (ref) => assignmentForms(
+            ref as AssignmentFormsRef,
+            assignmentId,
+          ),
+          from: assignmentFormsProvider,
+          name: r'assignmentFormsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$assignmentFormsHash,
+          dependencies: AssignmentFormsFamily._dependencies,
+          allTransitiveDependencies:
+              AssignmentFormsFamily._allTransitiveDependencies,
+          assignmentId: assignmentId,
+        );
+
+  AssignmentFormsProvider._internal(
+    super.create, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.assignmentId,
+  }) : super.internal();
+
+  final String assignmentId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<FormVersion>> Function(AssignmentFormsRef ref) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: AssignmentFormsProvider._internal(
+        (ref) => create(ref as AssignmentFormsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        assignmentId: assignmentId,
+      ),
+    );
+  }
+
+  @override
+  (String,) get argument {
+    return (assignmentId,);
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<FormVersion>> createElement() {
+    return _AssignmentFormsProviderElement(this);
+  }
+
+  AssignmentFormsProvider _copyWith(
+    FutureOr<List<FormVersion>> Function(AssignmentFormsRef ref) create,
+  ) {
+    return AssignmentFormsProvider._internal(
+      (ref) => create(ref as AssignmentFormsRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      assignmentId: assignmentId,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AssignmentFormsProvider &&
+        other.assignmentId == assignmentId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, assignmentId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin AssignmentFormsRef on AutoDisposeFutureProviderRef<List<FormVersion>> {
+  /// The parameter `assignmentId` of this provider.
+  String get assignmentId;
+}
+
+class _AssignmentFormsProviderElement
+    extends AutoDisposeFutureProviderElement<List<FormVersion>>
+    with AssignmentFormsRef {
+  _AssignmentFormsProviderElement(super.provider);
+
+  @override
+  String get assignmentId => (origin as AssignmentFormsProvider).assignmentId;
+}
+
+String _$assignmentsHash() => r'72e89050c71265b50ba25df2d480e07545d08224';
+
+/// See also [Assignments].
+@ProviderFor(Assignments)
+final assignmentsProvider = AutoDisposeAsyncNotifierProvider<Assignments,
+    List<AssignmentModel>>.internal(
+  Assignments.new,
+  name: r'assignmentsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$assignmentsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Assignments = AutoDisposeAsyncNotifier<List<AssignmentModel>>;
+String _$assignmentSubmissionsHash() =>
+    r'f52fb43fb987076c3e02bbec5216374c31b10188';
 
 abstract class _$AssignmentSubmissions
     extends BuildlessAutoDisposeAsyncNotifier<List<DataFormSubmission>> {

@@ -1,19 +1,26 @@
+import 'package:d2_remote/d2_remote.dart';
+import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/datarun/form/entities/form_template.entity.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
+import 'package:datarun/core/utils/get_item_local_string.dart';
+import 'package:datarun/data_run/d_assignment/assign_over/form_submission_create.widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class AssignmentOverviewItem extends ConsumerWidget {
   const AssignmentOverviewItem({
     super.key,
     required this.assignment,
-    required this.onSubmitForm,
+    required this.onFormSubmission,
     required this.onViewDetails,
     required this.onChangeStatus,
   });
 
   final AssignmentModel assignment;
-  final VoidCallback onSubmitForm;
+  final Function(DataFormSubmission submission) onFormSubmission;
   final VoidCallback onViewDetails;
   final void Function(AssignmentStatus newStatus) onChangeStatus;
 
@@ -30,7 +37,6 @@ class AssignmentOverviewItem extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Header: Activity and Assignment ID
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -42,13 +48,11 @@ class AssignmentOverviewItem extends ConsumerWidget {
               ],
             ),
             const SizedBox(height: 8),
-            // Text('Assignment ID: $assignmentId',
-            //     style: Theme.of(context).textTheme.bodySmall, softWrap: true),
             _buildDetailRow(
               context,
               icon: Icons.category,
-              label: 'Scope',
-              value: assignment.scope.name,
+              label: S.of(context).scope,
+              value: Intl.message(assignment.scope.name.toLowerCase()),
               style: TextStyle(color: Colors.grey[700]),
             ),
 
@@ -62,24 +66,28 @@ class AssignmentOverviewItem extends ConsumerWidget {
                 context),
             const SizedBox(height: 8),
             _buildDetailIcon(
-                Icons.group, assignment.teamName, searchQuery, context),
+                Icons.group,
+                '${S.of(context).team}: ${assignment.teamCode}',
+                searchQuery,
+                context),
             const SizedBox(height: 16),
 
-            _buildDetailRow(
-              context,
-              icon: Icons.calendar_today,
-              label: 'dueDate',
-              value: _formatDate(assignment.dueDate, context),
-              style: assignment.dueDate.isBefore(DateTime.now())
-                  ? Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.red)
-                  : Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: Colors.grey[700]),
-            ),
+            if (assignment.dueDate != null)
+              _buildDetailRow(
+                context,
+                icon: Icons.calendar_today,
+                label: S.of(context).dueDate,
+                value: _formatDate(assignment.dueDate!, context),
+                style: assignment.dueDate!.isBefore(DateTime.now())
+                    ? Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.red)
+                    : Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.grey[700]),
+              ),
 
             if (assignment.rescheduledDate != null)
               _buildDetailIcon(
@@ -92,7 +100,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
 
             // Forms Section
             Text(
-              'Forms: ${assignment.forms.length}',
+              '${S.of(context).formsAssigned}: ${assignment.forms.length}',
               style: Theme.of(context).textTheme.labelMedium,
               softWrap: true,
             ),
@@ -112,17 +120,19 @@ class AssignmentOverviewItem extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton.icon(
-                        onPressed: onSubmitForm,
-                        icon: const Icon(Icons.send),
-                        label: const Text(
-                          'Submit Form',
+                        onPressed: () async {
+                          await _showFormSelectionBottomSheet(context);
+                        },
+                        icon: const Icon(Icons.file_open),
+                        label: Text(
+                          S.of(context).openNewForm,
                           softWrap: true,
                         ),
                       ),
                       TextButton.icon(
                         onPressed: onViewDetails,
                         icon: const Icon(Icons.info_outline),
-                        label: const Text('View Details', softWrap: true),
+                        label: Text(S.of(context).viewDetails, softWrap: true),
                       ),
                     ],
                   ),
@@ -137,7 +147,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
                       .map((status) => DropdownMenuItem<AssignmentStatus>(
                             value: status,
                             child: Text(
-                              status.name,
+                              Intl.message(status.name.toLowerCase()),
                               style: Theme.of(context).textTheme.labelSmall,
                             ),
                           ))
@@ -149,6 +159,37 @@ class AssignmentOverviewItem extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _showFormSelectionBottomSheet(BuildContext context) async {
+    try {
+      await showModalBottomSheet(
+        enableDrag: false,
+        // backgroundColor: Colors.transparent,
+        context: context,
+        builder: (BuildContext context) {
+          return FormSubmissionCreate(
+            assignment: assignment,
+            onNewFormCreated: (createdSubmissionId) {
+              onFormSubmission(createdSubmissionId);
+            },
+          );
+        },
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+              '${S.of(context).errorOpeningForm}: ${e.toString().substring(0, 50)}'),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
+  }
+
+  Future<List<FormTemplate>> _getFormTemplates(List<String> formIds) async {
+    return D2Remote.formModule.formTemplateV.byIds(formIds).get();
   }
 
   Widget _buildHighlightedText(
@@ -202,7 +243,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Resources',
+          S.of(context).resources,
           style: Theme.of(context).textTheme.labelMedium,
         ),
         const SizedBox(height: 8),
@@ -280,7 +321,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
     }
 
     return Tooltip(
-      message: assignment.status.name,
+      message: Intl.message(assignment.status.name.toLowerCase()),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(

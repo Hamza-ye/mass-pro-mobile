@@ -1,4 +1,5 @@
 import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
+import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:datarun/data_run/form/form_template/template_providers.dart';
 import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
@@ -11,12 +12,13 @@ part 'ou_picker_data_source.provider.g.dart';
 @riverpod
 Future<TreeNodeDataSource> ouPickerDataSource(OuPickerDataSourceRef ref,
     {required FormMetadata formMetadata}) async {
-  final FormVersion? template = await ref.watch(formVersionAsyncProvider(
-          form: formMetadata.form, version: formMetadata.version)
-      .future);
+  final List<FormVersion> template = await ref.watch(
+      submissionVersionFormTemplateProvider(
+              formId: [formMetadata.assignmentForm.formId])
+          .future);
 
   final dataSourceValue = await ref.watch(treeNodeDataSourceProvider(
-          selectableUids: (template?.orgUnits ?? []).lock)
+          selectableUids: /*(template?.orgUnits ?? [])*/ <String>[].lock)
       .future);
 
   return dataSourceValue;

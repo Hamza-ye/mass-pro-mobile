@@ -59,7 +59,7 @@ class FormFlatTemplate with PathWalkingService {
 
   String get defaultLocal => formTemplate.defaultLocal;
 
-  String get activity => formTemplate.activity;
+  // String get activity => formTemplate.activity;
 
   int get version => formTemplate.version;
 
@@ -79,7 +79,7 @@ class FormFlatTemplate with PathWalkingService {
 
   Map<String, String> get label => Map.unmodifiable(formTemplate.label);
 
-  List<String> get orgUnits => List.unmodifiable(formTemplate.orgUnits);
+  List<String> get orgUnits => <String>[];//List.unmodifiable(formTemplate.orgUnits);
 }
 
 // @immutable

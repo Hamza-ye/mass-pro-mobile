@@ -2,7 +2,6 @@ import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.ent
 import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/data_run/form/form_element/form_element_iterators/form_element_iterator.dart';
 import 'package:datarun/data_run/form/form_element_factories/form_element_control_builder.dart';
-import 'package:datarun/data_run/screens/form_module/form/code_generator.dart';
 import 'package:datarun/data_run/screens/form_module/form_template/form_element_template.dart';
 import 'package:datarun/data_run/form/form_element_factories/form_element_builder.dart';
 import 'package:datarun/data_run/form/form_submission/submission_list.provider.dart';
@@ -66,7 +65,7 @@ class FormInstance {
   SectionInstance get formSection => _formSection;
 
   FormSubmissions get formSubmissionList =>
-      _ref.read(formSubmissionsProvider(formMetadata.form).notifier);
+      _ref.read(formSubmissionsProvider(formMetadata.assignmentForm.formId).notifier);
 
   final FormMetadata formMetadata;
 

@@ -24,7 +24,8 @@ final userDeviceInfoServiceProvider =
 
 typedef UserDeviceInfoServiceRef
     = AutoDisposeFutureProviderRef<AndroidDeviceInfoService>;
-String _$formFlatTemplateHash() => r'2932127cb1ded14519b75ed39c9f436d003aed53';
+String _$submissionVersionFormTemplateHash() =>
+    r'f42e1dd295f143f0e23d3d09ad64ebb980c5d102';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,6 +47,213 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// form id could be on the format of formId-version or formId
+/// look for the latest version of the form template or the form template
+/// that matches the version
+///
+/// Copied from [submissionVersionFormTemplate].
+@ProviderFor(submissionVersionFormTemplate)
+const submissionVersionFormTemplateProvider =
+    SubmissionVersionFormTemplateFamily();
+
+/// form id could be on the format of formId-version or formId
+/// look for the latest version of the form template or the form template
+/// that matches the version
+///
+/// Copied from [submissionVersionFormTemplate].
+class SubmissionVersionFormTemplateFamily extends Family {
+  /// form id could be on the format of formId-version or formId
+  /// look for the latest version of the form template or the form template
+  /// that matches the version
+  ///
+  /// Copied from [submissionVersionFormTemplate].
+  const SubmissionVersionFormTemplateFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'submissionVersionFormTemplateProvider';
+
+  /// form id could be on the format of formId-version or formId
+  /// look for the latest version of the form template or the form template
+  /// that matches the version
+  ///
+  /// Copied from [submissionVersionFormTemplate].
+  SubmissionVersionFormTemplateProvider call({
+    required List<String> formId,
+  }) {
+    return SubmissionVersionFormTemplateProvider(
+      formId: formId,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  SubmissionVersionFormTemplateProvider getProviderOverride(
+    covariant SubmissionVersionFormTemplateProvider provider,
+  ) {
+    return call(
+      formId: provider.formId,
+    );
+  }
+
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(
+      FutureOr<List<FormVersion>> Function(SubmissionVersionFormTemplateRef ref)
+          create) {
+    return _$SubmissionVersionFormTemplateFamilyOverride(this, create);
+  }
+}
+
+class _$SubmissionVersionFormTemplateFamilyOverride implements FamilyOverride {
+  _$SubmissionVersionFormTemplateFamilyOverride(
+      this.overriddenFamily, this.create);
+
+  final FutureOr<List<FormVersion>> Function(
+      SubmissionVersionFormTemplateRef ref) create;
+
+  @override
+  final SubmissionVersionFormTemplateFamily overriddenFamily;
+
+  @override
+  SubmissionVersionFormTemplateProvider getProviderOverride(
+    covariant SubmissionVersionFormTemplateProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
+}
+
+/// form id could be on the format of formId-version or formId
+/// look for the latest version of the form template or the form template
+/// that matches the version
+///
+/// Copied from [submissionVersionFormTemplate].
+class SubmissionVersionFormTemplateProvider
+    extends AutoDisposeFutureProvider<List<FormVersion>> {
+  /// form id could be on the format of formId-version or formId
+  /// look for the latest version of the form template or the form template
+  /// that matches the version
+  ///
+  /// Copied from [submissionVersionFormTemplate].
+  SubmissionVersionFormTemplateProvider({
+    required List<String> formId,
+  }) : this._internal(
+          (ref) => submissionVersionFormTemplate(
+            ref as SubmissionVersionFormTemplateRef,
+            formId: formId,
+          ),
+          from: submissionVersionFormTemplateProvider,
+          name: r'submissionVersionFormTemplateProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$submissionVersionFormTemplateHash,
+          dependencies: SubmissionVersionFormTemplateFamily._dependencies,
+          allTransitiveDependencies:
+              SubmissionVersionFormTemplateFamily._allTransitiveDependencies,
+          formId: formId,
+        );
+
+  SubmissionVersionFormTemplateProvider._internal(
+    super.create, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.formId,
+  }) : super.internal();
+
+  final List<String> formId;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<FormVersion>> Function(SubmissionVersionFormTemplateRef ref)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SubmissionVersionFormTemplateProvider._internal(
+        (ref) => create(ref as SubmissionVersionFormTemplateRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        formId: formId,
+      ),
+    );
+  }
+
+  @override
+  ({
+    List<String> formId,
+  }) get argument {
+    return (formId: formId,);
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<FormVersion>> createElement() {
+    return _SubmissionVersionFormTemplateProviderElement(this);
+  }
+
+  SubmissionVersionFormTemplateProvider _copyWith(
+    FutureOr<List<FormVersion>> Function(SubmissionVersionFormTemplateRef ref)
+        create,
+  ) {
+    return SubmissionVersionFormTemplateProvider._internal(
+      (ref) => create(ref as SubmissionVersionFormTemplateRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      formId: formId,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SubmissionVersionFormTemplateProvider &&
+        other.formId == formId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, formId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin SubmissionVersionFormTemplateRef
+    on AutoDisposeFutureProviderRef<List<FormVersion>> {
+  /// The parameter `formId` of this provider.
+  List<String> get formId;
+}
+
+class _SubmissionVersionFormTemplateProviderElement
+    extends AutoDisposeFutureProviderElement<List<FormVersion>>
+    with SubmissionVersionFormTemplateRef {
+  _SubmissionVersionFormTemplateProviderElement(super.provider);
+
+  @override
+  List<String> get formId =>
+      (origin as SubmissionVersionFormTemplateProvider).formId;
+}
+
+String _$formFlatTemplateHash() => r'70e9c76bd6e103e86b2ad024d600acdf8c15d638';
 
 /// See also [formFlatTemplate].
 @ProviderFor(formFlatTemplate)

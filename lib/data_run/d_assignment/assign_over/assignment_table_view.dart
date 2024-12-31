@@ -1,11 +1,13 @@
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class AssignmentTableView extends ConsumerWidget {
-  AssignmentTableView({required this.onViewDetails});
+  AssignmentTableView({super.key,required this.onViewDetails});
 
   final void Function(AssignmentModel) onViewDetails;
 
@@ -28,52 +30,40 @@ class AssignmentTableView extends ConsumerWidget {
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: DataTable(
-          columns: const <DataColumn>[
-            DataColumn(label: Text('Activity')),
-            DataColumn(label: Text('Entity')),
-            DataColumn(label: Text('Team')),
-            DataColumn(label: Text('Scope')),
-            DataColumn(label: Text('Status')),
-            DataColumn(label: Text('Due Date')),
-            DataColumn(label: Text('Rescheduled Date')),
-            DataColumn(label: Text('Allocated Resources')),
-            DataColumn(label: Text('Reported Resources')),
-            DataColumn(label: Text('Forms')),
-            DataColumn(label: Text('Status')),
+          columns: <DataColumn>[
+            // DataColumn(label: Text(S.current.activity)),
+            DataColumn(label: Text(S.current.status)),
+            DataColumn(label: Text(S.current.entity)),
+            DataColumn(label: Text(S.current.team)),
+            DataColumn(label: Text(S.current.scope)),
+            // DataColumn(label: Text(S.current.status)),
+            DataColumn(label: Text(S.current.dueDate)),
+            DataColumn(label: Text(S.current.rescheduled)),
+            DataColumn(label: Text(S.current.allocatedResources)),
+            DataColumn(label: Text(S.current.reportedResources)),
+            // DataColumn(label: Text(S.current.forms)),
           ],
           rows: assignments
               .map((assignment) => DataRow(
                     cells: <DataCell>[
-                      DataCell(_buildHighlightedText(
-                          assignment.activity, searchQuery)),
+                      // DataCell(_buildHighlightedText(
+                      //     assignment.activity, searchQuery)),
+                      DataCell(_buildStatusBadge(assignment)),
                       DataCell(_buildHighlightedText(
                           '${assignment.entityCode} - ${assignment.entityName}',
                           searchQuery)),
                       DataCell(_buildHighlightedText(
-                          '${assignment.teamCode} - ${assignment.teamName}',
-                          searchQuery)),
-                      DataCell(Text(assignment.scope.name)),
-                      DataCell(Text(assignment.status.name)),
+                          '${assignment.teamName}', searchQuery)),
+                      DataCell(Text(
+                          Intl.message(assignment.scope.name.toLowerCase()))),
+                      // DataCell(Text(
+                      //     Intl.message(assignment.status.name.toLowerCase()))),
                       DataCell(Text(assignment.dueDate.toString())),
                       DataCell(
                           Text(assignment.rescheduledDate?.toString() ?? '')),
                       DataCell(Text(assignment.allocatedResources.toString())),
                       DataCell(Text(assignment.reportedResources.toString())),
-                      DataCell(Text(assignment.forms.toString())),
-                      DataCell(
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: _statusColor(assignment.status),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Text(
-                            assignment.status.name,
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
+                      // DataCell(Text(assignment.forms.toString())),
                     ],
                     onSelectChanged: (_) => onViewDetails(assignment),
                   ))
@@ -131,5 +121,48 @@ class AssignmentTableView extends ConsumerWidget {
       default:
         return Colors.black;
     }
+  }
+
+  Widget _buildStatusBadge(AssignmentModel assignment) {
+    IconData statusIcon;
+    Color badgeColor;
+
+    switch (assignment.status) {
+      case AssignmentStatus.NOT_STARTED:
+        statusIcon = Icons.hourglass_empty;
+        badgeColor = Colors.grey;
+        break;
+      case AssignmentStatus.IN_PROGRESS:
+        statusIcon = Icons.autorenew;
+        badgeColor = Colors.blue;
+        break;
+      case AssignmentStatus.COMPLETED:
+        statusIcon = Icons.check_circle;
+        badgeColor = Colors.green;
+        break;
+      case AssignmentStatus.RESCHEDULED:
+        statusIcon = Icons.schedule;
+        badgeColor = Colors.orange;
+        break;
+      case AssignmentStatus.CANCELLED:
+        statusIcon = Icons.cancel;
+        badgeColor = Colors.red;
+        break;
+      default:
+        statusIcon = Icons.help_outline;
+        badgeColor = Colors.black;
+    }
+
+    return Tooltip(
+      message: Intl.message(assignment.status.name.toLowerCase()),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: badgeColor,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Icon(statusIcon, color: Colors.white),
+      ),
+    );
   }
 }

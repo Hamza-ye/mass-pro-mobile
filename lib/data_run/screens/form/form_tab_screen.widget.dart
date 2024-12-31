@@ -32,8 +32,8 @@ class FormSubmissionScreenState extends ConsumerState<FormSubmissionScreen> {
   Widget build(BuildContext context) {
     final formMetadata = FormMetadataWidget.of(context);
 
-    final AsyncValue<bool> submissionEditStatus = ref.watch(
-        submissionEditStatusProvider(submission: formMetadata.submission!));
+    final AsyncValue<bool> submissionEditStatus =
+        ref.watch(submissionEditStatusProvider(formMetadata: formMetadata));
 
     return AsyncValueWidget(
         value: submissionEditStatus,

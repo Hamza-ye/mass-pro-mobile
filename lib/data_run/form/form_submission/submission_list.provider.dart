@@ -3,6 +3,7 @@ import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
 import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/datarun/form/models/geometry.dart';
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/metadatarun/assignment/entities/d_assignment.entity.dart';
 import 'package:d2_remote/modules/metadatarun/org_unit/entities/org_unit.entity.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:d2_remote/shared/utilities/save_option.util.dart';
@@ -12,7 +13,6 @@ import 'package:datarun/core/utils/get_item_local_string.dart';
 import 'package:datarun/data_run/form/form_submission/form_submission_repository.dart';
 import 'package:datarun/data_run/form/form_submission/submission_list_util.dart';
 import 'package:datarun/data_run/form/form_submission/submission_summary.model.dart';
-import 'package:datarun/data_run/form/shared/submission_status.dart';
 import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -62,24 +62,26 @@ class FormSubmissions extends _$FormSubmissions {
 
   /// injecting the arguments from the context
   Future<DataFormSubmission> createNewSubmission(
-      {required String activityUid,
-      required String teamUid,
-      // required String orgUnit,
+      {required formVersion,
+      String? assignmentId,
+      required String teamId,
+      required String formId,
       required int version,
       Map<String, dynamic> formData = const {},
       Geometry? geometry}) async {
     final DataFormSubmission submission = DataFormSubmission(
         status: AssignmentStatus.IN_PROGRESS,
-        form: form,
-        formVersion: '${form}_$version',
+        form: formId,
+        formVersion: formVersion,
         version: version,
-        activity: activityUid,
-        team: teamUid,
-        // orgUnit: orgUnit,
+        // activity: activityUid,
+        team: teamId,
+        assignment: assignmentId,
         formData: formData,
         dirty: true,
         synced: false,
         deleted: false,
+        isFinal: false,
         startEntryTime:
             DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()));
 
@@ -107,7 +109,7 @@ class FormSubmissions extends _$FormSubmissions {
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
-    ref.invalidateSelf();
+    // ref.invalidateSelf();
 
     return submission;
   }
@@ -137,8 +139,13 @@ class FormSubmissions extends _$FormSubmissions {
 
 @riverpod
 Future<bool> submissionEditStatus(SubmissionEditStatusRef ref,
-    {required String submission}) async {
-  return D2Remote.formModule.dataFormSubmission.byId(submission).canEdit();
+    {required FormMetadata formMetadata}) async {
+  if (formMetadata.assignmentForm.isNew) {
+    return true;
+  }
+  return D2Remote.formModule.dataFormSubmission
+      .byId(formMetadata.submission!)
+      .canEdit();
 }
 
 @riverpod
@@ -176,15 +183,21 @@ Future<List<DataFormSubmission>> submissionFilteredByState(
 @riverpod
 Future<SubmissionItemSummaryModel> submissionInfo(SubmissionInfoRef ref,
     {required FormMetadata formMetadata}) async {
-  final allSubmissions =
-      await ref.watch(formSubmissionsProvider(formMetadata.form).future);
+  final allSubmissions = await ref.watch(
+      formSubmissionsProvider(formMetadata.assignmentForm.formId).future);
 
   final submission =
       allSubmissions.firstWhere((t) => t.uid == formMetadata.submission!);
 
-  final OrgUnit? orgUnit = submission.assignment != null
-      ? await D2Remote.organisationUnitModuleD.orgUnit
+  final DAssignment? assignment = submission.assignment != null
+      ? await D2Remote.assignmentModuleD.assignment
           .byId(submission.assignment!)
+          .getOne()
+      : null;
+
+  final OrgUnit? orgUnit = assignment != null
+      ? await D2Remote.organisationUnitModuleD.orgUnit
+          .byId(assignment.orgUnit!)
           .getOne()
       : null;
 

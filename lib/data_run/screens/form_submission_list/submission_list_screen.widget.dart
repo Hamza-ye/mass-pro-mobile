@@ -1,7 +1,7 @@
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
-import 'package:datarun/data_run/form/form_template/template_providers.dart';
+import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
@@ -15,6 +15,7 @@ import 'package:datarun/data_run/screens/form_ui_elements/get_error_widget.dart'
 import 'package:datarun/data_run/screens/form_submission_list/submission_sync_dialog.widget.dart';
 import 'package:datarun/data_run/screens/project_activity_detail/form_tiles/form_submissions_status.provider.dart';
 import 'package:datarun/generated/l10n.dart';
+import 'package:intl/intl.dart';
 
 class SubmissionListScreen extends StatefulHookConsumerWidget {
   const SubmissionListScreen({super.key});
@@ -37,7 +38,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
           syncEntity: (uids) async {
             if (uids != null) {
               await ref
-                  .read(formSubmissionsProvider(formMetadata.form).notifier)
+                  .read(formSubmissionsProvider(formMetadata.assignmentForm.formId).notifier)
                   .syncEntities(uids);
             }
           },
@@ -54,15 +55,15 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
   @override
   Widget build(BuildContext context) {
     final formMetadata = FormMetadataWidget.of(context);
-    final formTemplateAsync = ref.watch(formVersionAsyncProvider(
-        form: formMetadata.form, version: formMetadata.version));
+    final formTemplateAsync = ref.watch(
+        submissionVersionFormTemplateProvider(formId: [formMetadata.assignmentForm.formId]));
     return AsyncValueWidget(
       value: formTemplateAsync,
       valueBuilder: (formTemplate) {
         return Scaffold(
-            key: ValueKey(formMetadata.form),
+            key: ValueKey(formMetadata.assignmentForm.formId),
             appBar: AppBar(
-              title: Text(formMetadata.formLabel),
+              title: Text(formMetadata.assignmentForm.assignmentModel.activity),
             ),
             body: Column(
               children: [
@@ -71,7 +72,8 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
                     child: AsyncValueWidget(
                   value: ref.watch(
                     submissionFilteredByStateProvider(
-                        form: formMetadata.form, status: _selectedStatus),
+                        form: formMetadata.assignmentForm.formId,
+                        status: _selectedStatus),
                   ),
                   valueBuilder: (submissions) => ListView.builder(
                     itemCount: submissions.length,
@@ -91,12 +93,12 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
                           ),
                           child: SubmissionInfo(
                               rootSection:
-                                  SectionTemplate(fields: formTemplate.fields),
+                                  SectionTemplate(fields: formTemplate.single.fields),
                               submissionEntity: entity,
                               onSyncPressed: (uid) =>
                                   _showSyncDialog([entity.uid!]),
                               onTap: () => _goToDataEntryForm(
-                                  entity.uid!, entity.version)),
+                                  entity.uid!, /*entity.version*/)),
                         ),
                       );
                     },
@@ -117,7 +119,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
 
   Widget _buildFilterBar() {
     final statusCountModelValue = ref.watch(
-        formSubmissionsStatusProvider(FormMetadataWidget.of(context).form));
+        formSubmissionsStatusProvider(FormMetadataWidget.of(context).assignmentForm.formId));
 
     return switch (statusCountModelValue) {
       AsyncValue(:final Object error?, :final stackTrace) =>
@@ -147,7 +149,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
       child: ChoiceChip(
         label: Text(' ($count)'),
         showCheckmark: false,
-        tooltip: status.name,
+        tooltip: Intl.message(status.name.toLowerCase()),
         avatar: buildStatusIcon(status),
         selected: _selectedStatus == status,
         onSelected: (bool selected) {
@@ -165,25 +167,25 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
     }
 
     final formMetadata = FormMetadataWidget.of(context);
-    final String? result = await showDialog<String?>(
-        context: context,
-        builder: (BuildContext context) {
-          return FormMetadataWidget(
-            formMetadata: formMetadata,
-            child: const SubmissionCreationDialog(),
-          );
-        });
-    if (result != null) {
-      _goToDataEntryForm(result, formMetadata.version);
-    } else {
-      // Handle cancellation or failure
-    }
+    // final String? result = await showDialog<String?>(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return FormMetadataWidget(
+    //         formMetadata: formMetadata,
+    //         child: const SubmissionCreationDialog(),
+    //       );
+    //     });
+    // if (result != null) {
+    //   // _goToDataEntryForm(result/*, formMetadata.version*/);
+    // } else {
+    //   // Handle cancellation or failure
+    // }
   }
 
-  void _goToDataEntryForm(String submission, int version) async {
+  void _goToDataEntryForm(String submission/*, int version*/) async {
     final metas = FormMetadataWidget.of(context).copyWith(
       submission: submission,
-      version: version,
+      // version: version,
     );
 
     Navigator.push(

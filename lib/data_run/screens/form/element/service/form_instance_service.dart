@@ -4,10 +4,9 @@ import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
 import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/auth/user/entities/d_user.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/attribute_type.dart';
-import 'package:datarun/data_run/screens/form/element/form_instance.dart';
-import 'package:datarun/data_run/screens/form/element/service/device_info_service.dart';
+import 'package:datarun/data_run/d_assignment/model/assignment_form.dart';
 import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
-import 'package:datarun/data_run/screens/form_module/form/code_generator.dart';
+import 'package:datarun/data_run/screens/form/element/service/device_info_service.dart';
 import 'package:uuid/uuid.dart';
 
 class FormInstanceService {
@@ -61,15 +60,19 @@ class FormInstanceService {
           initialValue ?? _deviceInfoService?.deviceId(),
         AttributeType.deviceModel =>
           initialValue ?? _deviceInfoService?.model(),
-        AttributeType.form => initialValue ?? formMetadata.form,
+        AttributeType.form =>
+          initialValue ?? formMetadata.assignmentForm.formId.split('-').first,
         AttributeType.team => initialValue ??
             (await D2Remote.teamModuleD.team
                     .where(attribute: 'disabled', value: false)
-                    .byActivity(formMetadata.activity)
+                    .byActivity(
+                        formMetadata.assignmentForm.assignmentModel.teamId)
                     .getOne())
                 ?.uid,
-        AttributeType.activity => initialValue ?? formMetadata.activity,
-        AttributeType.version => initialValue ?? formMetadata.version
+        AttributeType.activity => initialValue ??
+            formMetadata.assignmentForm.assignmentModel.activityId,
+        AttributeType.version =>
+          initialValue ?? formMetadata.assignmentForm.formId
       };
 
   Future<Map<String, Object?>> formAttributesControls(initialValue) async {
@@ -112,7 +115,8 @@ class FormInstanceService {
 
       /// form
       '_${AttributeType.form.name}':
-          initialValue['_${AttributeType.form.name}'] ?? formMetadata.form,
+          initialValue['_${AttributeType.form.name}'] ??
+              formMetadata.assignmentForm.formId,
 
       /// activity
       '_${AttributeType.activity.name}': await attributeControl(

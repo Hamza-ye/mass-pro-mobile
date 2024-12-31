@@ -19,16 +19,16 @@ Future<FormConfiguration> formConfiguration(FormConfigurationRef ref,
   final FormVersion? formTemplateVersion = await ref
       .watch(formVersionAsyncProvider(form: form, version: version).future);
 
-  Iterable<String> orgUnits = formTemplateVersion?.orgUnits ?? [];
+  Iterable<String> orgUnits =  [];
 
-  if (formTemplateVersion != null) {
-    final assignments = await D2Remote.assignmentModuleD.assignment
-        .byActivity(formTemplateVersion.activity)
-        .get();
-    final assigned =
-        assignments.where((a) => a.orgUnit != null).map((a) => a.orgUnit!);
-    orgUnits = orgUnits.where((o) => assigned.contains(o));
-  }
+  // if (formTemplateVersion != null) {
+  //   final assignments = await D2Remote.assignmentModuleD.assignment
+  //       .byActivity(formTemplateVersion.activity)
+  //       .get();
+  //   final assigned =
+  //       assignments.where((a) => a.orgUnit != null).map((a) => a.orgUnit!);
+  //   orgUnits = orgUnits.where((o) => assigned.contains(o));
+  // }
 
   return FormConfiguration(
       label: IMap(formTemplateVersion!.label),

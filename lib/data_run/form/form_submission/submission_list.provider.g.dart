@@ -25,7 +25,7 @@ final formSubmissionRepositoryProvider =
 typedef FormSubmissionRepositoryRef
     = AutoDisposeProviderRef<FormSubmissionRepository>;
 String _$submissionEditStatusHash() =>
-    r'63f64bbf47904c2ae529c1518582ad719f9f8bff';
+    r'5a0fe36f57f5aa199120cd8365703e79509ef44e';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -73,10 +73,10 @@ class SubmissionEditStatusFamily extends Family {
 
   /// See also [submissionEditStatus].
   SubmissionEditStatusProvider call({
-    required String submission,
+    required FormMetadata formMetadata,
   }) {
     return SubmissionEditStatusProvider(
-      submission: submission,
+      formMetadata: formMetadata,
     );
   }
 
@@ -86,7 +86,7 @@ class SubmissionEditStatusFamily extends Family {
     covariant SubmissionEditStatusProvider provider,
   ) {
     return call(
-      submission: provider.submission,
+      formMetadata: provider.formMetadata,
     );
   }
 
@@ -117,11 +117,11 @@ class _$SubmissionEditStatusFamilyOverride implements FamilyOverride {
 class SubmissionEditStatusProvider extends AutoDisposeFutureProvider<bool> {
   /// See also [submissionEditStatus].
   SubmissionEditStatusProvider({
-    required String submission,
+    required FormMetadata formMetadata,
   }) : this._internal(
           (ref) => submissionEditStatus(
             ref as SubmissionEditStatusRef,
-            submission: submission,
+            formMetadata: formMetadata,
           ),
           from: submissionEditStatusProvider,
           name: r'submissionEditStatusProvider',
@@ -132,7 +132,7 @@ class SubmissionEditStatusProvider extends AutoDisposeFutureProvider<bool> {
           dependencies: SubmissionEditStatusFamily._dependencies,
           allTransitiveDependencies:
               SubmissionEditStatusFamily._allTransitiveDependencies,
-          submission: submission,
+          formMetadata: formMetadata,
         );
 
   SubmissionEditStatusProvider._internal(
@@ -142,10 +142,10 @@ class SubmissionEditStatusProvider extends AutoDisposeFutureProvider<bool> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.submission,
+    required this.formMetadata,
   }) : super.internal();
 
-  final String submission;
+  final FormMetadata formMetadata;
 
   @override
   Override overrideWith(
@@ -160,16 +160,16 @@ class SubmissionEditStatusProvider extends AutoDisposeFutureProvider<bool> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        submission: submission,
+        formMetadata: formMetadata,
       ),
     );
   }
 
   @override
   ({
-    String submission,
+    FormMetadata formMetadata,
   }) get argument {
-    return (submission: submission,);
+    return (formMetadata: formMetadata,);
   }
 
   @override
@@ -187,28 +187,28 @@ class SubmissionEditStatusProvider extends AutoDisposeFutureProvider<bool> {
       allTransitiveDependencies: allTransitiveDependencies,
       debugGetCreateSourceHash: debugGetCreateSourceHash,
       from: from,
-      submission: submission,
+      formMetadata: formMetadata,
     );
   }
 
   @override
   bool operator ==(Object other) {
     return other is SubmissionEditStatusProvider &&
-        other.submission == submission;
+        other.formMetadata == formMetadata;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, submission.hashCode);
+    hash = _SystemHash.combine(hash, formMetadata.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin SubmissionEditStatusRef on AutoDisposeFutureProviderRef<bool> {
-  /// The parameter `submission` of this provider.
-  String get submission;
+  /// The parameter `formMetadata` of this provider.
+  FormMetadata get formMetadata;
 }
 
 class _SubmissionEditStatusProviderElement
@@ -217,7 +217,8 @@ class _SubmissionEditStatusProviderElement
   _SubmissionEditStatusProviderElement(super.provider);
 
   @override
-  String get submission => (origin as SubmissionEditStatusProvider).submission;
+  FormMetadata get formMetadata =>
+      (origin as SubmissionEditStatusProvider).formMetadata;
 }
 
 String _$formSubmissionDataHash() =>
@@ -625,7 +626,7 @@ class _SubmissionFilteredByStateProviderElement
   String get sortBy => (origin as SubmissionFilteredByStateProvider).sortBy;
 }
 
-String _$submissionInfoHash() => r'0359145ce5b5b68cb658809e2fbd0d00ed3c1796';
+String _$submissionInfoHash() => r'1ffccc097c172906cba2a54572789d43439bbb32';
 
 /// See also [submissionInfo].
 @ProviderFor(submissionInfo)
@@ -804,7 +805,7 @@ class _SubmissionInfoProviderElement
       (origin as SubmissionInfoProvider).formMetadata;
 }
 
-String _$formSubmissionsHash() => r'8f1db8baae8f8f48a805016b55eaad8193b7b270';
+String _$formSubmissionsHash() => r'9b6b2ff7e18418b7db8201c21e69a49f8252cbca';
 
 abstract class _$FormSubmissions
     extends BuildlessAutoDisposeAsyncNotifier<IList<DataFormSubmission>> {

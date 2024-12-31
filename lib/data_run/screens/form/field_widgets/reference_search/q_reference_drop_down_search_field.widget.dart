@@ -5,7 +5,6 @@ import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/reference_search/add_metadata_submission_form.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/reference_search/metadata_submission_update_provider.dart';
-import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
