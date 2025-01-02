@@ -47,7 +47,7 @@ class FormSubmissions extends _$FormSubmissions {
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
-    ref.invalidateSelf();
+    // ref.invalidateSelf();
     await future;
   }
 
@@ -140,9 +140,9 @@ class FormSubmissions extends _$FormSubmissions {
 @riverpod
 Future<bool> submissionEditStatus(SubmissionEditStatusRef ref,
     {required FormMetadata formMetadata}) async {
-  if (formMetadata.assignmentForm.isNew) {
-    return true;
-  }
+  // if (formMetadata.assignmentForm.isNew) {
+  //   return true;
+  // }
   return D2Remote.formModule.dataFormSubmission
       .byId(formMetadata.submission!)
       .canEdit();
@@ -184,7 +184,7 @@ Future<List<DataFormSubmission>> submissionFilteredByState(
 Future<SubmissionItemSummaryModel> submissionInfo(SubmissionInfoRef ref,
     {required FormMetadata formMetadata}) async {
   final allSubmissions = await ref.watch(
-      formSubmissionsProvider(formMetadata.assignmentForm.formId).future);
+      formSubmissionsProvider(formMetadata.formId).future);
 
   final submission =
       allSubmissions.firstWhere((t) => t.uid == formMetadata.submission!);

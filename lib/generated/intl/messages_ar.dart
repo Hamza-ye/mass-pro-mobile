@@ -54,10 +54,10 @@ class MessageLookup extends MessageLookupByLibrary {
             "تم تعطيل هذا الحساب. يرجى الاتصال بالمسؤول للمساعدة."),
         "accountInformation":
             MessageLookupByLibrary.simpleMessage("معلومات الحساب"),
-        "activity": MessageLookupByLibrary.simpleMessage("Activity"),
+        "activity": MessageLookupByLibrary.simpleMessage("النشاط"),
         "addNew": MessageLookupByLibrary.simpleMessage("إضافة جديد"),
         "allocatedResources":
-            MessageLookupByLibrary.simpleMessage("Allocated Resources"),
+            MessageLookupByLibrary.simpleMessage("الموارد المخصصة"),
         "and": MessageLookupByLibrary.simpleMessage("و"),
         "apiError": m0,
         "appInformation":
@@ -65,6 +65,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "appName": MessageLookupByLibrary.simpleMessage("Datarun"),
         "appVersion": MessageLookupByLibrary.simpleMessage("إصدار التطبيق"),
         "appearance": MessageLookupByLibrary.simpleMessage("المظهر"),
+        "assigned": MessageLookupByLibrary.simpleMessage("مهمة"),
         "assignmentDetail":
             MessageLookupByLibrary.simpleMessage("تفاصيل المهمة"),
         "authInvalidCredentials": MessageLookupByLibrary.simpleMessage(
@@ -80,6 +81,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تغيير كلمة السر"),
         "checkFieldsLater": MessageLookupByLibrary.simpleMessage("ليس الآن"),
         "clear": MessageLookupByLibrary.simpleMessage("تصفية"),
+        "clearFilters": MessageLookupByLibrary.simpleMessage("Clear Filters"),
         "closeWithoutSaving":
             MessageLookupByLibrary.simpleMessage("إغلاق وحذف؟"),
         "completed": MessageLookupByLibrary.simpleMessage("مكتمل"),
@@ -102,6 +104,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "databaseInternalError": m1,
         "databaseQueryFailed": MessageLookupByLibrary.simpleMessage(
             "حدث خطأ أثناء معالجة طلب قاعدة البيانات. يرجى المحاولة مرة أخرى."),
+        "day": MessageLookupByLibrary.simpleMessage("اليوم"),
         "delete": MessageLookupByLibrary.simpleMessage("حذف"),
         "deleteConfirmationMessage": MessageLookupByLibrary.simpleMessage(
             "هل تريد بالتأكيد حذف هذا العنصر؟"),
@@ -128,7 +131,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "entity": MessageLookupByLibrary.simpleMessage("الكيان"),
         "error": MessageLookupByLibrary.simpleMessage("خطأ"),
         "errorOpeningForm":
-            MessageLookupByLibrary.simpleMessage("Error Opening Form"),
+            MessageLookupByLibrary.simpleMessage("حدث خطأ أثناء فتح الاستمارة"),
         "errorOpeningNewForm":
             MessageLookupByLibrary.simpleMessage("حدث خطأ أثناء فتح الإستمارة"),
         "everyFifteenDays": MessageLookupByLibrary.simpleMessage("كل 15 يوم"),
@@ -174,6 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تسجيل خروج المستخدم الحالي"),
         "makeFormFinalOrSaveBody": MessageLookupByLibrary.simpleMessage(
             "قم بتعيين الاستمار كنهائية حتى يتسنى لك إرسالها، أو اختر (ليس الآن) لحفظها كمسودة إلى وقت لاحق!"),
+        "managed": MessageLookupByLibrary.simpleMessage("إدارة"),
         "markAsFinalData": MessageLookupByLibrary.simpleMessage(
             "حقول مكتملة، هل تبريد تعيين هذه البيانات كنهائية وجاهزة للإرسال؟"),
         "maximumAllowedLengthIsError": m3,
@@ -198,6 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "noFormsAvailable": MessageLookupByLibrary.simpleMessage(
             "لا تتوفر استمارات لهذا النشاط"),
         "noInternetAccess": MessageLookupByLibrary.simpleMessage("غير متصل"),
+        "noSubmissions": MessageLookupByLibrary.simpleMessage("لا توجد بيانات"),
         "noSyncYet": MessageLookupByLibrary.simpleMessage("لم يحدث بعد"),
         "notNow": MessageLookupByLibrary.simpleMessage("ليس الآن"),
         "not_started": MessageLookupByLibrary.simpleMessage("لم يبدأ"),
@@ -231,7 +236,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "productionDate": MessageLookupByLibrary.simpleMessage("تاريخ الانتاج"),
         "reassigned": MessageLookupByLibrary.simpleMessage("إعادة تعيين"),
         "reportedResources":
-            MessageLookupByLibrary.simpleMessage("Reported Resources"),
+            MessageLookupByLibrary.simpleMessage("موارد المرسلة"),
         "rescan": MessageLookupByLibrary.simpleMessage("إعادة مسح"),
         "rescheduled": MessageLookupByLibrary.simpleMessage("جدولة"),
         "resources": MessageLookupByLibrary.simpleMessage("الموارد"),
@@ -248,6 +253,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "scanningIsUnsupportedOnThisDevice":
             MessageLookupByLibrary.simpleMessage("الجهاز لا يدعم مسح الباركود"),
         "scope": MessageLookupByLibrary.simpleMessage("المسؤلية"),
+        "search": MessageLookupByLibrary.simpleMessage("بحث..."),
         "searchOrgUnitsHelpText":
             MessageLookupByLibrary.simpleMessage("البحث عن مكان..."),
         "selectAColorExtractionImage":
@@ -264,7 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "settings": MessageLookupByLibrary.simpleMessage("إعدادات"),
         "showPassword": MessageLookupByLibrary.simpleMessage("أظهر كلمة السر"),
         "startingSync": MessageLookupByLibrary.simpleMessage("بدء التحديث"),
-        "status": MessageLookupByLibrary.simpleMessage("Status"),
+        "status": MessageLookupByLibrary.simpleMessage("الحالة"),
         "submissionDataEntry": MessageLookupByLibrary.simpleMessage("بيانات"),
         "submissionInitialData":
             MessageLookupByLibrary.simpleMessage("الرئيسة"),
@@ -286,6 +292,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("هذا الحقل مطلوب."),
         "toggleBrightness":
             MessageLookupByLibrary.simpleMessage("تبديل الإضاءة"),
+        "toggleListTableView":
+            MessageLookupByLibrary.simpleMessage("Toggle List/Table View"),
         "undo": MessageLookupByLibrary.simpleMessage("تراجع"),
         "unknownError": m6,
         "unsavedChangesWarning":

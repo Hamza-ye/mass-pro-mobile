@@ -600,7 +600,7 @@ class _ProjectActiveActivitiesProviderElement
   String get project => (origin as ProjectActiveActivitiesProvider).project;
 }
 
-String _$activityFormsHash() => r'72edd48ec56f50ab202b36108e28f98f2a075710';
+String _$activityFormsHash() => r'173db7a1c145d9506f7b18b64c5bf6bb84d3ff5d';
 
 /// See also [activityForms].
 @ProviderFor(activityForms)

@@ -6,24 +6,7 @@ part of 'assignment_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$filterAssignmentsHash() => r'962646026ac6bfc2136171264764d9bc47394fe6';
-
-/// See also [filterAssignments].
-@ProviderFor(filterAssignments)
-final filterAssignmentsProvider =
-    AutoDisposeFutureProvider<List<AssignmentModel>>.internal(
-  filterAssignments,
-  name: r'filterAssignmentsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$filterAssignmentsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef FilterAssignmentsRef
-    = AutoDisposeFutureProviderRef<List<AssignmentModel>>;
-String _$assignmentFormsHash() => r'b7f55727c4e55efc249f4f534723d1960a4f475f';
+String _$assignmentHash() => r'209c8fbfc8518f2f170c800a502a9d04a8c43af6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -46,14 +29,20 @@ class _SystemHash {
   }
 }
 
-/// See also [assignmentForms].
-@ProviderFor(assignmentForms)
-const assignmentFormsProvider = AssignmentFormsFamily();
+/// retrieve a single assignmetn by id populated with data
+///
+/// Copied from [assignment].
+@ProviderFor(assignment)
+const assignmentProvider = AssignmentFamily();
 
-/// See also [assignmentForms].
-class AssignmentFormsFamily extends Family {
-  /// See also [assignmentForms].
-  const AssignmentFormsFamily();
+/// retrieve a single assignmetn by id populated with data
+///
+/// Copied from [assignment].
+class AssignmentFamily extends Family {
+  /// retrieve a single assignmetn by id populated with data
+  ///
+  /// Copied from [assignment].
+  const AssignmentFamily();
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
 
@@ -67,190 +56,524 @@ class AssignmentFormsFamily extends Family {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'assignmentFormsProvider';
+  String? get name => r'assignmentProvider';
 
-  /// See also [assignmentForms].
-  AssignmentFormsProvider call(
-    String assignmentId,
+  /// retrieve a single assignmetn by id populated with data
+  ///
+  /// Copied from [assignment].
+  AssignmentProvider call(
+    String id,
   ) {
-    return AssignmentFormsProvider(
-      assignmentId,
+    return AssignmentProvider(
+      id,
     );
   }
 
   @visibleForOverriding
   @override
-  AssignmentFormsProvider getProviderOverride(
-    covariant AssignmentFormsProvider provider,
+  AssignmentProvider getProviderOverride(
+    covariant AssignmentProvider provider,
   ) {
     return call(
-      provider.assignmentId,
+      provider.id,
     );
   }
 
   /// Enables overriding the behavior of this provider, no matter the parameters.
   Override overrideWith(
-      FutureOr<List<FormVersion>> Function(AssignmentFormsRef ref) create) {
-    return _$AssignmentFormsFamilyOverride(this, create);
+      FutureOr<AssignmentModel> Function(AssignmentRef ref) create) {
+    return _$AssignmentFamilyOverride(this, create);
   }
 }
 
-class _$AssignmentFormsFamilyOverride implements FamilyOverride {
-  _$AssignmentFormsFamilyOverride(this.overriddenFamily, this.create);
+class _$AssignmentFamilyOverride implements FamilyOverride {
+  _$AssignmentFamilyOverride(this.overriddenFamily, this.create);
 
-  final FutureOr<List<FormVersion>> Function(AssignmentFormsRef ref) create;
-
-  @override
-  final AssignmentFormsFamily overriddenFamily;
+  final FutureOr<AssignmentModel> Function(AssignmentRef ref) create;
 
   @override
-  AssignmentFormsProvider getProviderOverride(
-    covariant AssignmentFormsProvider provider,
+  final AssignmentFamily overriddenFamily;
+
+  @override
+  AssignmentProvider getProviderOverride(
+    covariant AssignmentProvider provider,
   ) {
     return provider._copyWith(create);
   }
 }
 
-/// See also [assignmentForms].
-class AssignmentFormsProvider
-    extends AutoDisposeFutureProvider<List<FormVersion>> {
-  /// See also [assignmentForms].
-  AssignmentFormsProvider(
-    String assignmentId,
+/// retrieve a single assignmetn by id populated with data
+///
+/// Copied from [assignment].
+class AssignmentProvider extends AutoDisposeFutureProvider<AssignmentModel> {
+  /// retrieve a single assignmetn by id populated with data
+  ///
+  /// Copied from [assignment].
+  AssignmentProvider(
+    String id,
   ) : this._internal(
-          (ref) => assignmentForms(
-            ref as AssignmentFormsRef,
-            assignmentId,
+          (ref) => assignment(
+            ref as AssignmentRef,
+            id,
           ),
-          from: assignmentFormsProvider,
-          name: r'assignmentFormsProvider',
+          from: assignmentProvider,
+          name: r'assignmentProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$assignmentFormsHash,
-          dependencies: AssignmentFormsFamily._dependencies,
+                  : _$assignmentHash,
+          dependencies: AssignmentFamily._dependencies,
           allTransitiveDependencies:
-              AssignmentFormsFamily._allTransitiveDependencies,
-          assignmentId: assignmentId,
+              AssignmentFamily._allTransitiveDependencies,
+          id: id,
         );
 
-  AssignmentFormsProvider._internal(
+  AssignmentProvider._internal(
     super.create, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.assignmentId,
+    required this.id,
   }) : super.internal();
 
-  final String assignmentId;
+  final String id;
 
   @override
   Override overrideWith(
-    FutureOr<List<FormVersion>> Function(AssignmentFormsRef ref) create,
+    FutureOr<AssignmentModel> Function(AssignmentRef ref) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: AssignmentFormsProvider._internal(
-        (ref) => create(ref as AssignmentFormsRef),
+      override: AssignmentProvider._internal(
+        (ref) => create(ref as AssignmentRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        assignmentId: assignmentId,
+        id: id,
       ),
     );
   }
 
   @override
   (String,) get argument {
-    return (assignmentId,);
+    return (id,);
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<FormVersion>> createElement() {
-    return _AssignmentFormsProviderElement(this);
+  AutoDisposeFutureProviderElement<AssignmentModel> createElement() {
+    return _AssignmentProviderElement(this);
   }
 
-  AssignmentFormsProvider _copyWith(
-    FutureOr<List<FormVersion>> Function(AssignmentFormsRef ref) create,
+  AssignmentProvider _copyWith(
+    FutureOr<AssignmentModel> Function(AssignmentRef ref) create,
   ) {
-    return AssignmentFormsProvider._internal(
-      (ref) => create(ref as AssignmentFormsRef),
+    return AssignmentProvider._internal(
+      (ref) => create(ref as AssignmentRef),
       name: name,
       dependencies: dependencies,
       allTransitiveDependencies: allTransitiveDependencies,
       debugGetCreateSourceHash: debugGetCreateSourceHash,
       from: from,
-      assignmentId: assignmentId,
+      id: id,
     );
   }
 
   @override
   bool operator ==(Object other) {
-    return other is AssignmentFormsProvider &&
-        other.assignmentId == assignmentId;
+    return other is AssignmentProvider && other.id == id;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, assignmentId.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin AssignmentFormsRef on AutoDisposeFutureProviderRef<List<FormVersion>> {
-  /// The parameter `assignmentId` of this provider.
-  String get assignmentId;
+mixin AssignmentRef on AutoDisposeFutureProviderRef<AssignmentModel> {
+  /// The parameter `id` of this provider.
+  String get id;
 }
 
-class _AssignmentFormsProviderElement
-    extends AutoDisposeFutureProviderElement<List<FormVersion>>
-    with AssignmentFormsRef {
-  _AssignmentFormsProviderElement(super.provider);
+class _AssignmentProviderElement
+    extends AutoDisposeFutureProviderElement<AssignmentModel>
+    with AssignmentRef {
+  _AssignmentProviderElement(super.provider);
 
   @override
-  String get assignmentId => (origin as AssignmentFormsProvider).assignmentId;
+  String get id => (origin as AssignmentProvider).id;
 }
 
-String _$assignmentsHash() => r'72e89050c71265b50ba25df2d480e07545d08224';
+String _$teamsHash() => r'fe6a349f014610e5e8b1c8fea2c302c4668e29cd';
 
-/// See also [Assignments].
-@ProviderFor(Assignments)
-final assignmentsProvider = AutoDisposeAsyncNotifierProvider<Assignments,
-    List<AssignmentModel>>.internal(
-  Assignments.new,
-  name: r'assignmentsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$assignmentsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// retrieve a managed teams
+///
+/// Copied from [teams].
+@ProviderFor(teams)
+const teamsProvider = TeamsFamily();
 
-typedef _$Assignments = AutoDisposeAsyncNotifier<List<AssignmentModel>>;
+/// retrieve a managed teams
+///
+/// Copied from [teams].
+class TeamsFamily extends Family {
+  /// retrieve a managed teams
+  ///
+  /// Copied from [teams].
+  const TeamsFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'teamsProvider';
+
+  /// retrieve a managed teams
+  ///
+  /// Copied from [teams].
+  TeamsProvider call({
+    EntityScope scope = EntityScope.Managed,
+  }) {
+    return TeamsProvider(
+      scope: scope,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  TeamsProvider getProviderOverride(
+    covariant TeamsProvider provider,
+  ) {
+    return call(
+      scope: provider.scope,
+    );
+  }
+
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(FutureOr<List<DTeam>> Function(TeamsRef ref) create) {
+    return _$TeamsFamilyOverride(this, create);
+  }
+}
+
+class _$TeamsFamilyOverride implements FamilyOverride {
+  _$TeamsFamilyOverride(this.overriddenFamily, this.create);
+
+  final FutureOr<List<DTeam>> Function(TeamsRef ref) create;
+
+  @override
+  final TeamsFamily overriddenFamily;
+
+  @override
+  TeamsProvider getProviderOverride(
+    covariant TeamsProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
+}
+
+/// retrieve a managed teams
+///
+/// Copied from [teams].
+class TeamsProvider extends AutoDisposeFutureProvider<List<DTeam>> {
+  /// retrieve a managed teams
+  ///
+  /// Copied from [teams].
+  TeamsProvider({
+    EntityScope scope = EntityScope.Managed,
+  }) : this._internal(
+          (ref) => teams(
+            ref as TeamsRef,
+            scope: scope,
+          ),
+          from: teamsProvider,
+          name: r'teamsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$teamsHash,
+          dependencies: TeamsFamily._dependencies,
+          allTransitiveDependencies: TeamsFamily._allTransitiveDependencies,
+          scope: scope,
+        );
+
+  TeamsProvider._internal(
+    super.create, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.scope,
+  }) : super.internal();
+
+  final EntityScope scope;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<DTeam>> Function(TeamsRef ref) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TeamsProvider._internal(
+        (ref) => create(ref as TeamsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        scope: scope,
+      ),
+    );
+  }
+
+  @override
+  ({
+    EntityScope scope,
+  }) get argument {
+    return (scope: scope,);
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<DTeam>> createElement() {
+    return _TeamsProviderElement(this);
+  }
+
+  TeamsProvider _copyWith(
+    FutureOr<List<DTeam>> Function(TeamsRef ref) create,
+  ) {
+    return TeamsProvider._internal(
+      (ref) => create(ref as TeamsRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      scope: scope,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TeamsProvider && other.scope == scope;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, scope.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin TeamsRef on AutoDisposeFutureProviderRef<List<DTeam>> {
+  /// The parameter `scope` of this provider.
+  EntityScope get scope;
+}
+
+class _TeamsProviderElement
+    extends AutoDisposeFutureProviderElement<List<DTeam>> with TeamsRef {
+  _TeamsProviderElement(super.provider);
+
+  @override
+  EntityScope get scope => (origin as TeamsProvider).scope;
+}
+
+String _$teamHash() => r'b2950ba1544381a31afcc2bc8d0623c924d3459a';
+
+/// See also [team].
+@ProviderFor(team)
+const teamProvider = TeamFamily();
+
+/// See also [team].
+class TeamFamily extends Family {
+  /// See also [team].
+  const TeamFamily();
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'teamProvider';
+
+  /// See also [team].
+  TeamProvider call(
+    String id,
+  ) {
+    return TeamProvider(
+      id,
+    );
+  }
+
+  @visibleForOverriding
+  @override
+  TeamProvider getProviderOverride(
+    covariant TeamProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  /// Enables overriding the behavior of this provider, no matter the parameters.
+  Override overrideWith(FutureOr<DTeam> Function(TeamRef ref) create) {
+    return _$TeamFamilyOverride(this, create);
+  }
+}
+
+class _$TeamFamilyOverride implements FamilyOverride {
+  _$TeamFamilyOverride(this.overriddenFamily, this.create);
+
+  final FutureOr<DTeam> Function(TeamRef ref) create;
+
+  @override
+  final TeamFamily overriddenFamily;
+
+  @override
+  TeamProvider getProviderOverride(
+    covariant TeamProvider provider,
+  ) {
+    return provider._copyWith(create);
+  }
+}
+
+/// See also [team].
+class TeamProvider extends AutoDisposeFutureProvider<DTeam> {
+  /// See also [team].
+  TeamProvider(
+    String id,
+  ) : this._internal(
+          (ref) => team(
+            ref as TeamRef,
+            id,
+          ),
+          from: teamProvider,
+          name: r'teamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product') ? null : _$teamHash,
+          dependencies: TeamFamily._dependencies,
+          allTransitiveDependencies: TeamFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  TeamProvider._internal(
+    super.create, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  Override overrideWith(
+    FutureOr<DTeam> Function(TeamRef ref) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: TeamProvider._internal(
+        (ref) => create(ref as TeamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  (String,) get argument {
+    return (id,);
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<DTeam> createElement() {
+    return _TeamProviderElement(this);
+  }
+
+  TeamProvider _copyWith(
+    FutureOr<DTeam> Function(TeamRef ref) create,
+  ) {
+    return TeamProvider._internal(
+      (ref) => create(ref as TeamRef),
+      name: name,
+      dependencies: dependencies,
+      allTransitiveDependencies: allTransitiveDependencies,
+      debugGetCreateSourceHash: debugGetCreateSourceHash,
+      from: from,
+      id: id,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TeamProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin TeamRef on AutoDisposeFutureProviderRef<DTeam> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _TeamProviderElement extends AutoDisposeFutureProviderElement<DTeam>
+    with TeamRef {
+  _TeamProviderElement(super.provider);
+
+  @override
+  String get id => (origin as TeamProvider).id;
+}
+
 String _$assignmentSubmissionsHash() =>
-    r'f52fb43fb987076c3e02bbec5216374c31b10188';
+    r'e11403098d858244ae5c33837879a90cdedd377c';
 
-abstract class _$AssignmentSubmissions
-    extends BuildlessAutoDisposeAsyncNotifier<List<DataFormSubmission>> {
-  late final String assignmentId;
-
-  FutureOr<List<DataFormSubmission>> build(
-    String assignmentId,
-  );
-}
-
-/// See also [AssignmentSubmissions].
-@ProviderFor(AssignmentSubmissions)
+/// retrieve a certain assignment forms submissions
+///
+/// Copied from [assignmentSubmissions].
+@ProviderFor(assignmentSubmissions)
 const assignmentSubmissionsProvider = AssignmentSubmissionsFamily();
 
-/// See also [AssignmentSubmissions].
+/// retrieve a certain assignment forms submissions
+///
+/// Copied from [assignmentSubmissions].
 class AssignmentSubmissionsFamily extends Family {
-  /// See also [AssignmentSubmissions].
+  /// retrieve a certain assignment forms submissions
+  ///
+  /// Copied from [assignmentSubmissions].
   const AssignmentSubmissionsFamily();
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -267,12 +590,16 @@ class AssignmentSubmissionsFamily extends Family {
   @override
   String? get name => r'assignmentSubmissionsProvider';
 
-  /// See also [AssignmentSubmissions].
+  /// retrieve a certain assignment forms submissions
+  ///
+  /// Copied from [assignmentSubmissions].
   AssignmentSubmissionsProvider call(
-    String assignmentId,
-  ) {
+    String assignmentId, {
+    String? form,
+  }) {
     return AssignmentSubmissionsProvider(
       assignmentId,
+      form: form,
     );
   }
 
@@ -283,11 +610,14 @@ class AssignmentSubmissionsFamily extends Family {
   ) {
     return call(
       provider.assignmentId,
+      form: provider.form,
     );
   }
 
   /// Enables overriding the behavior of this provider, no matter the parameters.
-  Override overrideWith(AssignmentSubmissions Function() create) {
+  Override overrideWith(
+      FutureOr<List<DataFormSubmission>> Function(AssignmentSubmissionsRef ref)
+          create) {
     return _$AssignmentSubmissionsFamilyOverride(this, create);
   }
 }
@@ -295,7 +625,8 @@ class AssignmentSubmissionsFamily extends Family {
 class _$AssignmentSubmissionsFamilyOverride implements FamilyOverride {
   _$AssignmentSubmissionsFamilyOverride(this.overriddenFamily, this.create);
 
-  final AssignmentSubmissions Function() create;
+  final FutureOr<List<DataFormSubmission>> Function(
+      AssignmentSubmissionsRef ref) create;
 
   @override
   final AssignmentSubmissionsFamily overriddenFamily;
@@ -308,15 +639,23 @@ class _$AssignmentSubmissionsFamilyOverride implements FamilyOverride {
   }
 }
 
-/// See also [AssignmentSubmissions].
+/// retrieve a certain assignment forms submissions
+///
+/// Copied from [assignmentSubmissions].
 class AssignmentSubmissionsProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<AssignmentSubmissions,
-        List<DataFormSubmission>> {
-  /// See also [AssignmentSubmissions].
+    extends AutoDisposeFutureProvider<List<DataFormSubmission>> {
+  /// retrieve a certain assignment forms submissions
+  ///
+  /// Copied from [assignmentSubmissions].
   AssignmentSubmissionsProvider(
-    String assignmentId,
-  ) : this._internal(
-          () => AssignmentSubmissions()..assignmentId = assignmentId,
+    String assignmentId, {
+    String? form,
+  }) : this._internal(
+          (ref) => assignmentSubmissions(
+            ref as AssignmentSubmissionsRef,
+            assignmentId,
+            form: form,
+          ),
           from: assignmentSubmissionsProvider,
           name: r'assignmentSubmissionsProvider',
           debugGetCreateSourceHash:
@@ -327,6 +666,7 @@ class AssignmentSubmissionsProvider
           allTransitiveDependencies:
               AssignmentSubmissionsFamily._allTransitiveDependencies,
           assignmentId: assignmentId,
+          form: form,
         );
 
   AssignmentSubmissionsProvider._internal(
@@ -337,94 +677,143 @@ class AssignmentSubmissionsProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.assignmentId,
+    required this.form,
   }) : super.internal();
 
   final String assignmentId;
+  final String? form;
 
   @override
-  FutureOr<List<DataFormSubmission>> runNotifierBuild(
-    covariant AssignmentSubmissions notifier,
+  Override overrideWith(
+    FutureOr<List<DataFormSubmission>> Function(AssignmentSubmissionsRef ref)
+        create,
   ) {
-    return notifier.build(
-      assignmentId,
-    );
-  }
-
-  @override
-  Override overrideWith(AssignmentSubmissions Function() create) {
     return ProviderOverride(
       origin: this,
       override: AssignmentSubmissionsProvider._internal(
-        () => create()..assignmentId = assignmentId,
+        (ref) => create(ref as AssignmentSubmissionsRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         assignmentId: assignmentId,
+        form: form,
       ),
     );
   }
 
   @override
-  (String,) get argument {
-    return (assignmentId,);
+  (
+    String, {
+    String? form,
+  }) get argument {
+    return (
+      assignmentId,
+      form: form,
+    );
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<AssignmentSubmissions,
-      List<DataFormSubmission>> createElement() {
+  AutoDisposeFutureProviderElement<List<DataFormSubmission>> createElement() {
     return _AssignmentSubmissionsProviderElement(this);
   }
 
   AssignmentSubmissionsProvider _copyWith(
-    AssignmentSubmissions Function() create,
+    FutureOr<List<DataFormSubmission>> Function(AssignmentSubmissionsRef ref)
+        create,
   ) {
     return AssignmentSubmissionsProvider._internal(
-      () => create()..assignmentId = assignmentId,
+      (ref) => create(ref as AssignmentSubmissionsRef),
       name: name,
       dependencies: dependencies,
       allTransitiveDependencies: allTransitiveDependencies,
       debugGetCreateSourceHash: debugGetCreateSourceHash,
       from: from,
       assignmentId: assignmentId,
+      form: form,
     );
   }
 
   @override
   bool operator ==(Object other) {
     return other is AssignmentSubmissionsProvider &&
-        other.assignmentId == assignmentId;
+        other.assignmentId == assignmentId &&
+        other.form == form;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, assignmentId.hashCode);
+    hash = _SystemHash.combine(hash, form.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
 mixin AssignmentSubmissionsRef
-    on AutoDisposeAsyncNotifierProviderRef<List<DataFormSubmission>> {
+    on AutoDisposeFutureProviderRef<List<DataFormSubmission>> {
   /// The parameter `assignmentId` of this provider.
   String get assignmentId;
+
+  /// The parameter `form` of this provider.
+  String? get form;
 }
 
 class _AssignmentSubmissionsProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<AssignmentSubmissions,
-        List<DataFormSubmission>> with AssignmentSubmissionsRef {
+    extends AutoDisposeFutureProviderElement<List<DataFormSubmission>>
+    with AssignmentSubmissionsRef {
   _AssignmentSubmissionsProviderElement(super.provider);
 
   @override
   String get assignmentId =>
       (origin as AssignmentSubmissionsProvider).assignmentId;
+  @override
+  String? get form => (origin as AssignmentSubmissionsProvider).form;
 }
 
-String _$filterQueryHash() => r'4bc1ecc63f188d2f1f85ed7d233ab11815cfe07a';
+String _$filterAssignmentsHash() => r'269bebba4a45155f33e4f4dbed186c525df820eb';
 
-/// See also [FilterQuery].
+/// filters the list of assignmnet by certain cretiria
+///
+/// Copied from [filterAssignments].
+@ProviderFor(filterAssignments)
+final filterAssignmentsProvider =
+    AutoDisposeFutureProvider<List<AssignmentModel>>.internal(
+  filterAssignments,
+  name: r'filterAssignmentsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$filterAssignmentsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FilterAssignmentsRef
+    = AutoDisposeFutureProviderRef<List<AssignmentModel>>;
+String _$assignmentsHash() => r'338a008ce7feabf4f153d5420301f3ccb7cc9a1e';
+
+/// a notifier that retrieves all assignments with their data populated
+///
+/// Copied from [Assignments].
+@ProviderFor(Assignments)
+final assignmentsProvider = AutoDisposeAsyncNotifierProvider<Assignments,
+    List<AssignmentModel>>.internal(
+  Assignments.new,
+  name: r'assignmentsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$assignmentsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Assignments = AutoDisposeAsyncNotifier<List<AssignmentModel>>;
+String _$filterQueryHash() => r'e9b231b7ab451bc9d6ab4286075ad15934b2773f';
+
+/// filter query model notifier that store filtering cretirias
+///
+/// Copied from [FilterQuery].
 @ProviderFor(FilterQuery)
 final filterQueryProvider =
     AutoDisposeNotifierProvider<FilterQuery, AssignmentFilterQuery>.internal(

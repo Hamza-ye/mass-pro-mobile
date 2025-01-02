@@ -138,7 +138,7 @@ class SubmissionInfoState extends ConsumerState<SubmissionInfo> {
     final formMetadata = FormMetadataWidget.of(context);
 
     ref
-        .read(formSubmissionsProvider(formMetadata.assignmentForm.formId).notifier)
+        .read(formSubmissionsProvider(formMetadata.formId).notifier)
         .deleteSubmission([toDeleteUid]);
 
     scaffoldMessenger.showSnackBar(

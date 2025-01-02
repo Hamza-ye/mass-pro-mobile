@@ -65,7 +65,7 @@ class FormInstance {
   SectionInstance get formSection => _formSection;
 
   FormSubmissions get formSubmissionList =>
-      _ref.read(formSubmissionsProvider(formMetadata.assignmentForm.formId).notifier);
+      _ref.read(formSubmissionsProvider(formMetadata.formId).notifier);
 
   final FormMetadata formMetadata;
 

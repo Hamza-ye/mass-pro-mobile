@@ -244,6 +244,8 @@
   "rescheduled": "Rescheduled",
   "merged": "Merged",
   "reassigned": "Reassigned",
+  "assigned": "Assigned",
+  "managed": "Managed",
   "entity": "Entity",
   "forms": "Forms",
   "assignmentDetail": "Assignment Detail",
@@ -251,5 +253,10 @@
   "status": "Status",
   "allocatedResources": "Allocated Resources",
   "reportedResources": "Reported Resources",
-  "errorOpeningForm": "Error Opening Form"
+  "errorOpeningForm": "Error Opening Form",
+  "noSubmissions": "No Submissions",
+  "search": "Search...",
+  "day": "Day",
+  "toggleListTableView": "Toggle List/Table View",
+  "clearFilters": "Clear Filters"
 }

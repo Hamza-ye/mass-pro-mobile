@@ -61,18 +61,20 @@ class FormInstanceService {
         AttributeType.deviceModel =>
           initialValue ?? _deviceInfoService?.model(),
         AttributeType.form =>
-          initialValue ?? formMetadata.assignmentForm.formId.split('-').first,
+          initialValue ?? formMetadata.formId.split('-').first,
         AttributeType.team => initialValue ??
             (await D2Remote.teamModuleD.team
                     .where(attribute: 'disabled', value: false)
                     .byActivity(
-                        formMetadata.assignmentForm.assignmentModel.teamId)
+                        formMetadata.assignmentModel.teamId)
                     .getOne())
                 ?.uid,
         AttributeType.activity => initialValue ??
-            formMetadata.assignmentForm.assignmentModel.activityId,
+            formMetadata.assignmentModel.activityId,
         AttributeType.version =>
-          initialValue ?? formMetadata.assignmentForm.formId
+          initialValue ?? formMetadata.formId,
+        AttributeType.scope =>
+          formMetadata.assignmentModel.scope.name,
       };
 
   Future<Map<String, Object?>> formAttributesControls(initialValue) async {
@@ -88,6 +90,11 @@ class FormInstanceService {
       // /// submission uid
       // '_${formUid}':
       //     initialValue['_${formUid}'] ?? CodeGenerator.generateCompositeUid(),
+      // @Column(nullable: true, type: ColumnType.TEXT)
+      // EntityScope? scope;
+      '_${AttributeType.scope.name}': await attributeControl(
+          AttributeType.scope,
+          initialValue: initialValue['_${AttributeType.scope.name}']),
 
       /// phoneNumber
       '_${AttributeType.phoneNumber.name}': await attributeControl(
@@ -116,7 +123,7 @@ class FormInstanceService {
       /// form
       '_${AttributeType.form.name}':
           initialValue['_${AttributeType.form.name}'] ??
-              formMetadata.assignmentForm.formId,
+              formMetadata.formId,
 
       /// activity
       '_${AttributeType.activity.name}': await attributeControl(

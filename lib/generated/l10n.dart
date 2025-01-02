@@ -1844,6 +1844,26 @@ class S {
     );
   }
 
+  /// `Assigned`
+  String get assigned {
+    return Intl.message(
+      'Assigned',
+      name: 'assigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Managed`
+  String get managed {
+    return Intl.message(
+      'Managed',
+      name: 'managed',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Entity`
   String get entity {
     return Intl.message(
@@ -1919,6 +1939,56 @@ class S {
     return Intl.message(
       'Error Opening Form',
       name: 'errorOpeningForm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Submissions`
+  String get noSubmissions {
+    return Intl.message(
+      'No Submissions',
+      name: 'noSubmissions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search...`
+  String get search {
+    return Intl.message(
+      'Search...',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Day`
+  String get day {
+    return Intl.message(
+      'Day',
+      name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Toggle List/Table View`
+  String get toggleListTableView {
+    return Intl.message(
+      'Toggle List/Table View',
+      name: 'toggleListTableView',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear Filters`
+  String get clearFilters {
+    return Intl.message(
+      'Clear Filters',
+      name: 'clearFilters',
       desc: '',
       args: [],
     );

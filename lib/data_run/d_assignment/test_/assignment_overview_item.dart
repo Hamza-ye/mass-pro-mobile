@@ -42,7 +42,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
               children: [
                 Expanded(
                   child: _buildHighlightedText(
-                      assignment.activity, searchQuery, context),
+                      assignment.activity ?? '', searchQuery, context),
                 ),
                 _buildStatusBadge(),
               ],
@@ -88,7 +88,22 @@ class AssignmentOverviewItem extends ConsumerWidget {
                         .bodyMedium
                         ?.copyWith(color: Colors.grey[700]),
               ),
-
+            if (assignment.startDay != null)
+              _buildDetailRow(
+                context,
+                icon: Icons.calendar_today,
+                label: S.of(context).dueDay,
+                value: '${S.of(context).day} ${assignment.startDay}',
+                style: assignment.dueDate!.isBefore(DateTime.now())
+                    ? Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.red)
+                    : Theme.of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.grey[700]),
+              ),
             if (assignment.rescheduledDate != null)
               _buildDetailIcon(
                 Icons.calendar_view_day,
@@ -122,6 +137,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
                       ElevatedButton.icon(
                         onPressed: () async {
                           await _showFormSelectionBottomSheet(context);
+                          ref.invalidate(assignmentsProvider);
                         },
                         icon: const Icon(Icons.file_open),
                         label: Text(

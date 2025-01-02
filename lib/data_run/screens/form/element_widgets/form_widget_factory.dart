@@ -1,6 +1,7 @@
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:datarun/data_run/screens/form/element_widgets/popup_section.widget.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/q_barcode_reader_field.dart';
+import 'package:datarun/data_run/screens/form/field_widgets/reactive_team_select_chip.widget.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/reference_search/q_reference_drop_down_search_field.widget.dart';
 import 'package:datarun/data_run/screens/form/form_with_sliver/repeat_table.widget.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +64,9 @@ class FieldFactory {
         return QSwitchField(element: element as FieldInstance<bool>);
       case ValueType.OrganisationUnit:
         return QOrgUnitPickerField(element: element as FieldInstance<String>);
+      case ValueType.Team:
+        return QReactiveTeamSelectChip(
+            element: element as FieldInstance<String>);
       case ValueType.SelectOne:
         if ((element.choiceFilter?.options ?? element.visibleOption).length <=
             6) {

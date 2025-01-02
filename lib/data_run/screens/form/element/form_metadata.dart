@@ -1,4 +1,5 @@
 import 'package:datarun/data_run/d_assignment/model/assignment_form.dart';
+import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
 import 'package:equatable/equatable.dart';
 
 class FormMetadata with EquatableMixin {
@@ -6,7 +7,9 @@ class FormMetadata with EquatableMixin {
     // required this.formId,
     // required this.formLabel,
     // required this.activity,
-    required this.assignmentForm,
+    required this.assignmentModel,
+    required this.formId,
+    // this.isNew = true,
     // this.version,
     this.submission,
   });
@@ -15,7 +18,12 @@ class FormMetadata with EquatableMixin {
 
   // final String activity;
   // final String formLabel;
-  final AssignmentForm assignmentForm;
+  // final AssignmentForm assignmentForm;
+
+  final AssignmentModel assignmentModel;
+
+  // final bool isNew;
+  final String formId;
 
   // final int? version;
   final String? submission;
@@ -24,15 +32,16 @@ class FormMetadata with EquatableMixin {
     String? formId,
     // String? formLabel,
     // String? activity,
-    AssignmentForm? assignmentForm,
+    // AssignmentForm? assignmentForm,
+    AssignmentModel? assignmentModel,
     // int? version,
     String? submission,
   }) {
     return FormMetadata(
-      // formId: formId ?? this.formId,
+      formId: formId ?? this.formId,
       // formLabel: formLabel ?? this.formLabel,
       // activity: activity ?? this.activity,
-      assignmentForm: assignmentForm ?? this.assignmentForm,
+      assignmentModel: assignmentModel ?? this.assignmentModel,
       // version: version ?? this.version,
       submission: submission ?? this.submission,
     );
@@ -45,6 +54,6 @@ class FormMetadata with EquatableMixin {
   List<Object?> get props => [
         submission,
         // version,
-        assignmentForm, /*formId, formLabel, activity*/
+        assignmentModel, formId /*, formLabel, activity*/
       ];
 }

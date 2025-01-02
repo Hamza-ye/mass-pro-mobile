@@ -58,7 +58,7 @@ Future<List<DActivity>> projectActiveActivities(
 Future<List<FormTemplate>> activityForms(
     ActivityFormsRef ref, String? activity) async {
   final List<FormTemplate> activeForms = await D2Remote.formModule.formTemplate
-      .withFormVersions()
+      // .withFormVersions()
       .where(attribute: 'activity', value: activity)
       .get();
 

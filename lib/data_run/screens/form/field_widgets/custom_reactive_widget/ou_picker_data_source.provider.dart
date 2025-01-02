@@ -12,9 +12,9 @@ part 'ou_picker_data_source.provider.g.dart';
 @riverpod
 Future<TreeNodeDataSource> ouPickerDataSource(OuPickerDataSourceRef ref,
     {required FormMetadata formMetadata}) async {
-  final List<FormVersion> template = await ref.watch(
+  final FormVersion template = await ref.watch(
       submissionVersionFormTemplateProvider(
-              formId: [formMetadata.assignmentForm.formId])
+              formId: formMetadata.formId)
           .future);
 
   final dataSourceValue = await ref.watch(treeNodeDataSourceProvider(

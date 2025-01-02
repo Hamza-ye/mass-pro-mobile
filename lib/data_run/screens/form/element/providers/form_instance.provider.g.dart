@@ -25,7 +25,7 @@ final userDeviceInfoServiceProvider =
 typedef UserDeviceInfoServiceRef
     = AutoDisposeFutureProviderRef<AndroidDeviceInfoService>;
 String _$submissionVersionFormTemplateHash() =>
-    r'f42e1dd295f143f0e23d3d09ad64ebb980c5d102';
+    r'8718e48a42a08de483b1863b10b2927a82ebdaed';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -90,7 +90,7 @@ class SubmissionVersionFormTemplateFamily extends Family {
   ///
   /// Copied from [submissionVersionFormTemplate].
   SubmissionVersionFormTemplateProvider call({
-    required List<String> formId,
+    required String formId,
   }) {
     return SubmissionVersionFormTemplateProvider(
       formId: formId,
@@ -109,7 +109,7 @@ class SubmissionVersionFormTemplateFamily extends Family {
 
   /// Enables overriding the behavior of this provider, no matter the parameters.
   Override overrideWith(
-      FutureOr<List<FormVersion>> Function(SubmissionVersionFormTemplateRef ref)
+      FutureOr<FormVersion> Function(SubmissionVersionFormTemplateRef ref)
           create) {
     return _$SubmissionVersionFormTemplateFamilyOverride(this, create);
   }
@@ -119,8 +119,8 @@ class _$SubmissionVersionFormTemplateFamilyOverride implements FamilyOverride {
   _$SubmissionVersionFormTemplateFamilyOverride(
       this.overriddenFamily, this.create);
 
-  final FutureOr<List<FormVersion>> Function(
-      SubmissionVersionFormTemplateRef ref) create;
+  final FutureOr<FormVersion> Function(SubmissionVersionFormTemplateRef ref)
+      create;
 
   @override
   final SubmissionVersionFormTemplateFamily overriddenFamily;
@@ -139,14 +139,14 @@ class _$SubmissionVersionFormTemplateFamilyOverride implements FamilyOverride {
 ///
 /// Copied from [submissionVersionFormTemplate].
 class SubmissionVersionFormTemplateProvider
-    extends AutoDisposeFutureProvider<List<FormVersion>> {
+    extends AutoDisposeFutureProvider<FormVersion> {
   /// form id could be on the format of formId-version or formId
   /// look for the latest version of the form template or the form template
   /// that matches the version
   ///
   /// Copied from [submissionVersionFormTemplate].
   SubmissionVersionFormTemplateProvider({
-    required List<String> formId,
+    required String formId,
   }) : this._internal(
           (ref) => submissionVersionFormTemplate(
             ref as SubmissionVersionFormTemplateRef,
@@ -174,12 +174,11 @@ class SubmissionVersionFormTemplateProvider
     required this.formId,
   }) : super.internal();
 
-  final List<String> formId;
+  final String formId;
 
   @override
   Override overrideWith(
-    FutureOr<List<FormVersion>> Function(SubmissionVersionFormTemplateRef ref)
-        create,
+    FutureOr<FormVersion> Function(SubmissionVersionFormTemplateRef ref) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -197,19 +196,18 @@ class SubmissionVersionFormTemplateProvider
 
   @override
   ({
-    List<String> formId,
+    String formId,
   }) get argument {
     return (formId: formId,);
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<FormVersion>> createElement() {
+  AutoDisposeFutureProviderElement<FormVersion> createElement() {
     return _SubmissionVersionFormTemplateProviderElement(this);
   }
 
   SubmissionVersionFormTemplateProvider _copyWith(
-    FutureOr<List<FormVersion>> Function(SubmissionVersionFormTemplateRef ref)
-        create,
+    FutureOr<FormVersion> Function(SubmissionVersionFormTemplateRef ref) create,
   ) {
     return SubmissionVersionFormTemplateProvider._internal(
       (ref) => create(ref as SubmissionVersionFormTemplateRef),
@@ -238,22 +236,21 @@ class SubmissionVersionFormTemplateProvider
 }
 
 mixin SubmissionVersionFormTemplateRef
-    on AutoDisposeFutureProviderRef<List<FormVersion>> {
+    on AutoDisposeFutureProviderRef<FormVersion> {
   /// The parameter `formId` of this provider.
-  List<String> get formId;
+  String get formId;
 }
 
 class _SubmissionVersionFormTemplateProviderElement
-    extends AutoDisposeFutureProviderElement<List<FormVersion>>
+    extends AutoDisposeFutureProviderElement<FormVersion>
     with SubmissionVersionFormTemplateRef {
   _SubmissionVersionFormTemplateProviderElement(super.provider);
 
   @override
-  List<String> get formId =>
-      (origin as SubmissionVersionFormTemplateProvider).formId;
+  String get formId => (origin as SubmissionVersionFormTemplateProvider).formId;
 }
 
-String _$formFlatTemplateHash() => r'70e9c76bd6e103e86b2ad024d600acdf8c15d638';
+String _$formFlatTemplateHash() => r'7ca9acb88b9ca8aceba372e49929bf55f776a7f1';
 
 /// See also [formFlatTemplate].
 @ProviderFor(formFlatTemplate)

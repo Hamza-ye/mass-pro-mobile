@@ -51,6 +51,7 @@ class TemplateFormControlBuilder {
     switch (fieldTemplate.type) {
       case ValueType.Text:
       case ValueType.OrganisationUnit:
+      case ValueType.Team:
         return FormControl<String>(
           value: initialValue ?? fieldTemplate.defaultValue,
           validators: FieldValidators.getValidators(fieldTemplate),

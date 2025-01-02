@@ -66,6 +66,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "appName": MessageLookupByLibrary.simpleMessage("Datarun"),
         "appVersion": MessageLookupByLibrary.simpleMessage("App Version"),
         "appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
+        "assigned": MessageLookupByLibrary.simpleMessage("Assigned"),
         "assignmentDetail":
             MessageLookupByLibrary.simpleMessage("Assignment Detail"),
         "authInvalidCredentials": MessageLookupByLibrary.simpleMessage(
@@ -82,6 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "checkFieldsLater":
             MessageLookupByLibrary.simpleMessage("Check Fields later"),
         "clear": MessageLookupByLibrary.simpleMessage("Clear"),
+        "clearFilters": MessageLookupByLibrary.simpleMessage("Clear Filters"),
         "closeWithoutSaving":
             MessageLookupByLibrary.simpleMessage("Close without saving?"),
         "completed": MessageLookupByLibrary.simpleMessage("Completed"),
@@ -104,6 +106,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "databaseInternalError": m1,
         "databaseQueryFailed": MessageLookupByLibrary.simpleMessage(
             "Error occurred while querying the database."),
+        "day": MessageLookupByLibrary.simpleMessage("Day"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deleteConfirmationMessage": MessageLookupByLibrary.simpleMessage(
             "Are you sure you want to delete this item?"),
@@ -176,6 +179,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "your data will not be deleted when you login back again"),
         "makeFormFinalOrSaveBody": MessageLookupByLibrary.simpleMessage(
             "Make Form Final for Send to server, or save as draft!"),
+        "managed": MessageLookupByLibrary.simpleMessage("Managed"),
         "markAsFinalData": MessageLookupByLibrary.simpleMessage(
             "Make the form Final before exiting."),
         "maximumAllowedLengthIsError": m3,
@@ -200,6 +204,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("No forms available"),
         "noInternetAccess":
             MessageLookupByLibrary.simpleMessage("No internet access"),
+        "noSubmissions": MessageLookupByLibrary.simpleMessage("No Submissions"),
         "noSyncYet": MessageLookupByLibrary.simpleMessage("No sync yet"),
         "notNow": MessageLookupByLibrary.simpleMessage("Not Now"),
         "not_started": MessageLookupByLibrary.simpleMessage("Not Started"),
@@ -250,6 +255,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Scanning is unsupported on this device"),
         "scope": MessageLookupByLibrary.simpleMessage("Scope"),
+        "search": MessageLookupByLibrary.simpleMessage("Search..."),
         "searchOrgUnitsHelpText":
             MessageLookupByLibrary.simpleMessage("Search Org Units..."),
         "selectAColorExtractionImage": MessageLookupByLibrary.simpleMessage(
@@ -285,6 +291,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("This field is required."),
         "toggleBrightness":
             MessageLookupByLibrary.simpleMessage("Toggle Brightness"),
+        "toggleListTableView":
+            MessageLookupByLibrary.simpleMessage("Toggle List/Table View"),
         "undo": MessageLookupByLibrary.simpleMessage("Undo"),
         "unknownError": m6,
         "unsavedChangesWarning":

@@ -10,7 +10,6 @@ import 'package:datarun/data_run/form/form_submission/submission_list.provider.d
 import 'package:datarun/data_run/screens/form/form_tab_screen.widget.dart';
 import 'package:datarun/data_run/screens/form/inherited_widgets/form_metadata_inherit_widget.dart';
 import 'package:datarun/data_run/screens/form_submission_list/submission_info.widget.dart';
-import 'package:datarun/data_run/screens/form_submission_list/submission_creation_dialog.widget.dart';
 import 'package:datarun/data_run/screens/form_ui_elements/get_error_widget.dart';
 import 'package:datarun/data_run/screens/form_submission_list/submission_sync_dialog.widget.dart';
 import 'package:datarun/data_run/screens/project_activity_detail/form_tiles/form_submissions_status.provider.dart';
@@ -38,7 +37,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
           syncEntity: (uids) async {
             if (uids != null) {
               await ref
-                  .read(formSubmissionsProvider(formMetadata.assignmentForm.formId).notifier)
+                  .read(formSubmissionsProvider(formMetadata.formId).notifier)
                   .syncEntities(uids);
             }
           },
@@ -56,14 +55,14 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
   Widget build(BuildContext context) {
     final formMetadata = FormMetadataWidget.of(context);
     final formTemplateAsync = ref.watch(
-        submissionVersionFormTemplateProvider(formId: [formMetadata.assignmentForm.formId]));
+        submissionVersionFormTemplateProvider(formId: formMetadata.formId));
     return AsyncValueWidget(
       value: formTemplateAsync,
       valueBuilder: (formTemplate) {
         return Scaffold(
-            key: ValueKey(formMetadata.assignmentForm.formId),
+            key: ValueKey(formMetadata.formId),
             appBar: AppBar(
-              title: Text(formMetadata.assignmentForm.assignmentModel.activity),
+              title: Text(formMetadata.assignmentModel.activity ?? ''),
             ),
             body: Column(
               children: [
@@ -72,8 +71,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
                     child: AsyncValueWidget(
                   value: ref.watch(
                     submissionFilteredByStateProvider(
-                        form: formMetadata.assignmentForm.formId,
-                        status: _selectedStatus),
+                        form: formMetadata.formId, status: _selectedStatus),
                   ),
                   valueBuilder: (submissions) => ListView.builder(
                     itemCount: submissions.length,
@@ -93,12 +91,13 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
                           ),
                           child: SubmissionInfo(
                               rootSection:
-                                  SectionTemplate(fields: formTemplate.single.fields),
+                                  SectionTemplate(fields: formTemplate.fields),
                               submissionEntity: entity,
                               onSyncPressed: (uid) =>
                                   _showSyncDialog([entity.uid!]),
                               onTap: () => _goToDataEntryForm(
-                                  entity.uid!, /*entity.version*/)),
+                                    entity.uid!, /*entity.version*/
+                                  )),
                         ),
                       );
                     },
@@ -119,7 +118,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
 
   Widget _buildFilterBar() {
     final statusCountModelValue = ref.watch(
-        formSubmissionsStatusProvider(FormMetadataWidget.of(context).assignmentForm.formId));
+        formSubmissionsStatusProvider(FormMetadataWidget.of(context).formId));
 
     return switch (statusCountModelValue) {
       AsyncValue(:final Object error?, :final stackTrace) =>
@@ -182,7 +181,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
     // }
   }
 
-  void _goToDataEntryForm(String submission/*, int version*/) async {
+  void _goToDataEntryForm(String submission /*, int version*/) async {
     final metas = FormMetadataWidget.of(context).copyWith(
       submission: submission,
       // version: version,

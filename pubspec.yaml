@@ -44,6 +44,8 @@ dependencies:
   hooks_riverpod: 3.0.0-dev.3
   freezed_annotation: ^2.4.1
   riverpod_annotation: 3.0.0-dev.3
+  flutter_map: ^4.0.0
+  latlong2: ^0.8.2
 #  flutter_barcode_scanner: ^2.0.0
 #  sentry_flutter: ^8.3.0
 

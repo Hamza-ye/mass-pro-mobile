@@ -91,6 +91,7 @@ class FormElementModelFactory {
       case ValueType.Time:
       case ValueType.DateTime:
       case ValueType.OrganisationUnit:
+      case ValueType.Team:
         return FieldElementModel<String>(
           templatePath: elementTemplate.path,
           mandatory: elementTemplate.mandatory,
