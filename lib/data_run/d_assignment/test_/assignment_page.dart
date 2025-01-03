@@ -27,15 +27,6 @@ class AssignmentPage extends ConsumerWidget {
               ref.read(filterQueryProvider.notifier).toggleCardTableView();
             },
           ),
-          const SizedBox(width: 8),
-          IconButton(
-            tooltip: S.of(context).toggleListTableView,
-            icon: const Icon(Icons.map),
-            onPressed: () => showModalBottomSheet(
-              context: context,
-              builder: (context) => _buildDraggableMap(context, ref),
-            ),
-          ),
         ],
       ),
       bottomNavigationBar: SingleChildScrollView(

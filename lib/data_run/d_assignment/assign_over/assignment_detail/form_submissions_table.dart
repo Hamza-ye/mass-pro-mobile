@@ -25,8 +25,6 @@ class FormSubmissionsTable extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final assignmentSubmissionsAsync =
-        ref.watch(assignmentSubmissionsProvider(assignment.id));
     final selectedSubmissions = useState<Set<DataFormSubmission>>({});
 
     final formVersionsAsync =
@@ -38,7 +36,8 @@ class FormSubmissionsTable extends HookConsumerWidget {
           final field = entry.value;
           return !field.type!.isSection && field.mainField;
         }).toList();
-        final formSubmissions = ref.watch(formSubmissionsProvider(formId));
+        final formSubmissions =
+            ref.watch(assignmentSubmissionsProvider(assignment.id, form: formVersion.formTemplate));
         return Column(
           children: [
             if (selectedSubmissions.value.isNotEmpty)
@@ -74,7 +73,7 @@ class FormSubmissionsTable extends HookConsumerWidget {
               ),
             AsyncValueWidget(
               value: formSubmissions,
-              valueBuilder: (IList<DataFormSubmission> submissions) {
+              valueBuilder: (List<DataFormSubmission> submissions) {
                 if (submissions.isEmpty) {
                   return Center(child: Text(S.of(context).noSubmissions));
                 }
