@@ -1,12 +1,13 @@
-import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
-import 'package:d2_remote/shared/enumeration/assignment_status.dart';
+import 'package:datarun/data_run/d_activity/activity_card.dart';
+import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
 import 'package:datarun/data_run/d_assignment/assign_over/assignment_detail/form_submissions_table.dart';
 import 'package:datarun/data_run/d_assignment/assign_over/form_submission_create.widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
-import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
-import 'package:datarun/data_run/screens/form/form_tab_screen.widget.dart';
-import 'package:datarun/data_run/screens/form/inherited_widgets/form_metadata_inherit_widget.dart';
+import 'package:datarun/data_run/d_assignment/test_/assignment_page.dart';
+import 'package:datarun/data_run/form/form_submission/submission_list.provider.dart';
+import 'package:datarun/data_run/screens/form_ui_elements/get_error_widget.dart';
 import 'package:datarun/generated/l10n.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,6 +20,7 @@ class AssignmentDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final activityModel = ActivityInheritedWidget.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(S.of(context).assignmentDetail)),
       body: Padding(
@@ -33,18 +35,29 @@ class AssignmentDetailPage extends ConsumerWidget {
               ),
               const SizedBox(height: 16),
               _buildDetails(context),
-              Divider(
-                height: 20,
-              ),
+              Divider(height: 20),
               const SizedBox(height: 16),
               _buildResourcesComparison(context),
               const SizedBox(height: 16),
-              _buildActions(context),
-              const SizedBox(height: 16),
+              _buildActions(context, ref, activityModel),
+              const SizedBox(height: 20),
+              Divider(height: 20),
+              const SizedBox(height: 20),
               ...assignment.forms
+                  .where((f) => ActivityInheritedWidget.of(context)
+                      .assignedForms
+                      .contains(f))
+                  .toList()
+                  .distinct()
                   .map(
-                    (form) => FormSubmissionsTable(
-                        assignment: assignment, formId: form),
+                    (form) => _EagerInitialization(
+                      child: FormSubmissionsTable(
+                        assignment: assignment,
+                        formId: form,
+                      ),
+                      assignment: assignment,
+                      formId: form,
+                    ),
                   )
                   .toList(),
             ],
@@ -64,7 +77,7 @@ class AssignmentDetailPage extends ConsumerWidget {
             style: Theme.of(context).textTheme.titleMedium,
           ),
         ),
-        buildStatusBadge(context, assignment.status),
+        buildStatusBadge(assignment.status),
       ],
     );
   }
@@ -76,12 +89,16 @@ class AssignmentDetailPage extends ConsumerWidget {
         _buildDetailRow(context, S.of(context).entity,
             '${assignment.entityCode} - ${assignment.entityName}'),
         _buildDetailRow(context, S.of(context).team, '${assignment.teamCode}'),
-        _buildDetailRow(context, S.of(context).scope, assignment.scope.name),
         _buildDetailRow(
-            context, S.of(context).dueDate, assignment.dueDate.toString()),
+            context, S.of(context).scope, Intl.message(assignment.scope.name.toLowerCase())),
+        if (assignment.dueDate != null)
+          _buildDetailRow(context, S.of(context).dueDate,
+              formatDate(assignment.dueDate!, context)),
         if (assignment.rescheduledDate != null)
-          _buildDetailRow(context, S.of(context).rescheduled,
-              assignment.rescheduledDate.toString()),
+          _buildDetailRow(
+              context,
+              S.of(context).rescheduled,
+              formatDate(assignment.rescheduledDate!, context)),
         _buildDetailRow(
             context, S.of(context).forms, assignment.forms.length.toString()),
       ],
@@ -110,11 +127,12 @@ class AssignmentDetailPage extends ConsumerWidget {
         const SizedBox(height: 8),
         ...assignment.allocatedResources.keys.map((key) {
           final allocated = assignment.allocatedResources[key] ?? 0;
-          final reported = assignment.reportedResources[key] ?? 0;
+          final reported = assignment.reportedResources[key.toLowerCase()] ?? 0;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(Intl.message(key), style: Theme.of(context).textTheme.bodyMedium),
+              Text(Intl.message(key.toLowerCase()),
+                  style: Theme.of(context).textTheme.bodyMedium),
               Text('$reported / $allocated',
                   style: Theme.of(context).textTheme.bodyMedium),
             ],
@@ -124,98 +142,62 @@ class AssignmentDetailPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildActions(BuildContext context) {
+  Widget _buildActions(
+      BuildContext context, WidgetRef ref, ActivityModel activityModel) {
     return Column(
       children: [
         ElevatedButton.icon(
           onPressed: () async {
-            await showFormSelectionBottomSheet(context, assignment);
-            // ref.invalidate(assignmentsProvider);
+            await showFormSelectionBottomSheet(
+                context, assignment, activityModel);
           },
           icon: const Icon(Icons.send),
           label: Text(S.of(context).openNewForm),
-        ),
-        const SizedBox(height: 8),
-        DropdownButton<AssignmentStatus>(
-          onChanged: (value) {
-            if (value != null) {
-              // Handle status change
-            }
-          },
-          value: assignment.status,
-          items: AssignmentStatus.values.map((status) {
-            return DropdownMenuItem<AssignmentStatus>(
-              value: status,
-              child: Text(Intl.message(status.name.toLowerCase())),
-            );
-          }).toList(),
         ),
       ],
     );
   }
 }
 
-Widget buildStatusBadge(BuildContext context, AssignmentStatus status) {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-    decoration: BoxDecoration(
-      color: statusColor(status),
-      borderRadius: BorderRadius.circular(8),
-    ),
-    child: Text(
-      Intl.message(status.name.toLowerCase()),
-      style: const TextStyle(color: Colors.white),
-    ),
-  );
-}
+class _EagerInitialization extends ConsumerWidget {
+  _EagerInitialization(
+      {required this.child, required this.assignment, required this.formId});
 
-Color statusColor(AssignmentStatus status) {
-  switch (status) {
-    case AssignmentStatus.NOT_STARTED:
-      return Colors.grey;
-    case AssignmentStatus.IN_PROGRESS:
-      return Colors.blue;
-    case AssignmentStatus.COMPLETED:
-      return Colors.green;
-    case AssignmentStatus.RESCHEDULED:
-      return Colors.orange;
-    case AssignmentStatus.CANCELLED:
-      return Colors.red;
-    default:
-      return Colors.black;
+  final Widget child;
+  final AssignmentModel assignment;
+  final String formId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final formInstance = ref.watch(formSubmissionsProvider(formId));
+    if (formInstance.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    } else if (formInstance.hasError) {
+      return getErrorWidget(formInstance.error, formInstance.stackTrace);
+    }
+
+    return child;
   }
 }
 
-Future<void> goToDataEntryForm(BuildContext context, AssignmentModel assignment,
-    DataFormSubmission submission) async {
-  await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => FormMetadataWidget(
-                formMetadata: FormMetadata(
-                  assignmentModel: assignment,
-                  formId: submission.formVersion is String
-                      ? submission.formVersion
-                      : submission.formVersion.id,
-                  submission: submission.id,
-                ),
-                child: const FormSubmissionScreen(currentPageIndex: 1),
-              )));
-}
-
-Future<void> showFormSelectionBottomSheet(
-    BuildContext context, AssignmentModel assignment) async {
+Future<void> showFormSelectionBottomSheet(BuildContext context,
+    AssignmentModel assignment, ActivityModel activityModel) async {
   try {
     await showModalBottomSheet(
       enableDrag: false,
       context: context,
       builder: (BuildContext context) {
-        return FormSubmissionCreate(
-          assignment: assignment,
-          onNewFormCreated: (createdSubmission) {
-            Navigator.of(context).pop();
-            goToDataEntryForm(context, assignment, createdSubmission);
-          },
+        return ActivityInheritedWidget(
+          activityModel: activityModel,
+          child: FormSubmissionCreate(
+            assignment: assignment,
+            onNewFormCreated: (createdSubmission) async {
+              Navigator.of(context).pop();
+              goToDataEntryForm(
+                  context, assignment, createdSubmission, activityModel);
+              // ref.invalidate(assignmentsProvider);
+            },
+          ),
         );
       },
     );

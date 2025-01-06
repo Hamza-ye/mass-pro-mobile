@@ -7,7 +7,7 @@ part of 'metadata_submission_update_provider.dart';
 // **************************************************************************
 
 String _$metadataSubmissionRepositoryHash() =>
-    r'0d6634ef1a31ce7b55778d65ac44576bf5fc16d9';
+    r'b0036c16a9a6f08fae03333901f2a5ff9bccc487';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -56,7 +56,7 @@ class MetadataSubmissionRepositoryFamily extends Family {
 
   /// See also [metadataSubmissionRepository].
   MetadataSubmissionRepositoryProvider call(
-    String orgUnit,
+    String? orgUnit,
   ) {
     return MetadataSubmissionRepositoryProvider(
       orgUnit,
@@ -105,7 +105,7 @@ class MetadataSubmissionRepositoryProvider
     extends AutoDisposeFutureProvider<MetadataSubmission?> {
   /// See also [metadataSubmissionRepository].
   MetadataSubmissionRepositoryProvider(
-    String orgUnit,
+    String? orgUnit,
   ) : this._internal(
           (ref) => metadataSubmissionRepository(
             ref as MetadataSubmissionRepositoryRef,
@@ -133,7 +133,7 @@ class MetadataSubmissionRepositoryProvider
     required this.orgUnit,
   }) : super.internal();
 
-  final String orgUnit;
+  final String? orgUnit;
 
   @override
   Override overrideWith(
@@ -155,7 +155,7 @@ class MetadataSubmissionRepositoryProvider
   }
 
   @override
-  (String,) get argument {
+  (String?,) get argument {
     return (orgUnit,);
   }
 
@@ -197,7 +197,7 @@ class MetadataSubmissionRepositoryProvider
 mixin MetadataSubmissionRepositoryRef
     on AutoDisposeFutureProviderRef<MetadataSubmission?> {
   /// The parameter `orgUnit` of this provider.
-  String get orgUnit;
+  String? get orgUnit;
 }
 
 class _MetadataSubmissionRepositoryProviderElement
@@ -206,12 +206,12 @@ class _MetadataSubmissionRepositoryProviderElement
   _MetadataSubmissionRepositoryProviderElement(super.provider);
 
   @override
-  String get orgUnit =>
+  String? get orgUnit =>
       (origin as MetadataSubmissionRepositoryProvider).orgUnit;
 }
 
 String _$systemMetadataSubmissionsHash() =>
-    r'be244c41f381083ad66393b699ac74c855250991';
+    r'a64633e0574084628a3a815e2b507a7c4bb7f9a7';
 
 /// See also [systemMetadataSubmissions].
 @ProviderFor(systemMetadataSubmissions)
@@ -239,7 +239,7 @@ class SystemMetadataSubmissionsFamily extends Family {
   /// See also [systemMetadataSubmissions].
   SystemMetadataSubmissionsProvider call({
     required String query,
-    required String orgUnit,
+    String? orgUnit,
     required String submissionId,
   }) {
     return SystemMetadataSubmissionsProvider(
@@ -293,7 +293,7 @@ class SystemMetadataSubmissionsProvider
   /// See also [systemMetadataSubmissions].
   SystemMetadataSubmissionsProvider({
     required String query,
-    required String orgUnit,
+    String? orgUnit,
     required String submissionId,
   }) : this._internal(
           (ref) => systemMetadataSubmissions(
@@ -329,7 +329,7 @@ class SystemMetadataSubmissionsProvider
   }) : super.internal();
 
   final String query;
-  final String orgUnit;
+  final String? orgUnit;
   final String submissionId;
 
   @override
@@ -357,7 +357,7 @@ class SystemMetadataSubmissionsProvider
   @override
   ({
     String query,
-    String orgUnit,
+    String? orgUnit,
     String submissionId,
   }) get argument {
     return (
@@ -416,7 +416,7 @@ mixin SystemMetadataSubmissionsRef
   String get query;
 
   /// The parameter `orgUnit` of this provider.
-  String get orgUnit;
+  String? get orgUnit;
 
   /// The parameter `submissionId` of this provider.
   String get submissionId;
@@ -430,7 +430,7 @@ class _SystemMetadataSubmissionsProviderElement
   @override
   String get query => (origin as SystemMetadataSubmissionsProvider).query;
   @override
-  String get orgUnit => (origin as SystemMetadataSubmissionsProvider).orgUnit;
+  String? get orgUnit => (origin as SystemMetadataSubmissionsProvider).orgUnit;
   @override
   String get submissionId =>
       (origin as SystemMetadataSubmissionsProvider).submissionId;

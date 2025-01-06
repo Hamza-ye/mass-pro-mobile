@@ -258,5 +258,28 @@
   "search": "Search...",
   "day": "Day",
   "toggleListTableView": "Toggle List/Table View",
-  "clearFilters": "Clear Filters"
+  "clearFilters": "Clear Filters",
+  "assignedTeam": "Assigned Team",
+  "managedTeams": "Managed Teams",
+  "assignedAssignments": "Assigned Assignments",
+  "managedAssignments": "Managed Assignments",
+  "startDate": "Start Date",
+  "endDate": "End Date",
+  "syncSubmissions": "{count, plural, =0{No Syncable submissions} =1{1 submission} =2{2 submissions} other{{count} submissions}}",
+  "@syncSubmissions": {
+    "description": "A plural message",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "allSubmissions": "All Submissions",
+  "createdDate": "Created Date",
+  "lastmodifiedDate": "LastModified Date",
+  "population": "Population",
+  "households": "Households",
+  "itns": "ITNs",
+  "selectForm": "Select Form"
 }

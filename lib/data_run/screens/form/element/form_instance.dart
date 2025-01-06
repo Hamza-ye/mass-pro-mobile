@@ -1,5 +1,6 @@
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
+import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/data_run/form/form_element/form_element_iterators/form_element_iterator.dart';
 import 'package:datarun/data_run/form/form_element_factories/form_element_control_builder.dart';
 import 'package:datarun/data_run/screens/form_module/form_template/form_element_template.dart';
@@ -30,7 +31,7 @@ class FormInstance {
       Map<String, FormElementInstance<dynamic>> elements = const {},
       required this.enabled})
       : _ref = ref,
-      /*  _formDataUid =
+        /*  _formDataUid =
             initialValue['_${formUid}'] ?? CodeGenerator.generateCompositeUid(),*/
         _formSection = rootSection {
     var formElementMap = {
@@ -64,8 +65,8 @@ class FormInstance {
 
   SectionInstance get formSection => _formSection;
 
-  FormSubmissions get formSubmissionList =>
-      _ref.read(formSubmissionsProvider(formMetadata.formId).notifier);
+  FormSubmissions get formSubmissionList => _ref.read(
+      formSubmissionsProvider(formMetadata.formId.split('_').first).notifier);
 
   final FormMetadata formMetadata;
 
@@ -74,9 +75,6 @@ class FormInstance {
   Future<DataFormSubmission> saveFormData() async {
     final formSubmission =
         await formSubmissionList.getSubmission(submissionUid!);
-
-    final value =  form.value;
-    final value2 = _formSection.value;
 
     formSection.value.forEach((key, value) {
       _initialValue.update(
@@ -93,6 +91,13 @@ class FormInstance {
     return formSubmissionList.updateSubmission(formSubmission);
   }
 
+  Future<DataFormSubmission> onChangeStatus(AssignmentStatus? status) async {
+    final formSubmission =
+        await formSubmissionList.getSubmission(submissionUid!);
+    formSubmission!.status = status;
+    return saveFormData();
+  }
+
   RepeatItemInstance onAddRepeatedItem(RepeatInstance parent) {
     final itemFormGroup = FormElementControlBuilder.createSectionFormGroup(
         formFlatTemplate, parent.template);
@@ -100,8 +105,10 @@ class FormInstance {
     parent.elementControl.add(itemFormGroup);
 
     final itemInstance = FormElementBuilder.buildRepeatItem(
-        form, formFlatTemplate, parent.template,
-        /*parentUid: _formDataUid as String*/);
+      form,
+      formFlatTemplate,
+      parent.template, /*parentUid: _formDataUid as String*/
+    );
     parent
       ..add(itemInstance)
       ..resolveDependencies()

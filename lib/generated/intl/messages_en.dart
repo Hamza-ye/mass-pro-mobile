@@ -35,15 +35,18 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m5(error) => "Error While Trying to Sync data \$${error}.";
 
-  static String m6(error) => "Error: \$${error}.";
+  static String m6(count) =>
+      "${Intl.plural(count, zero: 'No Syncable submissions', one: '1 submission', two: '2 submissions', other: '${count} submissions')}";
 
-  static String m7(error) =>
-      "The value must be greater than or equal to \$${error}.";
+  static String m7(error) => "Error: \$${error}.";
 
   static String m8(error) =>
+      "The value must be greater than or equal to \$${error}.";
+
+  static String m9(error) =>
       "The value must be less than or equal to \$${error}.";
 
-  static String m9(count) =>
+  static String m10(count) =>
       "${Intl.plural(count, zero: ' ', one: '1 Year', two: '2 Years', few: '${count} Years', other: '${count} Years')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -57,6 +60,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Account Information"),
         "activity": MessageLookupByLibrary.simpleMessage("Activity"),
         "addNew": MessageLookupByLibrary.simpleMessage("Add New"),
+        "allSubmissions":
+            MessageLookupByLibrary.simpleMessage("All Submissions"),
         "allocatedResources":
             MessageLookupByLibrary.simpleMessage("Allocated Resources"),
         "and": MessageLookupByLibrary.simpleMessage("And"),
@@ -67,6 +72,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "appVersion": MessageLookupByLibrary.simpleMessage("App Version"),
         "appearance": MessageLookupByLibrary.simpleMessage("Appearance"),
         "assigned": MessageLookupByLibrary.simpleMessage("Assigned"),
+        "assignedAssignments":
+            MessageLookupByLibrary.simpleMessage("Assigned Assignments"),
+        "assignedTeam": MessageLookupByLibrary.simpleMessage("Assigned Team"),
         "assignmentDetail":
             MessageLookupByLibrary.simpleMessage("Assignment Detail"),
         "authInvalidCredentials": MessageLookupByLibrary.simpleMessage(
@@ -97,6 +105,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "controllerNotReady":
             MessageLookupByLibrary.simpleMessage("Controller not ready."),
         "count": MessageLookupByLibrary.simpleMessage("Count"),
+        "createdDate": MessageLookupByLibrary.simpleMessage("Created Date"),
         "currentUsername":
             MessageLookupByLibrary.simpleMessage("Current username"),
         "daily": MessageLookupByLibrary.simpleMessage("Daily"),
@@ -125,6 +134,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "edit": MessageLookupByLibrary.simpleMessage("Edit"),
         "editItem": MessageLookupByLibrary.simpleMessage("Edit Item"),
         "empty": MessageLookupByLibrary.simpleMessage("Empty"),
+        "endDate": MessageLookupByLibrary.simpleMessage("End Date"),
         "enterAValidNumber": MessageLookupByLibrary.simpleMessage(
             "Please enter a valid number."),
         "enterYourUsername":
@@ -159,18 +169,22 @@ class MessageLookup extends MessageLookupByLibrary {
         "gtin": MessageLookupByLibrary.simpleMessage("GTIN"),
         "hidePassword": MessageLookupByLibrary.simpleMessage("Hide Password"),
         "home": MessageLookupByLibrary.simpleMessage("Home"),
+        "households": MessageLookupByLibrary.simpleMessage("Households"),
         "in_progress": MessageLookupByLibrary.simpleMessage("In Progress"),
         "internetIsConnected":
             MessageLookupByLibrary.simpleMessage("internet Is Connected"),
         "invalidScannedCode":
             MessageLookupByLibrary.simpleMessage("Invalid scanned code!"),
         "itemRemoved": MessageLookupByLibrary.simpleMessage("Item Removed"),
+        "itns": MessageLookupByLibrary.simpleMessage("ITNs"),
         "language": MessageLookupByLibrary.simpleMessage("Language"),
         "lastConfigurationSyncTime":
             MessageLookupByLibrary.simpleMessage("Sync Time"),
         "lastName": MessageLookupByLibrary.simpleMessage("Last Name"),
         "lastSyncStatus":
             MessageLookupByLibrary.simpleMessage("last sync status"),
+        "lastmodifiedDate":
+            MessageLookupByLibrary.simpleMessage("LastModified Date"),
         "level": MessageLookupByLibrary.simpleMessage("Level"),
         "login": MessageLookupByLibrary.simpleMessage("Login"),
         "loginUsername": MessageLookupByLibrary.simpleMessage("Login Username"),
@@ -180,6 +194,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "makeFormFinalOrSaveBody": MessageLookupByLibrary.simpleMessage(
             "Make Form Final for Send to server, or save as draft!"),
         "managed": MessageLookupByLibrary.simpleMessage("Managed"),
+        "managedAssignments":
+            MessageLookupByLibrary.simpleMessage("Managed Assignments"),
+        "managedTeams": MessageLookupByLibrary.simpleMessage("Managed Teams"),
         "markAsFinalData": MessageLookupByLibrary.simpleMessage(
             "Make the form Final before exiting."),
         "maximumAllowedLengthIsError": m3,
@@ -232,6 +249,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Person Information"),
         "pleaseEnterAValidEmailAddress": MessageLookupByLibrary.simpleMessage(
             "enter a valid email address."),
+        "population": MessageLookupByLibrary.simpleMessage("Population"),
         "preferences": MessageLookupByLibrary.simpleMessage("Preferences"),
         "productionDate":
             MessageLookupByLibrary.simpleMessage("Production Date"),
@@ -264,6 +282,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Select a seed color"),
         "selectColorTheme":
             MessageLookupByLibrary.simpleMessage("Select Color Theme"),
+        "selectForm": MessageLookupByLibrary.simpleMessage("Select Form"),
         "selectImageForColorExtraction": MessageLookupByLibrary.simpleMessage(
             "Select Image for Color Extraction"),
         "selected": MessageLookupByLibrary.simpleMessage("selected"),
@@ -272,6 +291,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "serverUrl": MessageLookupByLibrary.simpleMessage("Server URL"),
         "settings": MessageLookupByLibrary.simpleMessage("Settings"),
         "showPassword": MessageLookupByLibrary.simpleMessage("Show Password"),
+        "startDate": MessageLookupByLibrary.simpleMessage("Start Date"),
         "startingSync":
             MessageLookupByLibrary.simpleMessage("Starting sync..."),
         "status": MessageLookupByLibrary.simpleMessage("Status"),
@@ -282,6 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "syncInterval": MessageLookupByLibrary.simpleMessage("Sync Interval"),
         "syncNow": MessageLookupByLibrary.simpleMessage("Sync Now"),
         "syncSettings": MessageLookupByLibrary.simpleMessage("Sync Settings"),
+        "syncSubmissions": m6,
         "syncingConfiguration":
             MessageLookupByLibrary.simpleMessage("Syncing Configuration"),
         "syncingData": MessageLookupByLibrary.simpleMessage("Syncing Data"),
@@ -294,7 +315,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "toggleListTableView":
             MessageLookupByLibrary.simpleMessage("Toggle List/Table View"),
         "undo": MessageLookupByLibrary.simpleMessage("Undo"),
-        "unknownError": m6,
+        "unknownError": m7,
         "unsavedChangesWarning":
             MessageLookupByLibrary.simpleMessage("Unsaved changes"),
         "user": MessageLookupByLibrary.simpleMessage("user"),
@@ -302,15 +323,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "username": MessageLookupByLibrary.simpleMessage("Username"),
         "validationError": MessageLookupByLibrary.simpleMessage(
             "Please correct the errors in the form."),
-        "valueMustBeGreaterThanOrEqualToError": m7,
-        "valueMustBeLessThanOrEqualToError": m8,
+        "valueMustBeGreaterThanOrEqualToError": m8,
+        "valueMustBeLessThanOrEqualToError": m9,
         "version": MessageLookupByLibrary.simpleMessage("Version"),
         "viewAvailableForms": MessageLookupByLibrary.simpleMessage(
             "Expand to View Available Forms"),
         "viewDetails": MessageLookupByLibrary.simpleMessage("View Details"),
         "viewList": MessageLookupByLibrary.simpleMessage("View List"),
         "weekly": MessageLookupByLibrary.simpleMessage("Weekly"),
-        "year": m9,
+        "year": m10,
         "years": MessageLookupByLibrary.simpleMessage("Years"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes")
       };

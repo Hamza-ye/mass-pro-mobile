@@ -70,6 +70,7 @@ class FormElementControlBuilder {
       case ValueType.Text:
       case ValueType.OrganisationUnit:
       case ValueType.Team:
+      case ValueType.Progress:
         return FormControl<String>(
           value: initialValue ?? fieldTemplate.defaultValue,
           validators: FieldValidators.getValidators(fieldTemplate),

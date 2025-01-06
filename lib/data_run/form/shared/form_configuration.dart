@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
-import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/field_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';

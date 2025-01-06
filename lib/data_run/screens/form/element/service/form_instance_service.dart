@@ -4,7 +4,6 @@ import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
 import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/auth/user/entities/d_user.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/attribute_type.dart';
-import 'package:datarun/data_run/d_assignment/model/assignment_form.dart';
 import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
 import 'package:datarun/data_run/screens/form/element/service/device_info_service.dart';
 import 'package:uuid/uuid.dart';

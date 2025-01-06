@@ -7,9 +7,9 @@ part 'metadata_submission_update_provider.g.dart';
 
 @riverpod
 Future<MetadataSubmission?> metadataSubmissionRepository(
-    MetadataSubmissionRepositoryRef ref, String orgUnit) {
+    MetadataSubmissionRepositoryRef ref, String? orgUnit) {
   return D2Remote.formModule.metaSubmission
-      .where(attribute: 'resourceId', value: orgUnit)
+      .where(attribute: 'resourceId', value: orgUnit ?? '')
       .getOne();
 }
 
@@ -37,7 +37,7 @@ class MetadataSubmissionUpdates extends _$MetadataSubmissionUpdates {
 Future<List<MetadataSubmissionUpdate>> systemMetadataSubmissions(
     SystemMetadataSubmissionsRef ref,
     {required String query,
-    required String orgUnit,
+    String? orgUnit,
     required String submissionId}) async {
   final metadataSubmission =
       await ref.watch(metadataSubmissionRepositoryProvider(orgUnit).future);

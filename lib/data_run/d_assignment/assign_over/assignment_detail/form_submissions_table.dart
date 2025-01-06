@@ -1,20 +1,26 @@
+import 'package:d2_remote/core/utilities/list_extensions.dart';
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
 import 'package:d2_remote/modules/datarun/form/shared/template_extensions/form_traverse_extension.dart';
+import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
+import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
+import 'package:datarun/core/common/state.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
-import 'package:datarun/data_run/d_assignment/assign_over/assignment_detail/assignment_detail_page.dart';
+import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:datarun/data_run/d_assignment/test_/assignment_page.dart';
 import 'package:datarun/data_run/form/form_submission/submission_list.provider.dart';
+import 'package:datarun/data_run/form/form_submission/submission_list_util.dart';
 import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
-import 'package:datarun/data_run/screens/form/inherited_widgets/form_metadata_inherit_widget.dart';
 import 'package:datarun/data_run/screens/form_submission_list/submission_sync_dialog.widget.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class FormSubmissionsTable extends HookConsumerWidget {
   const FormSubmissionsTable(
@@ -25,123 +31,177 @@ class FormSubmissionsTable extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedSubmissions = useState<Set<DataFormSubmission>>({});
+    final selectedSubmissions = useState<IList<DataFormSubmission>>(IList());
+    final toSync = selectedSubmissions.value
+        .where((s) =>
+            SubmissionListUtil.getSyncStatus(s) == SyncStatus.TO_POST ||
+            SubmissionListUtil.getSyncStatus(s) == SyncStatus.ERROR)
+        .map((s) => s.id!)
+        .toList();
+    final activityModel = ActivityInheritedWidget.of(context);
 
-    final formVersionsAsync =
-        ref.watch(submissionVersionFormTemplateProvider(formId: formId));
+    final formAsync = ref.watch(latestFormTemplateProvider(formId: formId));
+    final _sortColumnIndex = useState<int?>(null);
+    final _sortAscending = useState(true);
+
+    final submissions = useState(ref
+        .watch(formSubmissionsProvider(formId))
+        .requireValue
+        .where((s) => s.assignment == assignment.id)
+        .toList());
+
+    void _sort<T>(Comparable<T> Function(DataFormSubmission d) getField,
+        int columnIndex, bool ascending) {
+      submissions.value.sort((a, b) {
+        final aValue = getField(a);
+        final bValue = getField(b);
+        return ascending
+            ? Comparable.compare(aValue, bValue)
+            : Comparable.compare(bValue, aValue);
+      });
+      _sortColumnIndex.value = columnIndex;
+      _sortAscending.value = ascending;
+    }
+
     return AsyncValueWidget(
-      value: formVersionsAsync,
-      valueBuilder: (FormVersion formVersion) {
-        final columnHeaders = formVersion.formFlatFields.entries.where((entry) {
-          final field = entry.value;
-          return !field.type!.isSection && field.mainField;
-        }).toList();
-        final formSubmissions =
-            ref.watch(assignmentSubmissionsProvider(assignment.id, form: formVersion.formTemplate));
-        return Column(
-          children: [
-            if (selectedSubmissions.value.isNotEmpty)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+        value: formAsync,
+        valueBuilder: (FormVersion formVersion) {
+          final columnHeaders =
+              formVersion.formFlatFields.entries.where((entry) {
+            final field = entry.value;
+            return !field.type!.isSection && field.mainField;
+          }).toList();
+
+          // final columns =
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(formVersion.name!,
+                  style: Theme.of(context).textTheme.titleMedium),
+              if (selectedSubmissions.value.isNotEmpty)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ElevatedButton.icon(
+                        onPressed: toSync.length > 0
+                            ? () async {
+                                await _showSyncDialog(context, toSync, ref);
+                              }
+                            : null,
+                        icon: const Icon(Icons.sync),
+                        label: Text(
+                            '${S.of(context).send}: ${S.of(context).syncSubmissions(toSync.length)}'))
+                  ],
+                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      await ref
-                          .read(formSubmissionsProvider(formId).notifier)
-                          .deleteSubmission(selectedSubmissions.value
-                              .map((s) => s.id)
-                              .toList());
-                      ref.invalidate(formSubmissionsProvider);
-                    },
-                    icon: const Icon(Icons.delete),
-                    label: Text(S.of(context).delete),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      sortAscending: _sortAscending.value,
+                      sortColumnIndex: _sortColumnIndex.value,
+                      columns: <DataColumn>[
+                        DataColumn(
+                          label: Text(S.of(context).status),
+                          onSort: (columnIndex, ascending) {
+                            _sort<String>(
+                                (d) => d.status!.name, columnIndex, ascending);
+                          },
+                        ),
+                        DataColumn(label: Text(S.of(context).edit)),
+                        ...columnHeaders.map((header) => DataColumn(
+                            label: Text(getItemLocalString(
+                                header.value.label.unlock,
+                                defaultString: header.key)))),
+                        // DataColumn(label: Text()),
+                        // DataColumn(label: Text()),
+                        DataColumn(
+                          label: Text(S.of(context).createdDate),
+                          onSort: (columnIndex, ascending) {
+                            _sort<DateTime>(
+                                (d) => DateTime.parse(d.createdDate!),
+                                columnIndex,
+                                ascending);
+                          },
+                        ),
+                        DataColumn(
+                          label: Text(S.of(context).lastmodifiedDate),
+                          onSort: (columnIndex, ascending) {
+                            _sort<DateTime>(
+                                (d) => DateTime.parse(d.lastModifiedDate!),
+                                columnIndex,
+                                ascending);
+                          },
+                        ),
+                        DataColumn(label: Text(S.of(context).delete)),
+                      ],
+                      rows: submissions.value.map((submission) {
+                        final extractedValues = _extractValues(
+                            submission.formData, formVersion, activityModel);
+                        final totalResources =
+                            _sumNumericResources(submission.formData);
+
+                        return DataRow(
+                          selected:
+                              selectedSubmissions.value.contains(submission),
+                          onSelectChanged: (selected) {
+                            if (selected == true) {
+                              selectedSubmissions.value =
+                                  selectedSubmissions.value.add(submission);
+                            } else {
+                              selectedSubmissions.value =
+                                  selectedSubmissions.value.remove(submission);
+                            }
+                          },
+                          cells: <DataCell>[
+                            DataCell(buildStatusIcon(
+                                SubmissionListUtil.getSyncStatus(submission))),
+                            DataCell(IconButton(
+                              onPressed: () async {
+                                goToDataEntryForm(context, assignment,
+                                    submission, activityModel);
+                                // ref.invalidate(assignmentsProvider);
+                              },
+                              icon: const Icon(Icons.edit),
+                              // label: Text(S.of(context).edit),
+                            )),
+                            ...columnHeaders.map(
+                              (header) => DataCell(Text(
+                                  extractedValues[header.value.name]
+                                          ?.toString() ??
+                                      totalResources[header.value.name]
+                                          ?.toString() ??
+                                      '')),
+                            ),
+                            DataCell(Text(_formatDate(submission.createdDate))),
+                            DataCell(
+                                Text(_formatDate(submission.lastModifiedDate))),
+                            DataCell(IconButton(
+                              icon: const Icon(Icons.delete, size: 20),
+                              onPressed: () =>
+                                  _confirmDelete(context, submission.id, ref),
+                            )),
+                          ],
+                        );
+                      }).toList(),
+                    ),
                   ),
-                  const SizedBox(width: 8),
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      final unSynced = selectedSubmissions.value
-                          .where((s) => s.synced == false)
-                          .map((s) => s.id!)
-                          .toList();
-                      await _showSyncDialog(context, unSynced, ref);
-                      ref.invalidate(formSubmissionsProvider);
-                    },
-                    icon: const Icon(Icons.sync),
-                    label: Text(S.of(context).syncFormData),
-                  ),
+                  if (submissions.value.isEmpty)
+                    Center(child: Text(S.of(context).noSubmissions))
                 ],
               ),
-            AsyncValueWidget(
-              value: formSubmissions,
-              valueBuilder: (List<DataFormSubmission> submissions) {
-                if (submissions.isEmpty) {
-                  return Center(child: Text(S.of(context).noSubmissions));
-                }
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(formVersion.name!,
-                        style: Theme.of(context).textTheme.titleMedium),
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: DataTable(
-                        columns: <DataColumn>[
-                          DataColumn(label: Text(S.of(context).status)),
-                          ...columnHeaders.map((header) => DataColumn(
-                              label: Text(getItemLocalString(
-                                  header.value.label.unlock,
-                                  defaultString: header.key)))),
-                        ],
-                        rows: submissions.map((submission) {
-                          final extractedValues =
-                              _extractValues(submission.formData, formVersion);
-                          final totalResources =
-                              _sumNumericResources(submission.formData);
-
-                          return DataRow(
-                            selected:
-                                selectedSubmissions.value.contains(submission),
-                            onSelectChanged: (selected) {
-                              if (selected == true) {
-                                selectedSubmissions.value = {
-                                  ...selectedSubmissions.value,
-                                  submission
-                                };
-                              } else {
-                                selectedSubmissions.value = {
-                                  ...selectedSubmissions.value
-                                }..remove(submission);
-                              }
-                            },
-                            cells: <DataCell>[
-                              DataCell(buildStatusBadge(
-                                  context, submission.status!)),
-                              ...columnHeaders.map(
-                                (header) => DataCell(Text(
-                                    extractedValues[header.value.name]
-                                            ?.toString() ??
-                                        totalResources[header.value.name]
-                                            ?.toString() ??
-                                        '')),
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
+              const SizedBox(height: 20),
+              const Divider(height: 20),
+              const SizedBox(height: 20),
+            ],
+          );
+        });
   }
 
-  Map<String, dynamic> _extractValues(
-      Map<String, dynamic> formData, FormVersion formTemplate) {
+  Map<String, dynamic> _extractValues(Map<String, dynamic> formData,
+      FormVersion formTemplate, ActivityModel activityModel) {
     Map<String, dynamic> extractedValues = {};
 
     void _extract(Map<String, dynamic> data, List<Template> fields) {
@@ -151,6 +211,22 @@ class FormSubmissionsTable extends HookConsumerWidget {
         } else if (field.type!.isRepeatSection &&
             data.containsKey(field.name)) {
           // extractedValues[field.name!] = data[field.name];
+        } else if (field.type == ValueType.Progress &&
+            data.containsKey(field.name)) {
+          extractedValues[field.name!] = Intl.message(
+            ((AssignmentStatus.values
+                            .firstOrNullWhere((t) => t.name == data[field.name])
+                            ?.name ??
+                        data[field.name]) as String?)
+                    ?.toLowerCase() ??
+                data[field.name],
+          );
+        } else if (field.type == ValueType.Team &&
+            data.containsKey(field.name)) {
+          extractedValues[field.name!] = activityModel.managedTeams
+                  .firstOrNullWhere((t) => t.id == data[field.name])
+                  ?.name ??
+              data[field.name];
         } else if (data.containsKey(field.name)) {
           extractedValues[field.name!] = data[field.name];
         }
@@ -186,7 +262,6 @@ class FormSubmissionsTable extends HookConsumerWidget {
 
   Future<void> _showSyncDialog(
       BuildContext context, List<String> entityUids, WidgetRef ref) async {
-    final formMetadata = FormMetadataWidget.of(context);
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -195,7 +270,7 @@ class FormSubmissionsTable extends HookConsumerWidget {
           syncEntity: (uids) async {
             if (uids != null) {
               await ref
-                  .read(formSubmissionsProvider(formMetadata.formId).notifier)
+                  .read(formSubmissionsProvider(formId).notifier)
                   .syncEntities(uids);
             }
           },
@@ -203,4 +278,74 @@ class FormSubmissionsTable extends HookConsumerWidget {
       },
     );
   }
+
+  Future<void> _confirmDelete(
+      BuildContext context, String? uid, WidgetRef ref) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).confirm),
+          content: Text(S.of(context).deleteConfirmationMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(S.of(context).cancel),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text(S.of(context).confirm),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true) {
+      _showUndoSnackBar(context, uid, ref);
+    }
+  }
+
+  void _showUndoSnackBar(
+      BuildContext context, String? toDeleteUid, WidgetRef ref) {
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
+    ref
+        .read(formSubmissionsProvider(formId).notifier)
+        .deleteSubmission([toDeleteUid]);
+
+    scaffoldMessenger.showSnackBar(
+      SnackBar(
+        content: Text(S.of(context).itemRemoved),
+        action: SnackBarAction(
+          label: S.of(context).undo,
+          onPressed: () {
+            // Code to undo deletion
+          },
+        ),
+      ),
+    );
+  }
+}
+
+Widget buildStatusIcon(SyncStatus? status) {
+  switch (status) {
+    case SyncStatus.SYNCED:
+      return const Icon(Icons.cloud_done, color: Colors.green, size: 20);
+    case SyncStatus.TO_POST:
+      return const Icon(Icons.cloud_upload, color: Colors.blue, size: 20);
+    case SyncStatus.TO_UPDATE:
+      return const Icon(Icons.update, color: Colors.orange, size: 20);
+    case SyncStatus.ERROR:
+      return const Icon(Icons.error, color: Colors.red, size: 20);
+    default:
+      return const Icon(Icons.all_inclusive, size: 20);
+  }
+}
+
+String _formatDate(String? dateStr) {
+  if (dateStr == null) return '';
+  final dateTime = DateTime.parse(dateStr);
+  return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
 }

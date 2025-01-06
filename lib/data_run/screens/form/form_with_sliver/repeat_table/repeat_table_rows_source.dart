@@ -1,6 +1,9 @@
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
+import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/extensions/list_extensions.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
+import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
+import 'package:datarun/data_run/d_assignment/test_/assignment_page.dart';
 import 'package:datarun/data_run/form/form_element/form_element_iterators/form_element_iterator.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
 import 'package:datarun/generated/l10n.dart';
@@ -14,12 +17,14 @@ class RepeatTableDataSource extends DataTableSource {
       {this.onDelete,
       this.onEdit,
       this.editable = true,
-        // required this.colsLength,
+      required this.activityModel,
+      // required this.colsLength,
       List<RepeatItemInstance> elements = const []}) {
     this.elements.addAll(elements);
   }
 
   // int colsLength;
+  final ActivityModel Function() activityModel;
 
   void markEnabled() {
     if (editable) {
@@ -130,6 +135,33 @@ class RepeatTableDataSource extends DataTableSource {
           ],
         );
         break;
+      case ValueType.Progress:
+        cellContent = field.value != null
+            ? Row(
+                children: [
+                  buildStatusBadge(AssignmentStatus.getType(field.value)!),
+                  SizedBox(width: 4),
+                  Text(field.value ?? ''),
+                ],
+              )
+            : Text('${field.value ?? '-'}');
+      case ValueType.Team:
+        cellContent = Row(
+          children: [
+            Icon(MdiIcons.accountGroup),
+            SizedBox(width: 4),
+            Text(activityModel
+                    .call()
+                    .managedTeams
+                    .where((t) => t.id == field.value)
+                    .firstOrNull
+                    ?.name ??
+                field.value ??
+                ''),
+          ],
+        );
+        break;
+
       case ValueType.Date:
       case ValueType.DateTime:
       case ValueType.Time:

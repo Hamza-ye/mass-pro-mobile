@@ -1,10 +1,10 @@
-import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
-import 'package:d2_remote/modules/datarun/form/entities/form_template.entity.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
-import 'package:datarun/core/utils/get_item_local_string.dart';
-import 'package:datarun/data_run/d_assignment/assign_over/form_submission_create.widget.dart';
+import 'package:datarun/data_run/d_activity/activity_card.dart';
+import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
+import 'package:datarun/data_run/d_assignment/assign_over/assignment_detail/assignment_detail_page.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:datarun/data_run/d_assignment/test_/assignment_page.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,8 +27,10 @@ class AssignmentOverviewItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchQuery =
-        ref.watch(filterQueryProvider.select((value) => value.searchQuery));
+    ref.watch(filterQueryProvider.select((value) => value.searchQuery));
+    final activityModel = ActivityInheritedWidget.of(context);
     return Card(
+      color: getCardColor(assignment.status),
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -42,16 +44,18 @@ class AssignmentOverviewItem extends ConsumerWidget {
               children: [
                 Expanded(
                   child: _buildHighlightedText(
-                      assignment.activity ?? '', searchQuery, context),
+                      assignment.activity, searchQuery, context),
                 ),
-                _buildStatusBadge(),
+                buildStatusBadge(assignment.status),
               ],
             ),
             const SizedBox(height: 8),
             _buildDetailRow(
               context,
               icon: Icons.category,
-              label: S.of(context).scope,
+              label: S
+                  .of(context)
+                  .scope,
               value: Intl.message(assignment.scope.name.toLowerCase()),
               style: TextStyle(color: Colors.grey[700]),
             ),
@@ -67,7 +71,9 @@ class AssignmentOverviewItem extends ConsumerWidget {
             const SizedBox(height: 8),
             _buildDetailIcon(
                 Icons.group,
-                '${S.of(context).team}: ${assignment.teamCode}',
+                '${S
+                    .of(context)
+                    .team}: ${assignment.teamCode}',
                 searchQuery,
                 context),
             const SizedBox(height: 16),
@@ -76,30 +82,40 @@ class AssignmentOverviewItem extends ConsumerWidget {
               _buildDetailRow(
                 context,
                 icon: Icons.calendar_today,
-                label: S.of(context).dueDate,
-                value: _formatDate(assignment.dueDate!, context),
+                label: S
+                    .of(context)
+                    .dueDate,
+                value: formatDate(assignment.dueDate!, context),
                 style: assignment.dueDate!.isBefore(DateTime.now())
-                    ? Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.red)
-                    : Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Colors.grey[700]),
+                    ? Theme
+                    .of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.red)
+                    : Theme
+                    .of(context)
+                    .textTheme
+                    .bodyMedium
+                    ?.copyWith(color: Colors.grey[700]),
               ),
             if (assignment.startDay != null)
               _buildDetailRow(
                 context,
                 icon: Icons.calendar_today,
-                label: S.of(context).dueDay,
-                value: '${S.of(context).day} ${assignment.startDay}',
+                label: S
+                    .of(context)
+                    .dueDay,
+                value: '${S
+                    .of(context)
+                    .day} ${assignment.startDay}',
                 style: assignment.dueDate!.isBefore(DateTime.now())
-                    ? Theme.of(context)
+                    ? Theme
+                    .of(context)
                     .textTheme
                     .bodyMedium
                     ?.copyWith(color: Colors.red)
-                    : Theme.of(context)
+                    : Theme
+                    .of(context)
                     .textTheme
                     .bodyMedium
                     ?.copyWith(color: Colors.grey[700]),
@@ -107,7 +123,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
             if (assignment.rescheduledDate != null)
               _buildDetailIcon(
                 Icons.calendar_view_day,
-                _formatDate(assignment.rescheduledDate!, context),
+                formatDate(assignment.rescheduledDate!, context),
                 searchQuery,
                 context,
               ),
@@ -115,14 +131,24 @@ class AssignmentOverviewItem extends ConsumerWidget {
 
             // Forms Section
             Text(
-              '${S.of(context).formsAssigned}: ${assignment.forms.length}',
-              style: Theme.of(context).textTheme.labelMedium,
+              '${S
+                  .of(context)
+                  .formsAssigned}: ${assignment.forms.length}',
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .labelMedium,
               softWrap: true,
             ),
 
             const SizedBox(height: 16),
             // Resources Section
-            _buildResourcesComparison(context),
+
+            _buildResourcesComparison(context,
+                ActivityInheritedWidget
+                    .of(context)
+                    .managedTeams
+                    .length > 0),
 
             const SizedBox(height: 16),
 
@@ -136,39 +162,44 @@ class AssignmentOverviewItem extends ConsumerWidget {
                     children: [
                       ElevatedButton.icon(
                         onPressed: () async {
-                          await _showFormSelectionBottomSheet(context);
+                          await showFormSelectionBottomSheet(
+                              context, assignment, activityModel);
                           ref.invalidate(assignmentsProvider);
                         },
                         icon: const Icon(Icons.file_open),
                         label: Text(
-                          S.of(context).openNewForm,
+                          S
+                              .of(context)
+                              .openNewForm,
                           softWrap: true,
                         ),
                       ),
                       TextButton.icon(
                         onPressed: onViewDetails,
                         icon: const Icon(Icons.info_outline),
-                        label: Text(S.of(context).viewDetails, softWrap: true),
+                        label: Text(S
+                            .of(context)
+                            .viewDetails, softWrap: true),
                       ),
                     ],
                   ),
                 ),
-                const Divider(height: 20),
-                DropdownButton<AssignmentStatus>(
-                  onChanged: (value) {
-                    if (value != null) onChangeStatus(value);
-                  },
-                  value: assignment.status,
-                  items: AssignmentStatus.values
-                      .map((status) => DropdownMenuItem<AssignmentStatus>(
-                            value: status,
-                            child: Text(
-                              Intl.message(status.name.toLowerCase()),
-                              style: Theme.of(context).textTheme.labelSmall,
-                            ),
-                          ))
-                      .toList(),
-                ),
+                // const Divider(height: 20),
+                // DropdownButton<AssignmentStatus>(
+                //   onChanged: (value) {
+                //     if (value != null) onChangeStatus(value);
+                //   },
+                //   value: assignment.status,
+                //   items: AssignmentStatus.values
+                //       .map((status) => DropdownMenuItem<AssignmentStatus>(
+                //             value: status,
+                //             child: Text(
+                //               Intl.message(status.name.toLowerCase()),
+                //               style: Theme.of(context).textTheme.labelSmall,
+                //             ),
+                //           ))
+                //       .toList(),
+                // ),
               ],
             ),
           ],
@@ -177,39 +208,54 @@ class AssignmentOverviewItem extends ConsumerWidget {
     );
   }
 
-  Future<void> _showFormSelectionBottomSheet(BuildContext context) async {
-    try {
-      await showModalBottomSheet(
-        enableDrag: false,
-        // backgroundColor: Colors.transparent,
-        context: context,
-        builder: (BuildContext context) {
-          return FormSubmissionCreate(
-            assignment: assignment,
-            onNewFormCreated: (createdSubmissionId) {
-              onFormSubmission(createdSubmissionId);
-            },
-          );
-        },
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-              '${S.of(context).errorOpeningForm}: ${e.toString().substring(0, 50)}'),
-          duration: const Duration(seconds: 2),
-        ),
-      );
-      return;
+  Color? getCardColor(AssignmentStatus status) {
+    if (assignment.status.isNotStarted() ||
+        assignment.status.isRescheduled()) {
+      return Colors.grey
+          .withOpacity(0.3); // Set the color to gray
     }
+    if (assignment.status.isDone()) {
+      return null; // Set the color to gray
+    }
+    return Colors.greenAccent
+        .withOpacity(0.3); // Use default color
+
   }
 
-  Future<List<FormTemplate>> _getFormTemplates(List<String> formIds) async {
-    return D2Remote.formModule.formTemplateV.byIds(formIds).get();
-  }
-
-  Widget _buildHighlightedText(
-      String text, String searchQuery, BuildContext context) {
+  //
+  // Future<void> _showFormSelectionBottomSheet(BuildContext context) async {
+  //   try {
+  //     final activityModel = ActivityInheritedWidget.of(context);
+  //     await showModalBottomSheet(
+  //       enableDrag: false,
+  //       // backgroundColor: Colors.transparent,
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return ActivityInheritedWidget(
+  //           activityModel: activityModel,
+  //           child: FormSubmissionCreate(
+  //             assignment: assignment,
+  //             onNewFormCreated: (createdSubmissionId) {
+  //               onFormSubmission(createdSubmissionId);
+  //             },
+  //           ),
+  //         );
+  //       },
+  //     );
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text(
+  //             '${S.of(context).errorOpeningForm}: ${e.toString().substring(0, 50)}'),
+  //         duration: const Duration(seconds: 2),
+  //       ),
+  //     );
+  //     return;
+  //   }
+  // }
+  //
+  Widget _buildHighlightedText(String text, String searchQuery,
+      BuildContext context) {
     if (searchQuery.isEmpty) {
       return Text(text, softWrap: true);
     }
@@ -239,12 +285,14 @@ class AssignmentOverviewItem extends ConsumerWidget {
 
     return RichText(
       text:
-          TextSpan(style: DefaultTextStyle.of(context).style, children: spans),
+      TextSpan(style: DefaultTextStyle
+          .of(context)
+          .style, children: spans),
     );
   }
 
-  Widget _buildDetailIcon(
-      IconData icon, String value, String searchQuery, BuildContext context) {
+  Widget _buildDetailIcon(IconData icon, String value, String searchQuery,
+      BuildContext context) {
     return Row(
       children: [
         Icon(icon, size: 20, color: Colors.grey[600]),
@@ -254,28 +302,39 @@ class AssignmentOverviewItem extends ConsumerWidget {
     );
   }
 
-  Widget _buildResourcesComparison(BuildContext context) {
+  Widget _buildResourcesComparison(BuildContext context, bool showTarget) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          S.of(context).resources,
-          style: Theme.of(context).textTheme.labelMedium,
+          S
+              .of(context)
+              .resources,
+          style: Theme
+              .of(context)
+              .textTheme
+              .labelMedium,
         ),
         const SizedBox(height: 8),
         ...assignment.allocatedResources.keys.map((key) {
           final allocated = assignment.allocatedResources[key] ?? 0;
-          final reported = assignment.reportedResources[key] ?? 0;
+          final reported = assignment.reportedResources[key.toLowerCase()] ?? 0;
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                key,
-                style: Theme.of(context).textTheme.bodySmall,
+                Intl.message(key.toLowerCase()),
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodySmall,
               ),
               Text(
-                '$reported / $allocated',
-                style: Theme.of(context).textTheme.bodySmall,
+                showTarget ? '${reported} / $allocated' : '$reported',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodySmall,
               ),
             ],
           );
@@ -286,10 +345,10 @@ class AssignmentOverviewItem extends ConsumerWidget {
 
   Widget _buildDetailRow(BuildContext context,
       {required IconData icon,
-      required String label,
-      required String value,
-      String searchQuery = '',
-      TextStyle? style}) {
+        required String label,
+        required String value,
+        String searchQuery = '',
+        TextStyle? style}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -306,50 +365,46 @@ class AssignmentOverviewItem extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatusBadge() {
-    IconData statusIcon;
-    Color badgeColor;
-
-    switch (assignment.status) {
-      case AssignmentStatus.NOT_STARTED:
-        statusIcon = Icons.hourglass_empty;
-        badgeColor = Colors.grey;
-        break;
-      case AssignmentStatus.IN_PROGRESS:
-        statusIcon = Icons.autorenew;
-        badgeColor = Colors.blue;
-        break;
-      case AssignmentStatus.COMPLETED:
-        statusIcon = Icons.check_circle;
-        badgeColor = Colors.green;
-        break;
-      case AssignmentStatus.RESCHEDULED:
-        statusIcon = Icons.schedule;
-        badgeColor = Colors.orange;
-        break;
-      case AssignmentStatus.CANCELLED:
-        statusIcon = Icons.cancel;
-        badgeColor = Colors.red;
-        break;
-      default:
-        statusIcon = Icons.help_outline;
-        badgeColor = Colors.black;
-    }
-
-    return Tooltip(
-      message: Intl.message(assignment.status.name.toLowerCase()),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-        decoration: BoxDecoration(
-          color: badgeColor,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Icon(statusIcon, color: Colors.white),
-      ),
-    );
-  }
-
-  String _formatDate(DateTime date, BuildContext context) {
-    return MaterialLocalizations.of(context).formatFullDate(date);
-  }
+// Widget _buildStatusBadge() {
+//   IconData statusIcon;
+//   Color badgeColor;
+//
+//   switch (assignment.status) {
+//     case AssignmentStatus.NOT_STARTED:
+//       statusIcon = Icons.hourglass_empty;
+//       badgeColor = Colors.grey;
+//       break;
+//     case AssignmentStatus.IN_PROGRESS:
+//       statusIcon = Icons.autorenew;
+//       badgeColor = Colors.blue;
+//       break;
+//     case AssignmentStatus.COMPLETED:
+//       statusIcon = Icons.check_circle;
+//       badgeColor = Colors.green;
+//       break;
+//     case AssignmentStatus.RESCHEDULED:
+//       statusIcon = Icons.schedule;
+//       badgeColor = Colors.orange;
+//       break;
+//     case AssignmentStatus.CANCELLED:
+//       statusIcon = Icons.cancel;
+//       badgeColor = Colors.red;
+//       break;
+//     default:
+//       statusIcon = Icons.help_outline;
+//       badgeColor = Colors.black;
+//   }
+//
+//   return Tooltip(
+//     message: Intl.message(assignment.status.name.toLowerCase()),
+//     child: Container(
+//       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+//       decoration: BoxDecoration(
+//         color: badgeColor,
+//         borderRadius: BorderRadius.circular(20),
+//       ),
+//       child: Icon(statusIcon, color: Colors.white),
+//     ),
+//   );
+// }
 }

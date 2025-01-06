@@ -31,15 +31,15 @@ Future<AndroidDeviceInfoService> userDeviceInfoService(
   return deviceService;
 }
 
-// @riverpod
-// Future<FormVersion> latestFormTemplate(LatestFormTemplateRef ref,
-//     {required String formId}) async {
-//   final formTemplates = D2Remote.formModule.formTemplateV
-//       .where(attribute: 'formTemplate', value: formId)
-//       .orderBy(attribute: 'version', order: SortOrder.DESC)
-//       .get();
-//   return formTemplates.first;
-// }
+@riverpod
+Future<FormVersion> latestFormTemplate(LatestFormTemplateRef ref,
+    {required String formId}) async {
+  final formTemplates = await D2Remote.formModule.formTemplateV
+      .where(attribute: 'formTemplate', value: formId)
+      .orderBy(attribute: 'version', order: SortOrder.DESC)
+      .get();
+  return formTemplates.first;
+}
 
 /// form id could be on the format of formId-version or formId
 /// look for the latest version of the form template or the form template
@@ -60,7 +60,7 @@ Future<FormVersion> submissionVersionFormTemplate(
   } else {
     /// try to get form versions by form template Ids
     /// if more than one value for the same formTemplate, take latest version
-    final FormVersion formTemplate = await D2Remote.formModule.formTemplateV
+    final FormVersion? formTemplate = await D2Remote.formModule.formTemplateV
         .where(attribute: 'formTemplate', value: formId)
         .orderBy(attribute: 'version', order: SortOrder.DESC)
         .getOne();
@@ -74,7 +74,7 @@ Future<FormVersion> submissionVersionFormTemplate(
     //   }
     // }
 
-    return formTemplate;
+    return formTemplate!;
   }
 }
 

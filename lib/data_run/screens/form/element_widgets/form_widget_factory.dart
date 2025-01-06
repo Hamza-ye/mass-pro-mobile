@@ -16,6 +16,8 @@ import 'package:datarun/data_run/screens/form/field_widgets/q_drop_down_with_sea
 import 'package:datarun/data_run/screens/form/field_widgets/q_text_type_field.widget.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/reactive_yes_no_choice_chips.widget.dart';
 
+import '../field_widgets/reactive_progress_select_chip.widget.dart';
+
 /// Factory that instantiate form input fields based on a dynamic element tree
 class PopupFormElementWidgetFactory {
   static Widget createWidget(FormElementInstance<dynamic> element) {
@@ -64,6 +66,9 @@ class FieldFactory {
         return QSwitchField(element: element as FieldInstance<bool>);
       case ValueType.OrganisationUnit:
         return QOrgUnitPickerField(element: element as FieldInstance<String>);
+      case ValueType.Progress:
+        return QReactiveProgressSelectChip(
+            element: element as FieldInstance<String>);
       case ValueType.Team:
         return QReactiveTeamSelectChip(
             element: element as FieldInstance<String>);

@@ -1,3 +1,4 @@
+import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
@@ -9,13 +10,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AssignmentsCardView extends ConsumerWidget {
-  const AssignmentsCardView({super.key, required this.onViewDetails});
+  const AssignmentsCardView({super.key, required this.onViewDetails, this.scope});
 
   final void Function(AssignmentModel) onViewDetails;
+  final EntityScope? scope;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final assignmentsAsync = ref.watch(filterAssignmentsProvider);
+    final assignmentsAsync = ref.watch(filterAssignmentsProvider(scope));
 
     return AsyncValueWidget(
       value: assignmentsAsync,

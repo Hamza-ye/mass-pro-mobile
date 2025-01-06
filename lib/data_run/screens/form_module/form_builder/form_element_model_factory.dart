@@ -92,6 +92,7 @@ class FormElementModelFactory {
       case ValueType.DateTime:
       case ValueType.OrganisationUnit:
       case ValueType.Team:
+      case ValueType.Progress:
         return FieldElementModel<String>(
           templatePath: elementTemplate.path,
           mandatory: elementTemplate.mandatory,

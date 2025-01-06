@@ -47,7 +47,8 @@ class FormSubmissions extends _$FormSubmissions {
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
-    // ref.invalidateSelf();
+    ref.invalidateSelf();
+    // ref.invalidate(formSubmissionsProvider(form));
     await future;
   }
 
@@ -63,25 +64,27 @@ class FormSubmissions extends _$FormSubmissions {
   /// injecting the arguments from the context
   Future<DataFormSubmission> createNewSubmission(
       {required formVersion,
-      String? assignmentId,
-      required String teamId,
-      required String formId,
+      required String assignmentId,
+      required String team,
+      required String form,
       required int version,
       Map<String, dynamic> formData = const {},
       Geometry? geometry}) async {
     final DataFormSubmission submission = DataFormSubmission(
         status: AssignmentStatus.IN_PROGRESS,
-        form: formId,
+        form: form,
         formVersion: formVersion,
         version: version,
         // activity: activityUid,
-        team: teamId,
+        team: team,
         assignment: assignmentId,
         formData: formData,
         dirty: true,
         synced: false,
         deleted: false,
         isFinal: false,
+        lastModifiedDate:
+            DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()),
         startEntryTime:
             DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()));
 
@@ -93,7 +96,8 @@ class FormSubmissions extends _$FormSubmissions {
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
-    return submission;
+    final savedSubmission = await D2Remote.formModule.dataFormSubmission.byId(submission.id!).getOne();
+    return savedSubmission;
   }
 
   Future<DataFormSubmission?> getSubmission(String uid) {
@@ -109,7 +113,25 @@ class FormSubmissions extends _$FormSubmissions {
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
-    // ref.invalidateSelf();
+    ref.invalidateSelf();
+    // ref.invalidate(formSubmissionsProvider);
+    // ref.invalidate(formSubmissionsProvider(form));
+
+    return submission;
+  }
+
+  Future<DataFormSubmission> updateStatus(
+      DataFormSubmission submission) async {
+    submission.status = AssignmentStatus.IN_PROGRESS;
+    submission.dirty = true;
+
+    await D2Remote.formModule.dataFormSubmission
+        .setData(submission)
+        .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
+
+    ref.invalidateSelf();
+    // ref.invalidate(formSubmissionsProvider);
+    // ref.invalidate(formSubmissionsProvider(form));
 
     return submission;
   }
@@ -119,6 +141,9 @@ class FormSubmissions extends _$FormSubmissions {
       await Future.forEach(syncableIds,
           (uid) => D2Remote.formModule.dataFormSubmission.byId(uid!).delete());
       ref.invalidateSelf();
+      // ref.invalidate(formSubmissionsProvider);
+      // ref.invalidate(formSubmissionsProvider(form));
+
       await future;
       return true;
     } on DError catch (e) {
@@ -128,11 +153,12 @@ class FormSubmissions extends _$FormSubmissions {
   }
 
   Future<void> syncEntities(List<String> uids) async {
-    await D2Remote.formModule.dataFormSubmission
-        // .byIds(uids)
-        .upload();
+    await D2Remote.formModule.dataFormSubmission.byIds(uids).upload();
 
     ref.invalidateSelf();
+    // ref.invalidate(formSubmissionsProvider);
+    // ref.invalidate(formSubmissionsProvider(form));
+
     await future;
   }
 }
@@ -183,8 +209,8 @@ Future<List<DataFormSubmission>> submissionFilteredByState(
 @riverpod
 Future<SubmissionItemSummaryModel> submissionInfo(SubmissionInfoRef ref,
     {required FormMetadata formMetadata}) async {
-  final allSubmissions = await ref.watch(
-      formSubmissionsProvider(formMetadata.formId).future);
+  final allSubmissions =
+      await ref.watch(formSubmissionsProvider(formMetadata.formId).future);
 
   final submission =
       allSubmissions.firstWhere((t) => t.uid == formMetadata.submission!);

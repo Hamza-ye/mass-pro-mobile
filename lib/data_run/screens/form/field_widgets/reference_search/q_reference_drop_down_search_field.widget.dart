@@ -1,7 +1,6 @@
 import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/datarun/form/entities/metadata_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/entities/metadata_submission_update.dart';
-import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/reference_search/add_metadata_submission_form.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/reference_search/metadata_submission_update_provider.dart';
@@ -16,13 +15,18 @@ import 'package:reactive_forms/reactive_forms.dart';
 
 List<String> getFilteredData(
     String filter, List<MetadataSubmissionUpdate> data) {
-  return data.where((item) {
-    final lowerQuery = filter.toLowerCase();
-    return item.formData['householdName'].toLowerCase().contains(lowerQuery) ||
-        item.formData['householdHeadSerialNumber']
-            .toString()
-            .contains(lowerQuery);
-  }).map((item) => item.householdName!).toList();
+  return data
+      .where((item) {
+        final lowerQuery = filter.toLowerCase();
+        return item.formData['householdName']
+                .toLowerCase()
+                .contains(lowerQuery) ||
+            item.formData['householdHeadSerialNumber']
+                .toString()
+                .contains(lowerQuery);
+      })
+      .map((item) => item.householdName!)
+      .toList();
   // return data
   //     .where((item) => item.userFilterBySerialName(filter))
   //     .map((item) => item.householdName ?? '')
@@ -50,13 +54,13 @@ class QReferenceDropDownSearchFieldState
             formInstanceProvider(formMetadata: FormMetadataWidget.of(context)))
         .requireValue;
 
-    final orgUnitElement = formInstance.forElementMap.values
-        .where((element) => element.type == ValueType.OrganisationUnit)
-        .firstOrNull;
+    // final orgUnitElement = formInstance.forElementMap.values
+    //     .where((element) => element.type == ValueType.OrganisationUnit)
+    //     .firstOrNull;
 
     final listValuesAsync = ref.watch(systemMetadataSubmissionsProvider(
-        query: "",
-        orgUnit: orgUnitElement?.value,
+        query: '',
+        orgUnit: formInstance.formMetadata.assignmentModel.entityId,
         submissionId: formInstance.submissionUid!));
 
     return AsyncValueWidget(

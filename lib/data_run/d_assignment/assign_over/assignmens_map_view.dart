@@ -1,3 +1,4 @@
+import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,11 +8,12 @@ import 'package:latlong2/latlong.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 
 class AssignmentMapPage extends ConsumerWidget {
-  AssignmentMapPage({super.key});
+  AssignmentMapPage({super.key, this.scope});
+  final EntityScope? scope;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final assignmentsAsync = ref.watch(filterAssignmentsProvider);
+    final assignmentsAsync = ref.watch(filterAssignmentsProvider(scope));
     final searchQuery = ref.watch(filterQueryProvider).searchQuery;
 
     return AsyncValueWidget(
@@ -67,7 +69,7 @@ class AssignmentMapPage extends ConsumerWidget {
         return Colors.red;
       case AssignmentStatus.IN_PROGRESS:
         return Colors.orange;
-      case AssignmentStatus.COMPLETED:
+      case AssignmentStatus.DONE:
         return Colors.green;
       default:
         return Colors.grey;

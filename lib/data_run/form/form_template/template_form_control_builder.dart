@@ -56,6 +56,11 @@ class TemplateFormControlBuilder {
           value: initialValue ?? fieldTemplate.defaultValue,
           validators: FieldValidators.getValidators(fieldTemplate),
         );
+      case ValueType.Progress:
+        return FormControl<String>(
+          value: initialValue ?? fieldTemplate.defaultValue,
+          validators: FieldValidators.getValidators(fieldTemplate),
+        );
       case ValueType.LongText:
       case ValueType.Letter:
         return FormControl<String>(

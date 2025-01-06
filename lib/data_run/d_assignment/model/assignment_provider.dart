@@ -1,177 +1,165 @@
-import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:d2_remote/modules/metadatarun/assignment/entities/d_assignment.entity.dart';
 import 'package:d2_remote/modules/metadatarun/teams/entities/d_team.entity.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
+import 'package:d2_remote/shared/utilities/save_option.util.dart';
+import 'package:datarun/commons/helpers/map.dart';
+import 'package:datarun/data_run/d_activity/activity_provider.dart';
 import 'package:datarun/data_run/d_assignment/model/extract_and_sum_allocated_actual.dart';
+import 'package:datarun/data_run/form/form_submission/submission_list.provider.dart';
 import 'package:equatable/equatable.dart';
 import 'package:intl/intl.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'assignment_provider.g.dart';
 
-// @riverpod
-// class ScopedAssignments extends _$ScopedAssignments {
-//   @override
-//   Future<List<AssignmentModel>> build() async {
-//     final List<DAssignment> assignments =
-//     await D2Remote.assignmentModuleD.assignment.get();
-//     List<AssignmentModel> assignmentModels = [];
-//     for (final assignment in assignments) {
-//       logDebug('assignment: ${assignment.id}');
-//       try {
-//         assignmentModels
-//             .add(await ref.watch(assignmentProvider(assignment.id!).future));
-//       } catch (e) {
-//         logError('Error loading assignment ${assignment.id}',
-//             data: {'error': e});
-//       }
-//     }
-//
-//     return assignmentModels;
-//   }
-// }
-
 /// a notifier that retrieves all assignments with their data populated
 @riverpod
 class Assignments extends _$Assignments {
   @override
   Future<List<AssignmentModel>> build() async {
-    final List<DAssignment> assignments =
-        await D2Remote.assignmentModuleD.assignment.get();
-    List<AssignmentModel> assignmentModels = [];
-    for (final assignment in assignments) {
-      logDebug('assignment: ${assignment.id}');
-      try {
-        assignmentModels
-            .add(await ref.watch(assignmentProvider(assignment.id!).future));
-      } catch (e) {
-        logError('Error loading assignment ${assignment.id}',
-            data: {'error': e});
-      }
-    }
+    final query = D2Remote.assignmentModuleD.assignment;
+    // if (scope != null) {
+    //   query.where(attribute: 'scope', value: scope.name);
+    // }
+    final List<DAssignment> assignments = await query.get();
+    final futures =
+        assignments.map<Future<AssignmentModel>>((assignment) async {
+      final activityEntity = await D2Remote.activityModuleD.activity
+          .byId(assignment.activity!)
+          .getOne();
+      final orgUnitEntity = await D2Remote.organisationUnitModuleD.orgUnit
+          .byId(assignment.orgUnit!)
+          .getOne();
 
+      final teamEntity =
+          await D2Remote.teamModuleD.team.byId(assignment.team!).getOne();
+
+      final List<DTeam> assignedTeams =
+          await ref.watch(teamsProvider(EntityScope.Assigned).future);
+
+      final List<DTeam> managedTeams =
+          await ref.watch(teamsProvider(EntityScope.Managed).future);
+
+      final assignedForms = assignedTeams
+          .expand((t) => t.formPermissions)
+          .map((f) => f.form)
+          .toList();
+
+      final assignmentForms =
+          assignment.forms.where((f) => assignedForms.contains(f)).toList();
+      List<DataFormSubmission> submissions = [];
+
+      for (var form in assignmentForms) {
+        submissions.addAll(await ref.watch(
+            assignmentSubmissionsProvider(assignment.id!, form: form).future));
+      }
+
+      AssignmentStatus status;
+
+      if (submissions.isEmpty) {
+        status = AssignmentStatus.NOT_STARTED;
+      } else {
+        // final sortedSubmissions = submissions.toList()
+        //   ..sort((a, b) => b.lastModifiedDate!.compareTo(a.lastModifiedDate!));
+        // status = sortedSubmissions.first.status!;
+        status = assignment.status;
+      }
+
+      return AssignmentModel(
+        id: assignment.id!,
+        activityId: activityEntity.id,
+        activity: activityEntity.name,
+        entityId: orgUnitEntity.id!,
+        entityCode: orgUnitEntity.code!,
+        entityName: orgUnitEntity.name!,
+        teamId: teamEntity.id,
+        teamCode: teamEntity.code,
+        teamName: teamEntity.name,
+        scope: assignment.scope ?? EntityScope.Assigned,
+        status: status,
+        dueDate: activityEntity.startDate != null
+            ? AssignmentModel.calculateAssignmentDate(
+                activityEntity.startDate, assignment.startDay)
+            : null,
+        // DateTime.parse(assignment.startDate!)
+        startDay: assignment.startDay,
+        rescheduledDate: assignment.startDate != null
+            ? DateTime.parse(assignment.startDate!)
+            : null,
+        allocatedResources: managedTeams.length > 0
+            ? assignment.allocatedResources
+                .filter((entry) =>
+                    entry.key != 'Latitude' && entry.key != 'Longitude')
+                .map((key, value) => MapEntry(key, value ?? 0))
+            : {'ITNs': 0, 'Population': 0, 'Households': 0},
+        reportedResources: sumActualResources(
+            submissions, assignment.allocatedResources.keys.toList()),
+        forms: assignment.forms,
+      );
+    }).toList();
+
+    final assignmentModels = await Future.wait<AssignmentModel>(futures);
     return assignmentModels;
   }
-}
 
-/// retrieve a single assignmetn by id populated with data
-@riverpod
-Future<AssignmentModel> assignment(AssignmentRef ref, String id) async {
-  final DAssignment assignment =
-      await D2Remote.assignmentModuleD.assignment.byId(id).getOne();
-  final activityEntity = await D2Remote.activityModuleD.activity
-      .byId(assignment.activity!)
-      .getOne();
-  final orgUnitEntity = await D2Remote.organisationUnitModuleD.orgUnit
-      .byId(assignment.orgUnit!)
-      .getOne();
-  final teamEntity =
-      await D2Remote.teamModuleD.team.byId(assignment.team!).getOne();
+  void updateStatus(AssignmentStatus? status, String assignmentId) async {
+    // final previousState = await future;
 
-  final DTeam userTeam = await D2Remote.teamModuleD.team
-      // .where(attribute: 'activity', value: activityEntity.id!)
-      .where(attribute: 'scope', value: EntityScope.Assigned.name)
-      .getOne();
-  final userForms = userTeam.formPermissions.map((fp) => fp.form).toList();
+    // final assignment = previousState.firstWhere((a) => a.id == assignmentId);
+    DAssignment assignment =
+        await D2Remote.assignmentModuleD.assignment.byId(assignmentId).getOne();
 
-  //
-  // final userAssignmentForms = assignment.forms.where((f) => userForms.contains(f)).toList();
+    final assignmentUpdate =
+        DAssignment.fromJson({...assignment.toJson(), 'status': status?.name});
 
-  final submissions =
-  await ref.watch(assignmentSubmissionsProvider(assignment.id!).future);
-  AssignmentStatus status;
-
-  if (submissions.isEmpty) {
-    status = AssignmentStatus.NOT_STARTED;
-  } else {
-    submissions
-        .sort((a, b) => b.lastModifiedDate!.compareTo(a.lastModifiedDate!));
-    status = submissions.first.status!;
+    await D2Remote.assignmentModuleD.assignment
+        .setData(assignmentUpdate)
+        .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
+    ref.invalidateSelf();
+    await future;
   }
-
-  return AssignmentModel(
-      id: assignment.id!,
-      activityId: activityEntity?.id,
-      activity: activityEntity?.name,
-      entityId: orgUnitEntity.id!,
-      entityCode: orgUnitEntity.code!,
-      entityName: orgUnitEntity.name!,
-      teamId: teamEntity.id,
-      teamCode: teamEntity.code,
-      teamName: teamEntity.name,
-      scope: assignment.scope!,
-      status: status,
-      dueDate: activityEntity.startDate != null
-          ? AssignmentModel.calculateAssignmentDate(
-              activityEntity.startDate, assignment.startDay)
-          : null,
-      startDay: assignment.startDay,
-      rescheduledDate: assignment.startDate != null
-          ? DateTime.parse(assignment.startDate!)
-          : null,
-      allocatedResources: assignment.allocatedResources
-          .map((key, value) => MapEntry(key, value ?? 0)),
-      reportedResources: sumActualResources(
-          submissions, assignment.allocatedResources.keys.toList()),
-      forms: assignment.forms.where((f) => userForms.contains(f)).toList());
-}
-
-/// retrieve a managed teams
-@riverpod
-Future<List<DTeam>> teams(TeamsRef ref,
-    {EntityScope scope = EntityScope.Managed}) async {
-  final List<DTeam> teams = await D2Remote.teamModuleD.team
-      .where(attribute: 'scope', value: scope.name)
-      .get();
-  return teams
-      .map((t) => t..name = '${Intl.message('team')} ${t.code}')
-      .toList();
-}
-
-@riverpod
-Future<DTeam> team(TeamRef ref, String id) async {
-  final team = await D2Remote.teamModuleD.team.byId(id).getOne();
-  return team..name = '${Intl.message('team')} ${team.code}';
 }
 
 /// retrieve a certain assignment forms submissions
 @riverpod
-Future<List<DataFormSubmission>> assignmentSubmissions(
-    AssignmentSubmissionsRef ref, String assignmentId, {String? form}) async {
-  final query = D2Remote
-      .formModule.dataFormSubmission
-      .where(attribute: 'assignment', value: assignmentId);
-  if (form != null) {
-    query.where(attribute: 'form', value: form);
-  }
-  final List<DataFormSubmission> submissions = await query
-      .get();
+class AssignmentSubmissions extends _$AssignmentSubmissions {
+  @override
+  Future<List<DataFormSubmission>> build(String assignmentId,
+      {required String form}) async {
+    final submissions = await ref.watch(formSubmissionsProvider(form).future);
 
-  // final futures = submissions.map((submission) async {
-  //   return submission
-  //     ..formVersion = await D2Remote.formModule.formTemplateV
-  //         .byId(submission.formVersion)
-  //         .getOne();
-  // }).toList();
-  //
-  // final submissionsWithTemplate =
-  //     await Future.wait<DataFormSubmission>(futures);
-  return submissions;
+    final futures = submissions
+        .where((s) => s.assignment == assignmentId)
+        .map((submission) async {
+      return submission
+        ..formVersion = await D2Remote.formModule.formTemplateV
+            .byId(submission.formVersion is String
+                ? submission.formVersion
+                : submission.formVersion.id)
+            .getOne();
+    }).toList();
+
+    final submissionsWithTemplate =
+        await Future.wait<DataFormSubmission>(futures);
+    return submissionsWithTemplate;
+  }
 }
 
 /// filters the list of assignmnet by certain cretiria
 @riverpod
-Future<List<AssignmentModel>> filterAssignments(
-    FilterAssignmentsRef ref) async {
+Future<List<AssignmentModel>> filterAssignments(FilterAssignmentsRef ref,
+    [EntityScope? scope]) async {
   final assignments = await ref.watch(assignmentsProvider.future);
   final query = ref.watch(filterQueryProvider);
 
   final lowerCaseQuery = query.searchQuery.toLowerCase();
-
-  final filteredAssignments = assignments.where((assignment) {
+  assignments.sort((a, b) => (a.startDay ?? 11).compareTo((b.startDay ?? 11)));
+  final filteredAssignments = assignments
+      .where((a) => scope != null && a.scope == scope)
+      .where((assignment) {
     for (var entry in query.filters.entries) {
       final key = entry.key;
       final value = entry.value;
@@ -198,15 +186,15 @@ Future<List<AssignmentModel>> filterAssignments(
     }
 
     if (query.searchQuery.isNotEmpty) {
-      // final lowerCaseActivity = assignment.activity?.toLowerCase();
+      final lowerCaseActivity = assignment.activity.toLowerCase();
       final lowerCaseEntityCode = assignment.entityCode.toLowerCase();
       final lowerCaseEntityName = assignment.entityName.toLowerCase();
       final lowerCaseTeamName = assignment.teamName.toLowerCase();
 
-      if (/*!lowerCaseActivity.contains(lowerCaseQuery) &&*/
+      if (!lowerCaseActivity.contains(lowerCaseQuery) &&
           !lowerCaseEntityCode.contains(lowerCaseQuery) &&
-              !lowerCaseEntityName.contains(lowerCaseQuery) &&
-              !lowerCaseTeamName.contains(lowerCaseQuery)) {
+          !lowerCaseEntityName.contains(lowerCaseQuery) &&
+          !lowerCaseTeamName.contains(lowerCaseQuery)) {
         return false;
       }
     }
@@ -292,31 +280,11 @@ class FilterQuery extends _$FilterQuery {
   }
 }
 
-// @riverpod
-// Future<List<FormVersion>> assignmentForms(
-//     AssignmentFormsRef ref, String assignmentId) async {
-//   final assignments = await ref.watch(assignmentsProvider.future);
-//
-//   if (assignments.isNotEmpty) {
-//     final assignmentForms = assignments
-//             .firstOrNullWhere((element) => element.id == assignmentId)
-//             ?.forms ??
-//         [];
-//
-//     /// by form Id get the form template, template might has more than one version
-//     /// retrieve latest version formTemplate
-//     final formVersions = await ref.watch(
-//         submissionVersionFormTemplateProvider(formIds: assignmentForms).future);
-//     return formVersions;
-//   }
-//   return [];
-// }
-
 class AssignmentModel {
   AssignmentModel({
     required this.id,
-    this.activityId,
-    this.activity,
+    required this.activityId,
+    required this.activity,
     required this.entityId,
     required this.entityCode,
     required this.entityName,
@@ -335,8 +303,8 @@ class AssignmentModel {
   });
 
   final String id;
-  String? activityId;
-  String? activity;
+  String activityId;
+  String activity;
   final String entityId;
   final String entityCode;
   final String entityName;

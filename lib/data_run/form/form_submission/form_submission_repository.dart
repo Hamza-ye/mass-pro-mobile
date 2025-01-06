@@ -9,9 +9,12 @@ class FormSubmissionRepository {
   DataFormSubmissionQuery get _query => D2Remote.formModule.dataFormSubmission;
 
   Future<IList<DataFormSubmission>> getSubmissions(String form,
-      [int? version]) async {
-    final List<DataFormSubmission> submissions =
-        await _query.byFormTemplate(form, version).get();
+      [String? assignment, int? version]) async {
+    final query = _query.byFormTemplate(form, version);
+    if (assignment != null) {
+      query.where(attribute: 'assignment', value: assignment);
+    }
+    final List<DataFormSubmission> submissions = await query.get();
     return submissions.lock;
   }
 

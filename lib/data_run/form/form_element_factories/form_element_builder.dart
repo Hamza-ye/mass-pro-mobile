@@ -149,6 +149,7 @@ class FormElementBuilder {
       case ValueType.DateTime:
       case ValueType.OrganisationUnit:
       case ValueType.Team:
+      case ValueType.Progress:
         return FieldInstance<String>(
             form: rootFormControl,
             elementProperties: FieldElementState<String>(

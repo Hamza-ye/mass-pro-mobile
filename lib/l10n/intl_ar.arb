@@ -144,7 +144,7 @@
   "appVersion": "إصدار التطبيق",
   "personInformation": "معلومات الشخص",
   "loginUsername": "حساب تسجيل الدخول",
-  "done": "نجاح",
+  "done": "اكتمل",
   "failed": "فشل",
   "lastConfigurationSyncTime": "آخر تحديث",
   "lastSyncStatus": "حالة آخر تحديث",
@@ -205,8 +205,8 @@
   "completed": "مكتمل",
   "rescheduled": "جدولة",
   "merged": "مدمج",
-  "reassigned": "إعادة تعيين",
-  "assigned": "مهمة",
+  "reassigned": "إعادة تعيين فريق آخر",
+  "assigned": "مهام",
   "managed": "إدارة",
   "entity": "الكيان",
   "forms": "استمارات",
@@ -219,6 +219,29 @@
   "noSubmissions": "لا توجد بيانات",
   "search": "بحث...",
   "day": "اليوم",
-  "toggleListTableView": "Toggle List/Table View",
-  "clearFilters": "Clear Filters"
+  "toggleListTableView": "تحويل بين قائمة/جدول",
+  "clearFilters": "إلغا التصفية",
+  "assignedTeam": "فريقك",
+  "managedTeams": "فرق تحت إدارتك",
+  "assignedAssignments": "مهام",
+  "managedAssignments": "إدارة",
+  "startDate": "تاريخ البدء",
+  "endDate": "تاريخ الانتهاء",
+  "syncSubmissions": "{count, plural, =0{لا تتوفر استمارات نهائية} =1{عدد 1 استمارة} =2{عدد استمارتان} other{عدد {count} استمارة}}",
+  "@syncSubmissions": {
+    "description": "A plural message",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "allSubmissions": "كل المرسلات",
+  "createdDate": "تاريخ الإنشاء",
+  "lastmodifiedDate": "تاريخ آخر تعديل",
+  "population": "سكان",
+  "households": "منازل",
+  "itns": "ناموسيات",
+  "selectForm": "اختر استمارة"
 }

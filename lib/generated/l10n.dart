@@ -1993,6 +1993,150 @@ class S {
       args: [],
     );
   }
+
+  /// `Assigned Team`
+  String get assignedTeam {
+    return Intl.message(
+      'Assigned Team',
+      name: 'assignedTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Managed Teams`
+  String get managedTeams {
+    return Intl.message(
+      'Managed Teams',
+      name: 'managedTeams',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assigned Assignments`
+  String get assignedAssignments {
+    return Intl.message(
+      'Assigned Assignments',
+      name: 'assignedAssignments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Managed Assignments`
+  String get managedAssignments {
+    return Intl.message(
+      'Managed Assignments',
+      name: 'managedAssignments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Date`
+  String get startDate {
+    return Intl.message(
+      'Start Date',
+      name: 'startDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End Date`
+  String get endDate {
+    return Intl.message(
+      'End Date',
+      name: 'endDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count, plural, =0{No Syncable submissions} =1{1 submission} =2{2 submissions} other{{count} submissions}}`
+  String syncSubmissions(num count) {
+    return Intl.plural(
+      count,
+      zero: 'No Syncable submissions',
+      one: '1 submission',
+      two: '2 submissions',
+      other: '$count submissions',
+      name: 'syncSubmissions',
+      desc: 'A plural message',
+      args: [count],
+    );
+  }
+
+  /// `All Submissions`
+  String get allSubmissions {
+    return Intl.message(
+      'All Submissions',
+      name: 'allSubmissions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Created Date`
+  String get createdDate {
+    return Intl.message(
+      'Created Date',
+      name: 'createdDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `LastModified Date`
+  String get lastmodifiedDate {
+    return Intl.message(
+      'LastModified Date',
+      name: 'lastmodifiedDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Population`
+  String get population {
+    return Intl.message(
+      'Population',
+      name: 'population',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Households`
+  String get households {
+    return Intl.message(
+      'Households',
+      name: 'households',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ITNs`
+  String get itns {
+    return Intl.message(
+      'ITNs',
+      name: 'itns',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Form`
+  String get selectForm {
+    return Intl.message(
+      'Select Form',
+      name: 'selectForm',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,7 +1,7 @@
-import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:d2_remote/modules/metadatarun/teams/entities/d_team.entity.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
+import 'package:datarun/data_run/d_activity/activity_provider.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +13,7 @@ class SearchFilterBar extends ConsumerWidget {
     super.key,
     required this.onSearchChanged,
     required this.onStatusChanged,
-    required this.onScopeChanged,
+    // required this.onScopeChanged,
     required this.onDayChanged,
     required this.onClearFilters,
     required this.onTeamChanged,
@@ -23,7 +23,8 @@ class SearchFilterBar extends ConsumerWidget {
   final ValueChanged<String> onSearchChanged;
   final ValueChanged<String?> onTeamChanged;
   final ValueChanged<AssignmentStatus?> onStatusChanged;
-  final ValueChanged<EntityScope?> onScopeChanged;
+
+  // final ValueChanged<EntityScope?> onScopeChanged;
   final ValueChanged<int?> onDayChanged;
   final VoidCallback onClearFilters;
   final bool isCardView;
@@ -35,12 +36,10 @@ class SearchFilterBar extends ConsumerWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        filterQuery.filters.isNotEmpty
-            ? IconButton(
-                tooltip: S.of(context).clearFilters,
-                onPressed: onClearFilters,
-                icon: Icon(Icons.clear))
-            : const SizedBox(width: 30),
+        IconButton(
+            tooltip: S.of(context).clearFilters,
+            onPressed: filterQuery.filters.isNotEmpty ? onClearFilters : null,
+            icon: Icon(Icons.clear)),
         // Search Bar
         TextFormField(
           initialValue: filterQuery.searchQuery,
@@ -114,25 +113,25 @@ class SearchFilterBar extends ConsumerWidget {
             );
           }).toList(),
         ),
-        const SizedBox(width: 8),
-        // Scope Filter
-        DropdownButton<EntityScope>(
-          value: filterQuery.filters['scope'],
-          hint: Text(
-            S.of(context).scope,
-            softWrap: true,
-          ),
-          onChanged: onScopeChanged,
-          items: EntityScope.values.map((EntityScope value) {
-            return DropdownMenuItem<EntityScope>(
-              value: value,
-              child: Text(
-                Intl.message(value.name.toLowerCase()),
-                softWrap: true,
-              ),
-            );
-          }).toList(),
-        )
+        // const SizedBox(width: 8),
+        // // Scope Filter
+        // DropdownButton<EntityScope>(
+        //   value: filterQuery.filters['scope'],
+        //   hint: Text(
+        //     S.of(context).scope,
+        //     softWrap: true,
+        //   ),
+        //   onChanged: onScopeChanged,
+        //   items: EntityScope.values.map((EntityScope value) {
+        //     return DropdownMenuItem<EntityScope>(
+        //       value: value,
+        //       child: Text(
+        //         Intl.message(value.name.toLowerCase()),
+        //         softWrap: true,
+        //       ),
+        //     );
+        //   }).toList(),
+        // )
       ],
     );
   }
