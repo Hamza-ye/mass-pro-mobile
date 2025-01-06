@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datarun/utils/mass_utils/utils.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-import 'package:datarun/commons/constants.dart';
 
 // TODOremove this function
 bool supportsInlineBrowser() => !isDesktopOS();
