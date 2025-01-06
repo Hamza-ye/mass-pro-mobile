@@ -5,11 +5,6 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 version: 1.0.2+2
 
-# analyzer:
-# strong-mode: true
-# language:
-# enableSuperMixins: true
-
 environment:
   sdk: ">=3.3.0 <4.0.0"
 
@@ -26,54 +21,38 @@ dependencies:
   equatable: ^2.0.5
   intl: ^0.19.0
   shared_preferences: ^2.0.15
-  dio: ^5.0.0
   reflectable: ^4.0.5
-  freezed: ^2.5.2
-  freezed_annotation: ^2.4.1
-  flutter_form_builder: ^9.3.0
-  form_builder_validators: ^10.0.1
-  rounded_loading_button_plus: ^3.0.1
   percent_indicator: ^4.2.3
-  scrollable_positioned_list: ^0.3.8
-#  expressions: ^0.2.5+1
-  web: ^1.0.0
-
-  ## Temp
-#  animated_tree_view: ^2.2.1
-  flutter_fancy_tree_view: ^1.6.0
-  flutter_tree: ^2.0.3
   reactive_forms: ^17.0.1
-  reactive_forms_annotations:
-  reactive_dropdown_search: ^4.0.0
-  reactive_date_time_picker: ^4.0.0
-  scrollable: ^1.0.5
   uuid: ^4.5.0
-  device_info_plus: ^10.1.2
-  toggle_switch: ^2.3.0
-  petitparser: ^4.0.0
-  flutter_riverpod: 3.0.0-dev.3
-  hooks_riverpod: 3.0.0-dev.3
-  riverpod_annotation: 3.0.0-dev.3
   fast_immutable_collections: ^10.2.4
-  provider: ^6.1.2
-  expression_language: ^1.0.1
-  flutter_launcher_icons: ^0.9.3
   expressions: ^0.2.3
   flutter_sticky_header: ^0.7.0
-  sliver_tools: ^0.2.12
   collection: ^1.18.0
-  connectivity_plus: ^2.1.0
-  json_path: ^0.3.1
-  logger: ^2.4.0
-  flutter_treeview: ^1.0.7+1
-  easy_sticky_header: ^1.1.1
-  flutter_barcode_scanner: ^2.0.0
+  reactive_dropdown_search: ^5.0.5
+  sliver_tools: ^0.2.12
+  flutter_fancy_tree_view: ^1.6.0
+  gs1_barcode_parser: ^1.1.0
+  device_info_plus: ^11.1.1
+  connectivity_plus: ^6.1.0
+  mobile_scanner: ^6.0.2
+#  image_picker: ^1.1.2
+  sentry_flutter: ^8.10.1
+#  dropdown_search: ^6.0.1
+  fl_chart: ^0.69.2
+  flutter_riverpod: 3.0.0-dev.3
+  hooks_riverpod: 3.0.0-dev.3
+  freezed_annotation: ^2.4.1
+  riverpod_annotation: 3.0.0-dev.3
+  flutter_map: ^4.0.0
+  latlong2: ^0.8.2
+#  flutter_barcode_scanner: ^2.0.0
 #  sentry_flutter: ^8.3.0
 
 dev_dependencies:
   test: ^1.21.0
+  freezed: ^2.5.2
   build_runner: ^2.4.11
-#  custom_lint: ^0.6.4
   flutter_test:
     sdk: flutter
   mockito: ^5.4.4
@@ -82,8 +61,15 @@ dev_dependencies:
   riverpod_generator: 3.0.0-dev.11
   riverpod_lint: 3.0.0-dev.4
   custom_lint: ^0.5.11
-  injectable_generator: ^2.6.2
-  #  sealed_generators: ^1.13.0
+#  injectable_generator: ^2.6.2
+#  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.13.1
+
+#flutter_launcher_icons:
+#  android: "launcher_icon"
+#  adaptive_icon_background: "assets/launcher_icon/ic_launcher.png"
+#  image_path: "assets/launcher_icon/ic_launcher.png"
+#  min_sdk_android: 21 # android min sdk min:16, default 21
 
 flutter:
   uses-material-design: true
@@ -91,6 +77,7 @@ flutter:
   assets:
     - lib/l10n/
     - assets/launcher_icon/
+#    - assets/images/
 # analyzer:
 #   strong-mode: true
 #   language:

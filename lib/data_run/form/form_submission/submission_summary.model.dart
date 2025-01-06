@@ -8,7 +8,7 @@ class SubmissionItemSummaryModel with EquatableMixin {
       required this.orgUnit,
       required this.syncStatus,
       Map<String, dynamic>? formData})
-      : this.formData = IMap.orNull(formData) ?? IMap();
+      : this.formData = IMap.orNull(formData) ?? const IMap.empty();
 
   final String? code;
   final String orgUnit;

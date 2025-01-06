@@ -81,7 +81,6 @@ void propagateChange<T>(
 
   for (var element in orderedIterator) {
     if (affectedElements.contains(element)) {
-      print('evaluate: $element');
     }
   }
 }
@@ -100,9 +99,8 @@ final dependencies = <String, Set<String>>{
 void main() {
   final reverseDepMap3 = buildReverseDependencyMap<String>(dependencies);
 
-  ///Step 2: Compute the Transitive Closure
-  final closure = dependencyOrderedIterator(reverseDepMap3);
-  print(closure);
+  // ///Step 2: Compute the Transitive Closure
+  // final closure = dependencyOrderedIterator(reverseDepMap3);
 
   propagateChange('country', reverseDepMap3);
 }

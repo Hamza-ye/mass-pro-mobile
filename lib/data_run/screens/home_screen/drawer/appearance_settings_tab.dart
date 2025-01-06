@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AppearanceSettingsTab extends ConsumerWidget {
   const AppearanceSettingsTab({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListView(
@@ -25,8 +26,12 @@ class AppearanceSettingsTab extends ConsumerWidget {
           title: Text('Material Version'),
           trailing: IconButton(
             icon: Theme.of(context).useMaterial3
-                ? Icon(Icons.filter_2, )
-                : Icon(Icons.filter_3, ),
+                ? Icon(
+                    Icons.filter_2,
+                  )
+                : Icon(
+                    Icons.filter_3,
+                  ),
             onPressed: () => ref
                 .read(appAppearanceNotifierProvider.notifier)
                 .handleMaterialVersionChange(),
@@ -51,7 +56,7 @@ class _ColorSeedButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton(
-      icon:  Icon(
+      icon: Icon(
         Icons.palette_outlined,
       ),
       tooltip: S.of(context).selectASeedColor,
@@ -105,9 +110,8 @@ class _ColorImageButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return PopupMenuButton(
-      icon:  Icon(
-        Icons.image_outlined
-          ,
+      icon: Icon(
+        Icons.image_outlined,
       ),
       tooltip: S.of(context).selectAColorExtractionImage,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -154,27 +158,27 @@ class _ColorImageButton extends ConsumerWidget {
   }
 }
 
-class _BrightnessButton extends ConsumerWidget {
-  const _BrightnessButton({
-    this.showTooltipBelow = true,
-  });
-
-  final bool showTooltipBelow;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isBright = Theme.of(context).brightness == Brightness.light;
-    return Tooltip(
-      preferBelow: showTooltipBelow,
-      message: S.of(context).toggleBrightness,
-      child: IconButton(
-        icon: isBright
-            ? const Icon(Icons.dark_mode_outlined)
-            : const Icon(Icons.light_mode_outlined),
-        onPressed: () => ref
-            .read(appAppearanceNotifierProvider.notifier)
-            .handleBrightnessChange(!isBright),
-      ),
-    );
-  }
-}
+// class _BrightnessButton extends ConsumerWidget {
+//   const _BrightnessButton({
+//     this.showTooltipBelow = true,
+//   });
+//
+//   final bool showTooltipBelow;
+//
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final isBright = Theme.of(context).brightness == Brightness.light;
+//     return Tooltip(
+//       preferBelow: showTooltipBelow,
+//       message: S.of(context).toggleBrightness,
+//       child: IconButton(
+//         icon: isBright
+//             ? const Icon(Icons.dark_mode_outlined)
+//             : const Icon(Icons.light_mode_outlined),
+//         onPressed: () => ref
+//             .read(appAppearanceNotifierProvider.notifier)
+//             .handleBrightnessChange(!isBright),
+//       ),
+//     );
+//   }
+// }

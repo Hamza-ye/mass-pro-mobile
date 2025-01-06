@@ -1,5 +1,8 @@
 import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
-import 'package:d2_remote/modules/datarun/form/shared/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
+import 'package:d2_remote/modules/datarun/form/shared/template_extensions/form_traverse_extension.dart';
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:datarun/data_run/screens/form_module/form/code_generator.dart';
 import 'package:datarun/data_run/screens/form_module/form_element_model/form_element_model.dart';
@@ -18,24 +21,25 @@ class FormElementModelFactory {
     return elements;
   }
 
-  static FormElementModel<dynamic> buildFormElement(
-      FieldTemplate elementTemplate,
+  static FormElementModel<dynamic> buildFormElement(Template elementTemplate,
       {dynamic initialValue}) {
-    if (elementTemplate.type.isSection) {
-      return buildSectionModel(elementTemplate, initialValue: initialValue);
-    } else if (elementTemplate.type.isRepeatSection) {
-      return buildRepeatModel(elementTemplate, initialValue: initialValue);
+    if (elementTemplate.isSection) {
+      return buildSectionModel(elementTemplate as SectionTemplate,
+          initialValue: initialValue);
+    } else if (elementTemplate.isRepeat) {
+      return buildRepeatModel(elementTemplate as SectionTemplate,
+          initialValue: initialValue);
     } else {
-      return buildFieldModel(elementTemplate, initialValue: initialValue);
+      return buildFieldModel(elementTemplate as FieldTemplate,
+          initialValue: initialValue);
     }
   }
 
-  static SectionElementModel buildSectionModel(FieldTemplate elementTemplate,
+  static SectionElementModel buildSectionModel(SectionTemplate elementTemplate,
       {dynamic initialValue}) {
     final Map<String, FormElementModel<dynamic>> elements = {};
-    elementTemplate.fields.sort((a, b) => (a.order).compareTo(b.order));
 
-    final section = SectionElementModel(templatePath: elementTemplate.path!);
+    final section = SectionElementModel(templatePath: elementTemplate.path);
 
     for (var childTemplate in elementTemplate.fields) {
       elements[childTemplate.name!] = buildFormElement(childTemplate,
@@ -46,27 +50,26 @@ class FormElementModelFactory {
     return section;
   }
 
-  static RepeatItemElementModel buildRepeatItem(FieldTemplate elementTemplate,
+  static RepeatItemElementModel buildRepeatItem(SectionTemplate elementTemplate,
       {Map<String, Object?>? initialValue}) {
     final Map<String, FormElementModel<dynamic>> elements = {};
 
-    elementTemplate.fields.sort((a, b) => (a.order).compareTo(b.order));
     for (var childTemplate in elementTemplate.fields) {
       elements[childTemplate.name!] = buildFormElement(childTemplate,
           initialValue: initialValue?[childTemplate.name]);
     }
     final repeatedSection = RepeatItemElementModel(
-        templatePath: elementTemplate.path!,
+        templatePath: elementTemplate.path,
         elements: elements,
         uid: CodeGenerator.generateUid());
 
     return repeatedSection;
   }
 
-  static RepeatElementModel buildRepeatModel(FieldTemplate elementTemplate,
+  static RepeatElementModel buildRepeatModel(SectionTemplate elementTemplate,
       {List<dynamic>? initialValue}) {
     final repeatInstance = RepeatElementModel(
-        templatePath: elementTemplate.path!,
+        templatePath: elementTemplate.path,
         elements: initialValue
                 ?.map<RepeatItemElementModel>((value) =>
                     buildRepeatItem(elementTemplate, initialValue: value))
@@ -88,8 +91,10 @@ class FormElementModelFactory {
       case ValueType.Time:
       case ValueType.DateTime:
       case ValueType.OrganisationUnit:
+      case ValueType.Team:
+      case ValueType.Progress:
         return FieldElementModel<String>(
-          templatePath: elementTemplate.path!,
+          templatePath: elementTemplate.path,
           mandatory: elementTemplate.mandatory,
           value: initialValue ?? elementTemplate.defaultValue,
         );
@@ -98,7 +103,7 @@ class FormElementModelFactory {
       case ValueType.IntegerNegative:
       case ValueType.IntegerZeroOrPositive:
         return FieldElementModel<int>(
-          templatePath: elementTemplate.path!,
+          templatePath: elementTemplate.path,
           mandatory: elementTemplate.mandatory,
           value: initialValue ?? elementTemplate.defaultValue,
         );
@@ -108,7 +113,7 @@ class FormElementModelFactory {
       case ValueType.Percentage:
       case ValueType.Age:
         return FieldElementModel<double>(
-          templatePath: elementTemplate.path!,
+          templatePath: elementTemplate.path,
           mandatory: elementTemplate.mandatory,
           value: initialValue ?? elementTemplate.defaultValue,
         );
@@ -116,18 +121,18 @@ class FormElementModelFactory {
       case ValueType.TrueOnly:
       case ValueType.YesNo:
         return FieldElementModel<bool>(
-          templatePath: elementTemplate.path!,
+          templatePath: elementTemplate.path,
           mandatory: elementTemplate.mandatory,
           value: initialValue ?? elementTemplate.defaultValue,
         );
       case ValueType.SelectOne:
         return FieldElementModel<String>(
-            templatePath: elementTemplate.path!,
+            templatePath: elementTemplate.path,
             mandatory: elementTemplate.mandatory,
             value: initialValue ?? elementTemplate.defaultValue);
       case ValueType.SelectMulti:
         return FieldElementModel<List<String>>(
-            templatePath: elementTemplate.path!,
+            templatePath: elementTemplate.path,
             mandatory: elementTemplate.mandatory,
             value: initialValue ?? elementTemplate.defaultValue);
       default:

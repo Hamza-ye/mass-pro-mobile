@@ -3,7 +3,7 @@
   <component name="ProjectMigrations">
     <option name="MigrateToGradleLocalJavaHome">
       <set>
-        <option value="$PROJECT_DIR$/../../../../../../android-tools/flutter/packages/flutter_tools/gradle" />
+        <option value="$PROJECT_DIR$" />
       </set>
     </option>
   </component>

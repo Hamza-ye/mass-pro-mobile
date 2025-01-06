@@ -1,13 +1,13 @@
-import 'package:d2_remote/modules/datarun/form/shared/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/action.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/rule_action.dart';
-import 'package:datarun/commons/logging/logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
 
-extension RuleHandler on FieldTemplate {
+extension RuleHandler on Template {
   Iterable<RuleAction> ruleActions() {
-    return rules.map((rule) => rule.ruleAction);
+    return rules?.unlockView.map((rule) => rule.ruleAction) ?? [];
   }
 }
 
@@ -22,23 +22,21 @@ extension ApplyAction on RuleAction {
     switch (action) {
       case ActionType.Visibility:
         if (element.hidden) {
-          logDebug(
-              info: '${element.name}, applying action: ${ActionType.Show}');
+          logDebug('${element.name}, applying action: ${ActionType.Show}');
           element.markAsVisible(
               updateParent: updateParent, emitEvent: emitEvent);
         } else {
-          logDebug(
-              info: '${element.name}, applying action: ${ActionType.Hide}');
+          logDebug('${element.name}, applying action: ${ActionType.Hide}');
           element.markAsHidden(
               updateParent: updateParent, emitEvent: emitEvent);
         }
         break;
       case ActionType.Show:
-        logDebug(info: '${element.name}, applying action: ${ActionType.Show}');
+        logDebug('${element.name}, applying action: ${ActionType.Show}');
         element.markAsVisible(updateParent: updateParent, emitEvent: emitEvent);
         break;
       case ActionType.Hide:
-        logDebug(info: '${element.name}, applying action: ${ActionType.Hide}');
+        logDebug('${element.name}, applying action: ${ActionType.Hide}');
         element.markAsHidden(updateParent: updateParent, emitEvent: emitEvent);
         break;
       case ActionType.Error:
@@ -46,8 +44,7 @@ extension ApplyAction on RuleAction {
           final currentElementErrors = {...element.errors};
           currentElementErrors[getItemLocalString(message.unlockView)] =
               getItemLocalString(message.unlockView);
-          element.setErrors(currentElementErrors,
-              updateParent: updateParent, emitEvent: emitEvent);
+          element.setErrors(currentElementErrors);
         }
         break;
       case ActionType.Mandatory:
@@ -85,20 +82,17 @@ extension ApplyAction on RuleAction {
           element.markAsVisible(
               updateParent: updateParent, emitEvent: emitEvent);
         } else {
-          logDebug(
-              info: '${element.name}, resetting action to: ${ActionType.Hide}');
+          logDebug('${element.name}, resetting action to: ${ActionType.Hide}');
           element.markAsHidden(
               updateParent: updateParent, emitEvent: emitEvent);
         }
         break;
       case ActionType.Show:
-        logDebug(
-            info: '${element.name}, resetting action to: ${ActionType.Hide}');
+        logDebug('${element.name}, resetting action to: ${ActionType.Hide}');
         element.markAsHidden(updateParent: updateParent, emitEvent: emitEvent);
         break;
       case ActionType.Hide:
-        logDebug(
-            info: '${element.name}, resetting action to: ${ActionType.Show}');
+        logDebug('${element.name}, resetting action to: ${ActionType.Show}');
         element.markAsVisible(updateParent: updateParent, emitEvent: emitEvent);
         break;
       case ActionType.Error:

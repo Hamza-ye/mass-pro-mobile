@@ -4,7 +4,6 @@ import 'package:datarun/data_run/screens/home_screen/home_deck/home_item.widget.
 import 'package:datarun/data_run/screens/home_screen/home_deck/home_items_models_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class HomeItemList extends ConsumerStatefulWidget {
   const HomeItemList({
@@ -23,13 +22,13 @@ class HomeItemList extends ConsumerStatefulWidget {
 }
 
 class _DashboardItemsWidgetState extends ConsumerState<HomeItemList> {
-  final ItemScrollController itemScrollController = ItemScrollController();
+  final ScrollController itemScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     final value = ref.watch(homeItemsModelsNotifierProvider);
     return value.when(
-        data: (data) => ScrollablePositionedList.builder(
+        data: (data) => ListView.builder(
               shrinkWrap: true,
               itemCount: data.length,
               itemBuilder: (BuildContext context, int index) => ProviderScope(
@@ -45,7 +44,7 @@ class _DashboardItemsWidgetState extends ConsumerState<HomeItemList> {
                       widget.onDescriptionClick?.call(homeDeckItemModel),
                 ),
               ),
-              itemScrollController: itemScrollController,
+              controller: itemScrollController,
               // itemPositionsListener: itemPositionsListener,
             ),
         error: (Object error, StackTrace s) => getErrorWidget(error, s),

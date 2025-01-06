@@ -1,39 +1,39 @@
 // ignore_for_file: strict_raw_type
 
 import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
-import 'package:datarun/commons/logging/logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 
 extension StringNullExtension on String? {
   DateTime? toDate() {
     DateTime? date;
     try {
-      return DateUtils.databaseDateFormat().parse(this ?? '');
+      return DDateUtils.databaseDateFormat().parse(this ?? '');
     } catch (e) {
-      logError(info: 'wrong DateTime format');
+      logError('wrong DateTime format');
     }
 
     try {
-      return DateUtils.uiDateFormat().parse(this ?? '');
+      return DDateUtils.uiDateFormat().parse(this ?? '');
     } catch (e) {
-      logError(info: 'wrong DateTime format');
+      logError('wrong DateTime format');
     }
 
     try {
-      return DateUtils.oldUiDateFormat().parse(this ?? '');
+      return DDateUtils.oldUiDateFormat().parse(this ?? '');
     } catch (e) {
-      logError(info: 'wrong DateTime format');
+      logError('wrong DateTime format');
     }
 
     try {
-      return DateUtils.databaseDateFormatNoZone().parse(this ?? '');
+      return DDateUtils.databaseDateFormatNoZone().parse(this ?? '');
     } catch (e) {
-      logError(info: 'wrong DateTime format');
+      logError('wrong DateTime format');
     }
 
     try {
-      return DateUtils.dateTimeFormat().parse(this ?? '');
+      return DDateUtils.dateTimeFormat().parse(this ?? '');
     } catch (e) {
-      logError(info: 'wrong DateTime format');
+      logError('wrong DateTime format');
     }
 
     return date;

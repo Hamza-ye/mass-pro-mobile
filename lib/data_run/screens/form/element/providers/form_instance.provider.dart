@@ -2,14 +2,15 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:d2_remote/d2_remote.dart';
-import 'package:d2_remote/modules/datarun/form/shared/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
+import 'package:d2_remote/shared/utilities/sort_order.util.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:datarun/data_run/form/form_element_factories/form_element_builder.dart';
 import 'package:datarun/data_run/form/form_element_factories/form_element_control_builder.dart';
-import 'package:datarun/data_run/form/form_template/template_providers.dart';
-import 'package:datarun/data_run/form/shared/form_configuration.dart';
 import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
 import 'package:datarun/data_run/screens/form/element/service/device_info_service.dart';
 import 'package:datarun/data_run/screens/form/element/form_instance.dart';
@@ -31,12 +32,71 @@ Future<AndroidDeviceInfoService> userDeviceInfoService(
 }
 
 @riverpod
-Future<FormFlatTemplate> formFlatTemplate(FormFlatTemplateRef ref,
-    {required FormMetadata formMetadata}) async {
-  final formVersion = await ref.watch(formVersionAsyncProvider(
-          form: formMetadata.form, version: formMetadata.version)
-      .future);
+Future<FormVersion> latestFormTemplate(LatestFormTemplateRef ref,
+    {required String formId}) async {
+  final formTemplates = await D2Remote.formModule.formTemplateV
+      .where(attribute: 'formTemplate', value: formId)
+      .orderBy(attribute: 'version', order: SortOrder.DESC)
+      .get();
+  return formTemplates.first;
+}
 
+/// form id could be on the format of formId-version or formId
+/// look for the latest version of the form template or the form template
+/// that matches the version
+@riverpod
+Future<FormVersion> submissionVersionFormTemplate(
+    SubmissionVersionFormTemplateRef ref,
+    {required String formId}) async {
+  /// try to get form versions by the specific form version Ids
+  /// It would retrieve the specific versions of formTemplate
+  final formTemplate = await D2Remote.formModule.formTemplateV
+      .byId(formId)
+      .orderBy(attribute: 'version', order: SortOrder.DESC)
+      .getOne();
+
+  if (formTemplate != null) {
+    return formTemplate;
+  } else {
+    /// try to get form versions by form template Ids
+    /// if more than one value for the same formTemplate, take latest version
+    final FormVersion? formTemplate = await D2Remote.formModule.formTemplateV
+        .where(attribute: 'formTemplate', value: formId)
+        .orderBy(attribute: 'version', order: SortOrder.DESC)
+        .getOne();
+
+    // final Map<String, FormVersion> latestFormTemplates = {};
+    // for (var formTemplate in allFormTemplates) {
+    //   final formTemplateId = formTemplate.id!.split('_').first;
+    //   if (!latestFormTemplates.containsKey(formTemplateId) ||
+    //       latestFormTemplates[formTemplateId]!.version < formTemplate.version) {
+    //     latestFormTemplates[formTemplateId] = formTemplate;
+    //   }
+    // }
+
+    return formTemplate!;
+  }
+}
+
+@riverpod
+Future<FormFlatTemplate> formFlatTemplate(
+  FormFlatTemplateRef ref, {
+  required FormMetadata formMetadata,
+}) async {
+  if (formMetadata.submission != null) {
+    final DataFormSubmission submission = await D2Remote
+        .formModule.dataFormSubmission
+        .byId(formMetadata.submission!)
+        .getOne();
+    final FormVersion formVersion = await ref.watch(
+        submissionVersionFormTemplateProvider(formId: submission.formVersion)
+            .future);
+    return FormFlatTemplate.fromTemplate(formVersion);
+  }
+
+  final FormVersion formVersion = await ref.watch(
+      submissionVersionFormTemplateProvider(formId: formMetadata.formId)
+          .future);
   return FormFlatTemplate.fromTemplate(formVersion);
 }
 
@@ -53,53 +113,43 @@ Future<FormInstanceService> formInstanceService(FormInstanceServiceRef ref,
 @riverpod
 Future<FormInstance> formInstance(FormInstanceRef ref,
     {required FormMetadata formMetadata}) async {
-  final enabled = await D2Remote.formModule.formSubmission
+  final enabled = await D2Remote.formModule.dataFormSubmission
       .byId(formMetadata.submission!)
       .canEdit();
 
-  final submission = await D2Remote.formModule.formSubmission
+  final submission = await D2Remote.formModule.dataFormSubmission
       .byId(formMetadata.submission!)
       .getOne();
 
   final Map<String, dynamic>? initialFormValue = submission.formData;
-  // await ref.watch(
-  //     formInitialDataProvider(submission: formMetadata.submission!).future);
 
-  final service = await ref
+  final formInstanceService = await ref
       .watch(formInstanceServiceProvider(formMetadata: formMetadata).future);
 
-  final formControlBuilder = await ref.watch(
-      formElementControlBuilderProvider(formMetadata: formMetadata).future);
+  final formFlatTemplate = await ref
+      .watch(formFlatTemplateProvider(formMetadata: formMetadata).future);
 
-  final formElementBuilder = await ref
-      .watch(formElementBuilderProvider(formMetadata: formMetadata).future);
+  final form = FormGroup(FormElementControlBuilder.formDataControls(
+      formFlatTemplate, initialFormValue));
 
-  final form =
-      FormGroup(await formControlBuilder.formDataControls(initialFormValue));
-  final elements = await formElementBuilder.buildFormElements(form,
+  final elements = FormElementBuilder.buildFormElements(form, formFlatTemplate,
       initialFormValue: initialFormValue);
 
   final _formSection = SectionInstance(
-      template: FieldTemplate(
-          mandatory: false,
-          mainField: false,
-          type: ValueType.Unknown,
-          name: '',
-          path: null),
+      template: SectionTemplate(type: ValueType.Unknown, path: null),
       elements: elements,
       form: form)
     ..resolveDependencies()
     ..evaluate();
+  final attributeMap =
+      await formInstanceService.formAttributesControls(initialFormValue);
 
-  final formConfiguration = await ref.watch(formConfigurationProvider(
-          form: formMetadata.form, version: formMetadata.version)
-      .future);
   return FormInstance(ref,
       enabled: enabled,
-      orgUnit: submission.orgUnit,
-      formInstanceService: service,
+      initialValue: {...?initialFormValue, ...attributeMap},
       elements: elements,
-      formConfiguration: formConfiguration,
       formMetadata: formMetadata,
-      form: form, rootSection: _formSection);
+      form: form,
+      rootSection: _formSection,
+      formFlatTemplate: formFlatTemplate);
 }

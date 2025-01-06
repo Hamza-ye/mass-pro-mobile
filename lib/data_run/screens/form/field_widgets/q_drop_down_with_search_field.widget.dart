@@ -7,7 +7,7 @@ import 'package:datarun/data_run/screens/form/element/validation/form_element_va
 import 'package:datarun/data_run/screens/form/inherited_widgets/form_metadata_inherit_widget.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
 import 'package:reactive_dropdown_search/reactive_dropdown_search.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class QDropDownWithSearchField extends HookConsumerWidget {
   const QDropDownWithSearchField({super.key, required this.element});
@@ -26,13 +26,13 @@ class QDropDownWithSearchField extends HookConsumerWidget {
             formInstanceProvider(formMetadata: FormMetadataWidget.of(context)))
         .requireValue;
     return ReactiveDropdownSearch<String, String>(
-      formControl: formInstance.form.control(element.pathRecursive)
+      formControl: formInstance.form.control(element.elementPath!)
           as FormControl<String>,
-      clearButtonProps: const ClearButtonProps(isVisible: true),
+      // clearButtonProps: const ClearButtonProps(isVisible: true),
       validationMessages: validationMessages(context),
       valueAccessor: NameToLabelValueAccessor(options),
       dropdownDecoratorProps: DropDownDecoratorProps(
-        dropdownSearchDecoration: InputDecoration(
+        decoration: InputDecoration(
           labelText: element.label,
           contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
           border: OutlineInputBorder(),
@@ -41,27 +41,26 @@ class QDropDownWithSearchField extends HookConsumerWidget {
       popupProps: PopupProps.menu(
         showSelectedItems: true,
       ),
-      items: options
-          .map((option) => getItemLocalString(option.label))
+      items: (filter, prop) => options
+          .map((option) => getItemLocalString(option.label.unlockView))
           .toSet()
           .toList(),
-      showClearButton: true,
     );
   }
 }
 
 class NameToLabelValueAccessor
     extends DropDownSearchValueAccessor<String, String> {
-  final List<FormOption> options;
 
   NameToLabelValueAccessor(this.options);
+  final List<FormOption> options;
 
   @override
   String? modelToViewValue(List<String> items, String? modelValue) {
     return options
         .where((option) => option.name == modelValue)
         .map((option) =>
-            getItemLocalString(option.label, defaultString: option.name))
+            getItemLocalString(option.label.unlockView, defaultString: option.name))
         .firstOrNull;
   }
 
@@ -69,7 +68,7 @@ class NameToLabelValueAccessor
   String? viewToModelValue(List<String> items, String? viewValue) {
     return options
         .where((option) =>
-            getItemLocalString(option.label, defaultString: option.name) ==
+            getItemLocalString(option.label.unlockView, defaultString: option.name) ==
             viewValue)
         .map((option) => option.name)
         .firstOrNull;

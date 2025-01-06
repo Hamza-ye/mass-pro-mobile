@@ -60,7 +60,4 @@ class CodeGenerator {
 
 void main() {
   // Test the UID generation
-  print('Generated UID: ${CodeGenerator.generateUid()}');
-  print('Generated Secure Token: ${CodeGenerator.getRandomSecureToken(24)}');
-  print('Is Valid UID: ${CodeGenerator.isValidUid("A1b2C3d4E5f")}');
 }

@@ -6,7 +6,7 @@ part of 'form_configuration.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$formConfigurationHash() => r'c624e8b31016c04102ea5f7ba8e16feb87eff820';
+String _$formConfigurationHash() => r'8f554b9bf9acb6c357b8e26e245e96eb08d1ed4b';
 
 /// Copied from Dart SDK
 class _SystemHash {

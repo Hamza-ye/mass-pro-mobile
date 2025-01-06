@@ -1,244 +1,188 @@
-import 'package:d2_remote/core/utilities/list_extensions.dart';
-import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
-import 'package:datarun/data_run/form/form_element/form_element_iterators/form_element_iterator.dart';
-import 'package:datarun/data_run/screens/form/hooks/register_dependencies.dart';
-import 'package:datarun/generated/l10n.dart';
-import 'package:d2_remote/core/datarun/utilities/date_utils.dart' as sdk;
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:flutter/material.dart';
-import 'package:datarun/data_run/screens/form/element/form_element.dart';
-import 'package:datarun/data_run/screens/form/inherited_widgets/form_template_inherit_widget.dart';
-import 'package:datarun/data_run/screens/form_module/form_template/form_element_template.dart';
-import 'package:datarun/core/utils/get_item_local_string.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:reactive_forms/reactive_forms.dart';
-
-class RepeatInstanceDataTable extends HookConsumerWidget {
-  RepeatInstanceDataTable(
-      {super.key,
-      required this.repeatInstance,
-      this.onEdit,
-      this.onAdd,
-      this.onDelete});
-
-  final RepeatInstance repeatInstance;
-
-  // final int initialFirstRowIndex;
-  final Future<int> Function()? onAdd;
-  final Future<int> Function(int)? onEdit;
-  final Function(int)? onDelete;
-
-  Widget build(BuildContext context, WidgetRef ref) {
-    final formTemplate = FormFlatTemplateInheritWidget.of(context);
-    final tableColumns = formTemplate
-        .getChildrenOfType<FieldElementTemplate>(repeatInstance.pathRecursive)
-      ..sort((a, b) => (a.order).compareTo(b.order));
-
-    //
-    useRegisterDependencies(repeatInstance);
-
-    final elementPropertiesSnapshot =
-        useStream(repeatInstance.propertiesChanged);
-
-    if (!elementPropertiesSnapshot.hasData) {
-      return const CircularProgressIndicator();
-    }
-
-    if (elementPropertiesSnapshot.data!.hidden) {
-      return const SizedBox.shrink();
-    }
-    //
-
-    final ValueNotifier<int?> initialFirstRowIndex = useState(null);
-
-    return ReactiveFormArray(
-      formArray: repeatInstance.elementControl,
-      builder:
-          (BuildContext context, FormArray<dynamic> formArray, Widget? child) =>
-              PaginatedDataTable(
-        initialFirstRowIndex: initialFirstRowIndex.value,
-        showFirstLastButtons: true,
-        actions: [
-          ElevatedButton(
-            onPressed: () async {
-              initialFirstRowIndex.value = await onAdd?.call();
-            },
-            child: Icon(Icons.add),
-          ),
-        ],
-        header: Text('${repeatInstance.label}'),
-        rowsPerPage: 5,
-        columns: _buildColumns(tableColumns, context),
-        source: buildTableDataSource(ref),
-      ),
-    );
-  }
-
-  RepeatTableDataSource buildTableDataSource(WidgetRef ref) {
-    return RepeatTableDataSource(
-        repeatInstance: repeatInstance,
-        onEdit: (index) async {
-          await onEdit?.call(index);
-        },
-        onDelete: (index) async {
-          await onDelete?.call(index);
-          // formInstance.onRemoveRepeatedItem(index, repeatInstance);
-        }, ref: ref,);
-  }
-
-  List<DataColumn> _buildColumns(
-      List<FormElementTemplate> tableColumns, BuildContext context) {
-    return [
-      const DataColumn(label: Text('#')),
-      ...tableColumns
-          .map((fieldTemplate) => DataColumn(
-              label: Text(getItemLocalString(fieldTemplate.label,
-                  defaultString: fieldTemplate.name)),
-              numeric: fieldTemplate.type.isNumeric))
-          .toList(),
-      DataColumn(label: Text(S.of(context).edit)),
-      DataColumn(label: Text(S.of(context).delete)),
-    ];
-  }
-}
-
-class RepeatTableDataSource extends DataTableSource {
-  RepeatTableDataSource(
-      {required this.repeatInstance, this.onDelete, this.onEdit, required this.ref});
-
-  final WidgetRef ref;
-  final RepeatInstance repeatInstance;
-  final Function(int)? onDelete;
-  final Function(int)? onEdit;
-
-  int _selectedCount = 0;
-
-  @override
-  DataRow? getRow(int index) {
-    assert(index >= 0);
-
-    if (index >= repeatInstance.elements.length) return null;
-
-    final repeatItem = repeatInstance.elements[index];
-    final rowFields = getFormElementIterator<FieldInstance<dynamic>>(
-        repeatInstance.elements[index]);
-
-    final rowFieldsStates =
-        rowFields.map((field) => field).toList().reversedView;
-
-    return DataRow.byIndex(index: index, selected: repeatItem.selected, cells: [
-      DataCell(Text('${index + 1}')),
-      ...rowFieldsStates
-          .map((field) => DataCell(userFriendlyValue(field)))
-          .toList(),
-      DataCell(IconButton(
-          icon: Icon(Icons.edit),
-          onPressed: () {
-            onEdit?.call(index);
-          })),
-      DataCell(IconButton(
-          icon: Icon(
-            Icons.delete,
-            color: Colors.red,
-          ),
-          onPressed: () {
-            onDelete?.call(index);
-          })),
-    ]);
-  }
-
-  Widget userFriendlyValue(FieldInstance<dynamic> field) {
-    final value = field.value ?? '-';
-    final isDisabled = field.hidden;
-
-    final textStyle = isDisabled
-        ? TextStyle(color: Colors.grey, backgroundColor: Colors.grey[200])
-        : null;
-
-    if (field.elementControl?.hasErrors == true) {
-      return Text(
-        '$value! ${S.current.fieldContainErrors}',
-        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold).merge(textStyle),
-      );
-    }
-
-    switch (field.type) {
-      case ValueType.Date:
-      case ValueType.DateTime:
-      case ValueType.Time:
-        return Text(modelToViewValue(field.value) ?? '-', style: textStyle);
-      case ValueType.SelectMulti:
-        return Text(
-            field.visibleOption
-                .where((option) => option.name == field.value)
-                .whereType<String>()
-                .join(', '),
-            style: textStyle);
-      case ValueType.SelectOne:
-        if (field.elementControl?.hasErrors == true) {
-          return Text(
-            S.current.fieldContainErrors,
-            style: TextStyle(color: Colors.red).merge(textStyle),
-          );
-        }
-        return Text(
-            getItemLocalString(
-                field.visibleOption
-                    .firstOrNullWhere((option) => option.name == field.value)
-                    ?.label,
-                defaultString: '-'),
-            style: textStyle);
-      default:
-        return Text('$value', style: textStyle);
-    }
-  }
-
-  // Widget userFriendlyValue(FieldInstance<dynamic> field) {
-  //   final value = field.value ?? '-';
-  //   if (field.elementControl?.hasErrors == true) {
-  //     return Text(
-  //       '$value! ${S.current.fieldContainErrors}',
-  //       style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-  //     );
-  //   }
-  //   switch (field.type) {
-  //     case ValueType.Date:
-  //     case ValueType.DateTime:
-  //     case ValueType.Time:
-  //       return Text(modelToViewValue(field.value) ?? '-');
-  //     case ValueType.SelectMulti:
-  //       return Text(field.visibleOption
-  //           .where((option) => option.name == field.value)
-  //           .whereType<String>()
-  //           .join(', '));
-  //     case ValueType.SelectOne:
-  //       if (field.elementControl?.hasErrors == true) {
-  //         return Text(
-  //           S.current.fieldContainErrors,
-  //           style: const TextStyle(color: Colors.red),
-  //         );
-  //       }
-  //       return Text(getItemLocalString(
-  //           field.visibleOption
-  //               .firstOrNullWhere((option) => option.name == field.value)
-  //               ?.label,
-  //           defaultString: '-'));
-  //     default:
-  //       return Text('${field.value ?? '-'}');
-  //   }
-  // }
-
-  String? modelToViewValue(String? modelValue) {
-    return modelValue == null ? null : sdk.DateUtils.format(modelValue);
-  }
-
-  @override
-  int get rowCount => repeatInstance.elements.length;
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get selectedRowCount => _selectedCount;
-}
+// import 'package:datarun/data_run/screens/form/element/form_instance.dart';
+// import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
+// import 'package:datarun/data_run/screens/form/form_with_sliver/repeat_table.widget.dart';
+// import 'package:datarun/data_run/screens/form/form_with_sliver/repeat_table/edit_panel.dart';
+// import 'package:datarun/data_run/screens/form/inherited_widgets/form_metadata_inherit_widget.dart';
+// import 'package:datarun/data_run/screens/form_module/form/code_generator.dart';
+// import 'package:datarun/generated/l10n.dart';
+// import 'package:flutter/material.dart';
+// import 'package:datarun/data_run/screens/form/element/form_element.dart';
+// import 'package:hooks_riverpod/hooks_riverpod.dart';
+// import 'package:flutter_hooks/flutter_hooks.dart';
+// import 'package:reactive_forms/reactive_forms.dart';
+//
+// class RepeatInstanceDataTable extends HookConsumerWidget {
+//   RepeatInstanceDataTable({super.key, required this.repeatInstance});
+//
+//   final RepeatInstance repeatInstance;
+//
+//   @override
+//   Widget build(BuildContext context, WidgetRef ref) {
+//     final formInstance = ref
+//         .watch(
+//             formInstanceProvider(formMetadata: FormMetadataWidget.of(context)))
+//         .requireValue;
+//
+//     final elementPropertiesSnapshot =
+//         useStream(repeatInstance.propertiesChanged);
+//
+//     final Future<void> Function(int index) onEdit =
+//         useCallback((int index) async {
+//       final itemInstance = repeatInstance.elements[index];
+//       await _showEditPanel(context, formInstance, itemInstance, index);
+//     }, [repeatInstance, formInstance]);
+//
+//     final onDelete = useCallback((int index) async {
+//       formInstance.onRemoveRepeatedItem(index, repeatInstance);
+//     }, [formInstance, repeatInstance]);
+//
+//     if (!elementPropertiesSnapshot.hasData) {
+//       return const CircularProgressIndicator();
+//     }
+//
+//     if (elementPropertiesSnapshot.data!.hidden) {
+//       return const SizedBox.shrink();
+//     }
+//
+//     return RepeatTable(
+//         repeatInstance: repeatInstance,
+//         onEdit: onEdit,
+//         onDelete: onDelete,
+//         onAdd: () async {
+//           await _showEditPanel(context, formInstance);
+//         });
+//   }
+//
+//   Future<void> _showEditPanel(BuildContext context, FormInstance formInstance,
+//       [RepeatItemInstance? repeatItem, int? index]) async {
+//     bool itemSaved = false;
+//
+//     await showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return PopScope(
+//           canPop: false,
+//           onPopInvokedWithResult: (bool didPop, result) async {
+//             if (didPop) {
+//               return;
+//             }
+//
+//             final bool shouldPop = await _onTryToClose(
+//               context,
+//               formInstance,
+//               repeatInstance,
+//               repeatItem!,
+//               itemSaved,
+//             );
+//             if (context.mounted && shouldPop) {
+//               Navigator.pop(context);
+//             }
+//           },
+//           child: Dialog(
+//             child: FormMetadataWidget(
+//               formMetadata: formInstance.formMetadata,
+//               child: Builder(builder: (context) {
+//                 String title = repeatItem == null
+//                     ? '${S.of(context).newItem}: ${repeatInstance.label}'
+//                     : '${S.of(context).editItem}: ${repeatInstance.label}';
+//
+//                 if (repeatItem == null) {
+//                   repeatItem = formInstance.onAddRepeatedItem(repeatInstance);
+//                 }
+//
+//                 return ReactiveForm(
+//                   formGroup: repeatItem!.elementControl,
+//                   child: EditPanel(
+//                     title: title,
+//                     repeatInstance: repeatInstance,
+//                     item: repeatItem!,
+//                     onSave: (formGroup, action) {
+//                       repeatInstance.elementControl.markAllAsTouched();
+//                       repeatItem!.updateValue(formGroup.value);
+//                       if (formGroup.valid) {
+//                         itemSaved = true;
+//                         _handleSave(
+//                           context,
+//                           formInstance,
+//                           repeatInstance,
+//                           repeatItem!,
+//                           action,
+//                         );
+//                       }
+//                     },
+//                   ),
+//                 );
+//               }),
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+//
+//   Future<void> _handleSave(
+//       BuildContext context,
+//       FormInstance formInstance,
+//       RepeatInstance repeatInstance,
+//       RepeatItemInstance repeatItem,
+//       EditActionType action) async {
+//     if (repeatItem.elementControl.valid) {
+//       // the values are already updated, just to let the repeat
+//       // instance emit on stream so it rebuilds,
+//       Navigator.of(context).pop(); // Close the current dialog
+//
+//       if (action == EditActionType.SAVE_AND_ADD_ANOTHER) {
+//         _showEditPanel(context, formInstance);
+//       } else if (action == EditActionType.SAVE_AND_CLOSE) {
+//         // Do nothing, as we've already closed the dialog
+//       }
+//     }
+//   }
+//
+//   Future<bool> _onTryToClose(
+//       BuildContext context,
+//       FormInstance formInstance,
+//       RepeatInstance repeatInstance,
+//       RepeatItemInstance repeatItem,
+//       bool itemSaved) async {
+//     final isNew = repeatItem.uid == null;
+//
+//     if (/*control.itemFormGroup.dirty && */ isNew) {
+//       final bool? confirmClose = await showDialog<bool>(
+//         context: context,
+//         builder: (BuildContext context) {
+//           return AlertDialog(
+//             title: Text(S.of(context).unsavedChangesWarning),
+//             content: Text(S.of(context).closeWithoutSaving),
+//             actions: <Widget>[
+//               TextButton(
+//                 child: Text(S.of(context).cancel),
+//                 onPressed: () => Navigator.of(context).pop(false),
+//               ),
+//               if (repeatItem.elementControl.valid)
+//                 TextButton(
+//                   child: Text(S.of(context).saveAndClose),
+//                   onPressed: () {
+//                     repeatItem.setUid(CodeGenerator.generateUid());
+//                     Navigator.of(context).pop(true);
+//                   },
+//                 ),
+//               TextButton(
+//                 child: Text(S.of(context).closeWithoutSaving),
+//                 onPressed: () {
+//                   formInstance.onRemoveLastItem(repeatInstance);
+//                   Navigator.of(context).pop(true);
+//                 },
+//               ),
+//             ],
+//           );
+//         },
+//       );
+//
+//       return (confirmClose ?? false);
+//     } else if (repeatItem.elementControl.valid) {
+//       return true;
+//     }
+//     return false;
+//   }
+// }

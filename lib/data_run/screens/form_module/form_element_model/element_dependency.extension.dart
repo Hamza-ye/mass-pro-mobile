@@ -23,11 +23,11 @@
 //     // if (newValue != _elementState) {
 //     _elementState = newValue;
 //     propertiesChangedSubject?.add(newValue);
-//     logDebug(info: '$name, changed, --> Notifying subscribers');
+//     logDebug('$name, changed, --> Notifying subscribers');
 //     notifySubscribers();
 //
 //     // } else {
-//     // logDebug(info: '$name, same, x not Notifying subscribers');
+//     // logDebug('$name, same, x not Notifying subscribers');
 //     // }
 //     return _elementState;
 //   }
@@ -58,7 +58,7 @@
 //       _dependents.map((dependent) => dependent.name).toList();
 //
 //   void notifySubscribers() {
-//     logDebug(info: '$name, notifying: ${resolvedDependentsNames}');
+//     logDebug('$name, notifying: ${resolvedDependentsNames}');
 //     _dependents.forEach((s) => s.evaluate(name));
 //   }
 //

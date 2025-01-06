@@ -1,73 +1,65 @@
-import 'dart:async';
-
-import 'package:d2_remote/modules/datarun/form/shared/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/choice_filter.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/rule_parse_extension.dart';
+import 'package:d2_remote/modules/datarun/form/shared/template_extensions/form_traverse_extension.dart';
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
-import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
 import 'package:datarun/data_run/screens/form/element/members/form_element_state.dart';
-import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
 import 'package:datarun/data_run/screens/form_module/form_template/form_element_template.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'form_element_builder.g.dart';
-
-@riverpod
-Future<FormElementBuilder> formElementBuilder(FormElementBuilderRef ref,
-    {required FormMetadata formMetadata}) async {
-  final formFlatTemplate = await ref
-      .watch(formFlatTemplateProvider(formMetadata: formMetadata).future);
-
-  return FormElementBuilder(formFlatTemplate: formFlatTemplate);
-}
+import 'package:reactive_forms/reactive_forms.dart';
 
 class FormElementBuilder {
-  FormElementBuilder({required this.formFlatTemplate});
-
-  final FormFlatTemplate formFlatTemplate;
-
-  Map<String, FormElementInstance<dynamic>> buildFormElements(FormGroup form,
+  static Map<String, FormElementInstance<dynamic>> buildFormElements(
+      FormGroup form, FormFlatTemplate formFlatTemplate,
       {dynamic initialFormValue}) {
     final Map<String, FormElementInstance<dynamic>> elements = {};
 
-    for (var template in formFlatTemplate.formTemplate.fields) {
-      template.fields.sort((a, b) => (a.order).compareTo(b.order));
+    for (var template in formFlatTemplate.formTemplate.fields
+      ..sort((a, b) => (a.order).compareTo(b.order))) {
+      // template.fields.sort((a, b) => (a.order).compareTo(b.order));
 
-      elements[template.name!] = buildFormElement(form, template,
+      elements[template.name!] = buildFormElement(
+          form, formFlatTemplate, template,
           initialFormValue: initialFormValue?[template.name]);
     }
 
     return elements;
   }
 
-  FormElementInstance<dynamic> buildFormElement(
-      FormGroup form, FieldTemplate template,
+  static FormElementInstance<dynamic> buildFormElement(
+      FormGroup form, FormFlatTemplate formFlatTemplate, Template template,
       {dynamic initialFormValue}) {
-    if (template.type.isSection) {
-      return buildSectionInstance(form, template,
+    if (template.isSection) {
+      return buildSectionInstance(
+          form, formFlatTemplate, template as SectionTemplate,
           initialFormValue: initialFormValue);
-    } else if (template.type.isRepeatSection) {
-      return buildRepeatInstance(form, template,
+    } else if (template.isRepeat) {
+      return buildRepeatInstance(
+          form, formFlatTemplate, template as SectionTemplate,
+          initialFormValue: initialFormValue);
+    } else if (template.type == ValueType.ScannedCode) {
+      return buildFieldInstance(
+          form, formFlatTemplate, template as FieldTemplate,
           initialFormValue: initialFormValue);
     } else {
-      return buildFieldInstance(form, template,
+      return buildFieldInstance(
+          form, formFlatTemplate, template as FieldTemplate,
           initialFormValue: initialFormValue);
     }
   }
 
-  SectionInstance buildSectionInstance(
-      FormGroup rootFormControl, FieldTemplate template,
+  static SectionInstance buildSectionInstance(FormGroup rootFormControl,
+      FormFlatTemplate formFlatTemplate, SectionTemplate template,
       {dynamic initialFormValue}) {
     final Map<String, FormElementInstance<dynamic>> elements = {};
-    template.fields.sort((a, b) => (a.order).compareTo(b.order));
 
     final section = SectionInstance(form: rootFormControl, template: template);
 
     for (var childTemplate in template.fields) {
       elements[childTemplate.name!] = buildFormElement(
-          rootFormControl, childTemplate,
+          rootFormControl, formFlatTemplate, childTemplate,
           initialFormValue: initialFormValue?[childTemplate.name]);
     }
     section.addAll(elements);
@@ -75,17 +67,20 @@ class FormElementBuilder {
     return section;
   }
 
-  RepeatItemInstance buildRepeatItem(
-      FormGroup rootFormControl, FieldTemplate template,
-      {Map<String, Object?>? initialFormValue}) {
+  static RepeatItemInstance buildRepeatItem(FormGroup rootFormControl,
+      FormFlatTemplate formFlatTemplate, SectionTemplate template,
+      {Map<String, Object?>? initialFormValue/*, required String parentUid*/}) {
     final Map<String, FormElementInstance<dynamic>> elements = {};
 
-    template.fields.sort((a, b) => (a.order).compareTo(b.order));
-    final repeatedSection =
-        RepeatItemInstance(template: template, form: rootFormControl);
-    for (var childTemplate in template.fields) {
+    final repeatedSection = RepeatItemInstance(
+        template: template,
+        form: rootFormControl,
+        // parentUid: parentUid,
+        uid: initialFormValue?['repeatUid'] as String?);
+    for (var childTemplate
+        in template.fields.sort((a, b) => (a.order).compareTo(b.order))) {
       elements[childTemplate.name!] = buildFormElement(
-          rootFormControl, childTemplate,
+          rootFormControl, formFlatTemplate, childTemplate,
           initialFormValue: initialFormValue?[childTemplate.name]);
     }
     repeatedSection.addAll(elements);
@@ -105,12 +100,32 @@ class FormElementBuilder {
     // return repeatedSection;
   }
 
-  RepeatInstance buildRepeatInstance(
-      FormGroup rootFormControl, FieldTemplate template,
+  // static RepeatInstance buildScannedCode(FormGroup rootFormControl,
+  //     FormFlatTemplate formFlatTemplate, ScannedCodeTemplate template,
+  //     {List<dynamic>? initialFormValue}) {
+  //   final List<RepeatItemInstance> elements = initialFormValue
+  //       ?.map((value) => buildRepeatItem(
+  //       rootFormControl, formFlatTemplate, template,
+  //       initialFormValue: value,
+  //       parentUid: value['parentUid'] as String))
+  //       .toList() ??
+  //       [];
+  //
+  //   final repeatedSection =
+  //   RepeatInstance(template: template, form: rootFormControl);
+  //
+  //   repeatedSection.addAll(elements);
+  //   return repeatedSection;
+  // }
+
+  static RepeatInstance buildRepeatInstance(FormGroup rootFormControl,
+      FormFlatTemplate formFlatTemplate, SectionTemplate template,
       {List<dynamic>? initialFormValue}) {
     final List<RepeatItemInstance> elements = initialFormValue
-            ?.map((value) => buildRepeatItem(rootFormControl, template,
-                initialFormValue: value))
+            ?.map((value) => buildRepeatItem(
+                rootFormControl, formFlatTemplate, template,
+                initialFormValue: value,
+                /*parentUid: value['parentUid'] as String*/))
             .toList() ??
         [];
 
@@ -119,21 +134,10 @@ class FormElementBuilder {
 
     repeatedSection.addAll(elements);
     return repeatedSection;
-    //
-    // final repeatInstance = RepeatInstance(
-    //     template: template,
-    //     form: rootFormControl,
-    //     elements: initialFormValue
-    //             ?.map((value) => buildRepeatItem(rootFormControl, template,
-    //                 initialFormValue: value))
-    //             .toList() ??
-    //         []);
-    //
-    // return repeatInstance;
   }
 
-  FieldInstance<dynamic> buildFieldInstance(
-      FormGroup rootFormControl, FieldTemplate templateElement,
+  static FieldInstance<dynamic> buildFieldInstance(FormGroup rootFormControl,
+      FormFlatTemplate formFlatTemplate, FieldTemplate templateElement,
       {dynamic initialFormValue}) {
     switch (templateElement.type) {
       case ValueType.Text:
@@ -144,6 +148,8 @@ class FormElementBuilder {
       case ValueType.Time:
       case ValueType.DateTime:
       case ValueType.OrganisationUnit:
+      case ValueType.Team:
+      case ValueType.Progress:
         return FieldInstance<String>(
             form: rootFormControl,
             elementProperties: FieldElementState<String>(
@@ -191,7 +197,7 @@ class FormElementBuilder {
           form: rootFormControl,
           choiceFilter: templateElement.choiceFilter != null
               ? ChoiceFilter(
-                  expression: templateElement.evalChoiceFilterExpression!,
+                  expression: templateElement.evalChoiceFilterExpression,
                   options:
                       formFlatTemplate.optionLists[templateElement.listName!] ??
                           [])
@@ -210,7 +216,7 @@ class FormElementBuilder {
             form: rootFormControl,
             choiceFilter: templateElement.choiceFilter != null
                 ? ChoiceFilter(
-                    expression: templateElement.evalChoiceFilterExpression!,
+                    expression: templateElement.evalChoiceFilterExpression,
                     options: formFlatTemplate
                             .optionLists[templateElement.listName!] ??
                         [])
@@ -223,13 +229,17 @@ class FormElementBuilder {
                         : <String>[initialFormValue]
                     : <String>[],
                 mandatory: templateElement.mandatory,
-                visibleOptions: templateElement.options),
+                visibleOptions:
+                    formFlatTemplate.optionLists[templateElement.listName!] ??
+                        []),
             template: templateElement);
       case ValueType.Reference:
         return FieldInstance<String>(
           form: rootFormControl,
           elementProperties: FieldElementState<String>(
-              readOnly: true, value: initialFormValue, mandatory: false),
+              readOnly: templateElement.readOnly,
+              value: initialFormValue,
+              mandatory: templateElement.mandatory),
           template: templateElement,
         );
       case ValueType.ScannedCode:

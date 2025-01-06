@@ -1,8 +1,9 @@
 import 'package:d2_remote/modules/datarun/form/shared/rule/choice_filter.dart';
-import 'package:datarun/commons/logging/logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/data_run/screens/form/element/exceptions/form_element_exception.dart';
 import 'package:datarun/data_run/screens/form_module/form/code_generator.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:flutter/foundation.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'field_element_model.dart';
@@ -29,11 +30,6 @@ enum ElementStatus {
 }
 
 sealed class FormElementModel<T> {
-  Stream<ElementStatus> get propertiesChanged => (_statusChanges ??=
-      BehaviorSubject<ElementStatus>.seeded(status)) as Stream<ElementStatus>;
-
-  @protected
-  BehaviorSubject<ElementStatus?>? _statusChanges;
 
   FormElementModel({
     this.templatePath,
@@ -44,6 +40,11 @@ sealed class FormElementModel<T> {
   })  : _value = value,
         _status = hidden ? ElementStatus.hidden : ElementStatus.valid,
         _dirty = dirty;
+  Stream<ElementStatus> get propertiesChanged => (_statusChanges ??=
+      BehaviorSubject<ElementStatus>.seeded(status)) as Stream<ElementStatus>;
+
+  @protected
+  BehaviorSubject<ElementStatus?>? _statusChanges;
 
   String? get name => templatePath?.split('.').last;
 
@@ -249,7 +250,7 @@ sealed class FormElementModel<T> {
 
   @mustCallSuper
   void evaluate([String? changedDependency]) {
-    logDebug(info: '$name, dependencyChanged');
+    logDebug('$name, dependencyChanged');
     // if (_isEvaluating) {
     //   return;
     // }
@@ -266,7 +267,7 @@ sealed class FormElementModel<T> {
     //         : ruleAction.reset(this);
     //   });
     // } catch (e) {
-    //   logError(info: 'Error Evaluating: ');
+    //   logError('Error Evaluating: ');
     // } finally {
     //   _isEvaluating = false;
     // }

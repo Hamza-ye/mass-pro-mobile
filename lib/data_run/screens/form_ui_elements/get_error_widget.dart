@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:datarun/commons/logging/logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 
 Widget getErrorWidget(Object? error, StackTrace? stackTrace) {
-  logError(info: 'error: $error');
+  logError('error: $error');
   debugPrintStack(stackTrace: stackTrace, label: error.toString());
   return Builder(
     builder: (context) {

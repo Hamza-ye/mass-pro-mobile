@@ -5,7 +5,6 @@ import 'package:d2_remote/modules/datarun_shared/utilities/authenticated_user.da
 import 'package:datarun/commons/prefs/preference_provider.dart';
 import 'package:datarun/core/auth/auth_service.dart';
 import 'package:datarun/core/auth/user_session_manager.dart';
-import 'package:datarun/core/network/connectivy_service.dart';
 import 'package:datarun/data_run/screens/login_screen/auth_wrapper.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:datarun/main.reflectable.dart';
@@ -18,6 +17,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 AuthenticationResult? authenticationResult;
 
@@ -31,7 +31,7 @@ Future<void> main() async {
   // // SDK initialization and repository setup
   // await D2Remote.initialize();
 
-  await ConnectivityService.instance.initialize();
+  // await ConnectivityService.instance.initialize();
 
   FlutterError.demangleStackTrace = (StackTrace stack) {
     if (stack is stack_trace.Trace) {
@@ -56,16 +56,39 @@ Future<void> main() async {
     await D2Remote.initialize();
   }
 
-  runApp(ProviderScope(
-    overrides: [
-      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-      authServiceProvider.overrideWithValue(authService),
-      userSessionManagerProvider.overrideWithValue(userSessionManager),
-    ],
-    child: App(
-      isAuthenticated: hasExistingSession,
-    ),
-  ));
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'https://c39a75530f4b8694183508a689bbafb7@o4504831846645760.ingest.us.sentry.io/4507587127214080';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      // options.tracesSampleRate = 1.0;
+      // The sampling rate for profiling is relative to tracesSampleRate
+      // Setting to 1.0 will profile 100% of sampled transactions:
+      // options.profilesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+        authServiceProvider.overrideWithValue(authService),
+        userSessionManagerProvider.overrideWithValue(userSessionManager),
+      ],
+      child: App(
+        isAuthenticated: hasExistingSession,
+      ),
+    )),
+  );
+
+  // runApp(ProviderScope(
+  //   overrides: [
+  //     sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+  //     authServiceProvider.overrideWithValue(authService),
+  //     userSessionManagerProvider.overrideWithValue(userSessionManager),
+  //   ],
+  //   child: App(
+  //     isAuthenticated: hasExistingSession,
+  //   ),
+  // ));
 }
 
 class App extends ConsumerWidget {

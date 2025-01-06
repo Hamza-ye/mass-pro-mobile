@@ -69,7 +69,7 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('hit $index');
+        // print('hit $index');
       },
       child: Container(
         height: 60,

@@ -56,7 +56,6 @@ Iterable<T> propagateChange<T>(
 
     // Check for circular dependencies (optional enhancement)
     if (visited.contains(element)) {
-      print('Circular dependency detected: $element');
       continue; // Skip already visited elements
     }
 
@@ -87,15 +86,11 @@ void main() {
   final reverseDependencyMap =
   buildTransitiveReverseDependencyMap(dependencies);
 
-  print('Reverse Dependency Map (Transitive):');
   reverseDependencyMap.forEach((key, value) {
-    print('$key -> $value');
   });
 
-  print('\nPropagating Changes for "transaction":');
-  for (var element in propagateChange('transaction', reverseDependencyMap)) {
-    print('Evaluate: $element');
-  }
+  // for (var element in propagateChange('transaction', reverseDependencyMap)) {
+  // }
 }
 
 // import 'dart:collection';

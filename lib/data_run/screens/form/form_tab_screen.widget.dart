@@ -32,8 +32,8 @@ class FormSubmissionScreenState extends ConsumerState<FormSubmissionScreen> {
   Widget build(BuildContext context) {
     final formMetadata = FormMetadataWidget.of(context);
 
-    final AsyncValue<bool> submissionEditStatus = ref.watch(
-        submissionEditStatusProvider(submission: formMetadata.submission!));
+    final AsyncValue<bool> submissionEditStatus =
+        ref.watch(submissionEditStatusProvider(formMetadata: formMetadata));
 
     return AsyncValueWidget(
         value: submissionEditStatus,
@@ -236,6 +236,8 @@ class _EagerInitialization extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formInstance = ref.watch(
         formInstanceProvider(formMetadata: FormMetadataWidget.of(context)));
+    final submissions = ref.watch(formSubmissionsProvider(
+        FormMetadataWidget.of(context).formId.split('_').first));
     if (formInstance.isLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (formInstance.hasError) {

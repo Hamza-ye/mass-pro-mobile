@@ -20,7 +20,7 @@ function Hero() {
         </Link>
         <div className="button button--link">
           <iframe
-            src="https://ghbtns.com/github-btn.html?user=Hamza-ye&repo=datarun-mobile&type=star&count=true&size=large"
+            src="https://ghbtns.com/github-btn.html?user=Hamza-ye&repo=datarunmobile&type=star&count=true&size=large"
             frameBorder="0"
             scrolling="0"
             width="160px"

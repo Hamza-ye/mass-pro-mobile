@@ -1,5 +1,5 @@
 import 'package:expressions/expressions.dart';
-import 'package:datarun/commons/logging/logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 
 const evaluationEngine = const EvaluationEngine();
 
@@ -15,7 +15,7 @@ class EvaluationEngine {
       return result;
     } catch (e) {
       // Handling evaluation errors (e.g invalid expression, missing variables).
-      logError(info: 'Error evaluating expression: $e');
+      logError('Error evaluating expression: $e');
       return false;
     }
   }

@@ -8,12 +8,12 @@ import 'package:datarun/data_run/screens/form/field_widgets/custom_reactive_widg
 import 'package:datarun/data_run/screens/form/field_widgets/custom_reactive_widget/reactive_choice_chips.dart';
 import 'package:datarun/data_run/screens/form/inherited_widgets/form_metadata_inherit_widget.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class QReactiveChoiceSingleSelectChips extends ConsumerWidget {
   QReactiveChoiceSingleSelectChips({super.key, required this.element});
 
-  FieldInstance<String> element;
+  final FieldInstance<String> element;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,13 +23,13 @@ class QReactiveChoiceSingleSelectChips extends ConsumerWidget {
         .requireValue;
 
     return ReactiveChoiceChips<String>(
-      formControl: formInstance.form.control(element.pathRecursive)
+      formControl: formInstance.form.control(element.elementPath!)
           as FormControl<String>,
       validationMessages: validationMessages(context),
       selectedColor: Theme.of(context).colorScheme.error.withAlpha(100),
       options: _getChipOptions(element.visibleOption, wide: true),
       decoration: InputDecoration(
-        enabled: element.elementControl!.enabled,
+        enabled: element.elementControl.enabled,
         // border: const OutlineInputBorder(gapPadding: 20),
         // contentPadding: const EdgeInsets.all(16),
         labelText: element.label,
@@ -47,9 +47,9 @@ class QReactiveChoiceSingleSelectChips extends ConsumerWidget {
                   ? Container(
                       padding: const EdgeInsets.all(0.4),
                       child: Column(children: <Widget>[
-                        Text(getItemLocalString(option.label))
+                        Text(getItemLocalString(option.label.unlockView))
                       ]))
-                  : Text(getItemLocalString(option.label)),
+                  : Text(getItemLocalString(option.label.unlockView)),
             ))
         .toList();
   }

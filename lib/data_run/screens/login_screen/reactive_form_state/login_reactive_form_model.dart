@@ -2,7 +2,7 @@ import 'package:datarun/commons/constants.dart';
 import 'package:datarun/commons/errors_management/d_exception_reporter.dart';
 import 'package:datarun/core/auth/auth_service.dart';
 import 'package:datarun/core/auth/user_session_manager.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'login_reactive_form_model.g.dart';
@@ -14,8 +14,6 @@ LoginReactiveFormModel loginReactiveFormModel(LoginReactiveFormModelRef ref) {
 }
 
 class LoginReactiveFormModel {
-  static String URL_PATTERN =
-      r'^(http|https):\/\/[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?$';
 
   LoginReactiveFormModel(this._authService, this.userSessionManager)
       : this.form = FormGroup({
@@ -24,6 +22,8 @@ class LoginReactiveFormModel {
           'serverUrl': FormControl<String>(
               validators: [Validators.pattern(URL_PATTERN)], disabled: true),
         });
+  static String URL_PATTERN =
+      r'^(http|https):\/\/[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,6}(:[0-9]{1,5})?(\/.*)?$';
 
   final AuthService _authService;
   final UserSessionManager userSessionManager;

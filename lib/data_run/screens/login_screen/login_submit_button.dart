@@ -1,6 +1,6 @@
 import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class LoginSubmitButton extends StatelessWidget {
   const LoginSubmitButton({

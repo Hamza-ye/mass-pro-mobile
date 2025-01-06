@@ -1,6 +1,6 @@
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:datarun/commons/logging/logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 
 class ProviderLogger extends ProviderObserver {
   ProviderLogger({required this.providersNameToLog});
@@ -15,18 +15,15 @@ class ProviderLogger extends ProviderObserver {
   ) {
     if (providersNameToLog.isEmpty) {
       provider.name != null
-          ? logDebug(
-              info: 'didAddProvider, NAME: ${provider.name}, VALUE: $value')
+          ? logDebug('didAddProvider, NAME: ${provider.name}, VALUE: $value')
           : logDebug(
-              info:
-                  'didAddProvider, TYPE: ${provider.runtimeType}, VALUE: $value');
+              'didAddProvider, TYPE: ${provider.runtimeType}, VALUE: $value');
     } else {
       if (providersNameToLog.contains(provider.name)) {
         provider.name != null
-            ? logDebug(info: 'didAddProvider, VALUE: $value')
+            ? logDebug('didAddProvider, VALUE: $value')
             : logDebug(
-                info:
-                    'didAddProvider, TYPE: ${provider.runtimeType}, VALUE: $value');
+                'didAddProvider, TYPE: ${provider.runtimeType}, VALUE: $value');
       }
     }
   }
@@ -40,17 +37,15 @@ class ProviderLogger extends ProviderObserver {
   ) {
     if (providersNameToLog.isEmpty) {
       provider.name != null
-          ? logDebug(info: 'didUpdateProvider, newValue: $newValue')
+          ? logDebug('didUpdateProvider, newValue: $newValue')
           : logDebug(
-              info:
-                  'didUpdateProvider, TYPE: ${provider.runtimeType}, newValue: $newValue');
+              'didUpdateProvider, TYPE: ${provider.runtimeType}, newValue: $newValue');
     } else {
       if (providersNameToLog.contains(provider.name)) {
         provider.name != null
-            ? logDebug(info: 'didUpdateProvider, newValue: $newValue')
+            ? logDebug('didUpdateProvider, newValue: $newValue')
             : logDebug(
-                info:
-                    'didUpdateProvider, TYPE: ${provider.runtimeType}, newValue: $newValue');
+                'didUpdateProvider, TYPE: ${provider.runtimeType}, newValue: $newValue');
       }
     }
   }
@@ -62,14 +57,13 @@ class ProviderLogger extends ProviderObserver {
   ) {
     if (providersNameToLog.isEmpty) {
       provider.name != null
-          ? logDebug(info: 'NAME: ${provider.name}, didDisposeProvider')
-          : logDebug(info: 'TYPE: ${provider.runtimeType}, didDisposeProvider');
+          ? logDebug('NAME: ${provider.name}, didDisposeProvider')
+          : logDebug('TYPE: ${provider.runtimeType}, didDisposeProvider');
     } else {
       if (providersNameToLog.contains(provider.name)) {
         provider.name != null
-            ? logDebug(info: 'NAME: ${provider.name}, didDisposeProvider')
-            : logDebug(
-                info: 'TYPE: ${provider.runtimeType}, didDisposeProvider');
+            ? logDebug('NAME: ${provider.name}, didDisposeProvider')
+            : logDebug('TYPE: ${provider.runtimeType}, didDisposeProvider');
       }
     }
   }

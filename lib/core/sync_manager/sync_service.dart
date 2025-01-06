@@ -1,6 +1,6 @@
-import 'package:d2_remote/core/datarun/logging/logging.dart';
 import 'package:d2_remote/modules/datarun_shared/sync/call/d2_progress.dart';
 import 'package:d2_remote/modules/datarun_shared/sync/sync_metadata.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:datarun/utils/user_preferences/preference.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -19,18 +19,18 @@ enum SyncInterval {
   biweekly(15 * 24 * 60 * 60 * 1000, '15 Days'),
   monthly(30 * 24 * 60 * 60 * 1000, '1 Month');
 
-  String get localLabel => switch(this) {
-    SyncInterval.daily => S.current.daily,
-    SyncInterval.everyTwoDays => S.current.everyTwoDays,
-    SyncInterval.weekly => S.current.weekly,
-    SyncInterval.biweekly => S.current.everyFifteenDays,
-    SyncInterval.monthly => S.current.monthly,
-  };
+  const SyncInterval(this.milliseconds, this.label);
 
   final int milliseconds;
   final String label;
 
-  const SyncInterval(this.milliseconds, this.label);
+  String get localLabel => switch (this) {
+        SyncInterval.daily => S.current.daily,
+        SyncInterval.everyTwoDays => S.current.everyTwoDays,
+        SyncInterval.weekly => S.current.weekly,
+        SyncInterval.biweekly => S.current.everyFifteenDays,
+        SyncInterval.monthly => S.current.monthly,
+      };
 }
 
 @riverpod
@@ -51,11 +51,13 @@ class SyncService extends _$SyncService {
 
   SyncInterval getSyncInterval() {
     final prefs = ref.watch(sharedPreferencesProvider);
-    final intervalMs = prefs.getInt(SYNC_INTERVAL) ?? SyncInterval.daily.milliseconds;
-    return SyncInterval.values.firstWhere((interval) => interval.milliseconds == intervalMs,
+    final intervalMs =
+        prefs.getInt(SYNC_INTERVAL) ?? SyncInterval.daily.milliseconds;
+    return SyncInterval.values.firstWhere(
+        (interval) => interval.milliseconds == intervalMs,
         orElse: () => SyncInterval.daily);
   }
-  
+
   Future<bool> needsSync() async {
     final prefs = await SharedPreferences.getInstance();
     final lastSyncTime = prefs.getInt(LAST_SYNC_TIME) ?? 0;
@@ -66,7 +68,7 @@ class SyncService extends _$SyncService {
     final currentTime = DateTime.now().millisecondsSinceEpoch;
     return (currentTime - lastSyncTime) > syncInterval.milliseconds;
   }
-  
+
   // Future<bool> needsSync() async {
   //   final prefs = await SharedPreferences.getInstance();
   //   final lastSyncTime = prefs.getInt(LAST_SYNC_TIME) ?? 0;
@@ -97,7 +99,7 @@ class SyncService extends _$SyncService {
     } catch (error) {
       onFailure?.call(error.toString().substring(0, 255));
 
-      logDebug(info: 'Sync complete with error: $error');
+      logDebug('Sync complete with error: $error');
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt(LAST_SYNC_TIME, DateTime.now().millisecondsSinceEpoch);
       await prefs.setBool(SYNC_DONE, false);

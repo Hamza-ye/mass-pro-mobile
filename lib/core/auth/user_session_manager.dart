@@ -19,6 +19,8 @@ Future<DUser?> userInfo(UserInfoRef ref) {
 }
 
 class UserSessionManager {
+
+  UserSessionManager(this.prefs);
   static const IS_AUTHENTICATED = 'IS_AUTHENTICATED';
   static const SECURE_SESSION = 'SECURE_SESSION';
 
@@ -27,8 +29,6 @@ class UserSessionManager {
   static const PREFS_USERS = 'pref_users';
 
   final SharedPreferences prefs;
-
-  UserSessionManager(this.prefs);
 
   bool get isFirstSession {
     // final session = sessionData;
@@ -112,11 +112,6 @@ class UserSessionManager {
 }
 
 class SessionData {
-  final String? username;
-  final String? password;
-  final String? serverUrl;
-  final String? token;
-  final DateTime? expirationDate;
 
   SessionData({
     required this.username,
@@ -137,6 +132,11 @@ class SessionData {
           : null,
     );
   }
+  final String? username;
+  final String? password;
+  final String? serverUrl;
+  final String? token;
+  final DateTime? expirationDate;
 
   Map<String, dynamic> toJson() {
     return {

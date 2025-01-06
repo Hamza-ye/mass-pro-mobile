@@ -1,19 +1,18 @@
 import 'package:d2_remote/core/datarun/exception/d_error.dart';
-import 'package:d2_remote/core/datarun/utilities/date_utils.dart' as sdk;
 import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
 import 'package:d2_remote/d2_remote.dart';
-import 'package:d2_remote/modules/data/tracker/models/geometry.dart';
+import 'package:d2_remote/modules/datarun/form/models/geometry.dart';
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/metadatarun/assignment/entities/d_assignment.entity.dart';
 import 'package:d2_remote/modules/metadatarun/org_unit/entities/org_unit.entity.dart';
+import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:d2_remote/shared/utilities/save_option.util.dart';
-import 'package:datarun/commons/logging/logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/core/common/state.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
 import 'package:datarun/data_run/form/form_submission/form_submission_repository.dart';
 import 'package:datarun/data_run/form/form_submission/submission_list_util.dart';
 import 'package:datarun/data_run/form/form_submission/submission_summary.model.dart';
-import 'package:datarun/data_run/form/shared/form_configuration.dart';
-import 'package:datarun/data_run/form/shared/submission_status.dart';
 import 'package:datarun/data_run/screens/form/element/form_metadata.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -36,18 +35,20 @@ class FormSubmissions extends _$FormSubmissions {
 
   Future<void> markSubmissionAsFinal(String uid) async {
     final String? completedDate =
-        sdk.DateUtils.databaseDateFormat().format(DateTime.now().toUtc());
+        DDateUtils.databaseDateFormat().format(DateTime.now().toUtc());
     final DataFormSubmission? submission =
-        await D2Remote.formModule.formSubmission.byId(uid).getOne();
+        await D2Remote.formModule.dataFormSubmission.byId(uid).getOne();
     submission!
-      ..status = EntryStatus.COMPLETED.name
+      // ..status = EntryStatus.COMPLETED.name
+      ..isFinal = true
       ..finishedEntryTime = completedDate;
 
-    await D2Remote.formModule.formSubmission
+    await D2Remote.formModule.dataFormSubmission
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
     ref.invalidateSelf();
+    // ref.invalidate(formSubmissionsProvider(form));
     await future;
   }
 
@@ -55,59 +56,82 @@ class FormSubmissions extends _$FormSubmissions {
     await future;
 
     final DataFormSubmission? submission =
-        await D2Remote.formModule.formSubmission.byId(uid).getOne();
+        await D2Remote.formModule.dataFormSubmission.byId(uid).getOne();
 
-    return updateSubmission(submission!..orgUnit = orgUnit);
+    return updateSubmission(submission!..assignment = orgUnit);
   }
 
   /// injecting the arguments from the context
   Future<DataFormSubmission> createNewSubmission(
-      {required String activityUid,
-      required String teamUid,
-      required String orgUnit,
+      {required formVersion,
+      required String assignmentId,
+      required String team,
+      required String form,
       required int version,
       Map<String, dynamic> formData = const {},
       Geometry? geometry}) async {
     final DataFormSubmission submission = DataFormSubmission(
-        status: 'ACTIVE',
+        status: AssignmentStatus.IN_PROGRESS,
         form: form,
-        formVersion: '${form}_$version',
+        formVersion: formVersion,
         version: version,
-        activity: activityUid,
-        team: teamUid,
-        orgUnit: orgUnit,
+        // activity: activityUid,
+        team: team,
+        assignment: assignmentId,
         formData: formData,
         dirty: true,
         synced: false,
         deleted: false,
+        isFinal: false,
+        lastModifiedDate:
+            DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()),
         startEntryTime:
-            DateUtils.databaseDateFormat().format(DateTime.now().toUtc()));
+            DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()));
 
     if (geometry != null) {
       submission.geometry = geometry;
     }
 
-    await D2Remote.formModule.formSubmission
+    await D2Remote.formModule.dataFormSubmission
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
-    return submission;
+    final savedSubmission = await D2Remote.formModule.dataFormSubmission.byId(submission.id!).getOne();
+    return savedSubmission;
   }
 
   Future<DataFormSubmission?> getSubmission(String uid) {
-    return D2Remote.formModule.formSubmission.byId(uid).getOne();
+    return D2Remote.formModule.dataFormSubmission.byId(uid).getOne();
   }
 
   Future<DataFormSubmission> updateSubmission(
       DataFormSubmission submission) async {
-    submission.status = 'ACTIVE';
+    submission.status = AssignmentStatus.IN_PROGRESS;
     submission.dirty = true;
 
-    await D2Remote.formModule.formSubmission
+    await D2Remote.formModule.dataFormSubmission
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
     ref.invalidateSelf();
+    // ref.invalidate(formSubmissionsProvider);
+    // ref.invalidate(formSubmissionsProvider(form));
+
+    return submission;
+  }
+
+  Future<DataFormSubmission> updateStatus(
+      DataFormSubmission submission) async {
+    submission.status = AssignmentStatus.IN_PROGRESS;
+    submission.dirty = true;
+
+    await D2Remote.formModule.dataFormSubmission
+        .setData(submission)
+        .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
+
+    ref.invalidateSelf();
+    // ref.invalidate(formSubmissionsProvider);
+    // ref.invalidate(formSubmissionsProvider(form));
 
     return submission;
   }
@@ -115,28 +139,39 @@ class FormSubmissions extends _$FormSubmissions {
   Future<bool> deleteSubmission(Iterable<String?> syncableIds) async {
     try {
       await Future.forEach(syncableIds,
-          (uid) => D2Remote.formModule.formSubmission.byId(uid!).delete());
+          (uid) => D2Remote.formModule.dataFormSubmission.byId(uid!).delete());
       ref.invalidateSelf();
+      // ref.invalidate(formSubmissionsProvider);
+      // ref.invalidate(formSubmissionsProvider(form));
+
       await future;
       return true;
     } on DError catch (e) {
-      logError(info: '# DataRun Error: ${e.toString()}');
+      logError('# DataRun Error: ${e.toString()}');
       return false;
     }
   }
 
   Future<void> syncEntities(List<String> uids) async {
-    await D2Remote.formModule.formSubmission.byIds(uids).upload();
+    await D2Remote.formModule.dataFormSubmission.byIds(uids).upload();
 
     ref.invalidateSelf();
+    // ref.invalidate(formSubmissionsProvider);
+    // ref.invalidate(formSubmissionsProvider(form));
+
     await future;
   }
 }
 
 @riverpod
 Future<bool> submissionEditStatus(SubmissionEditStatusRef ref,
-    {required String submission}) async {
-  return D2Remote.formModule.formSubmission.byId(submission).canEdit();
+    {required FormMetadata formMetadata}) async {
+  // if (formMetadata.assignmentForm.isNew) {
+  //   return true;
+  // }
+  return D2Remote.formModule.dataFormSubmission
+      .byId(formMetadata.submission!)
+      .canEdit();
 }
 
 @riverpod
@@ -175,28 +210,33 @@ Future<List<DataFormSubmission>> submissionFilteredByState(
 Future<SubmissionItemSummaryModel> submissionInfo(SubmissionInfoRef ref,
     {required FormMetadata formMetadata}) async {
   final allSubmissions =
-      await ref.watch(formSubmissionsProvider(formMetadata.form).future);
+      await ref.watch(formSubmissionsProvider(formMetadata.formId).future);
 
   final submission =
       allSubmissions.firstWhere((t) => t.uid == formMetadata.submission!);
 
-  final formConfig = await ref.watch(formConfigurationProvider(
-          form: formMetadata.form, version: formMetadata.version)
-      .future);
-
-  final OrgUnit? orgUnit = submission.orgUnit != null
-      ? await D2Remote.organisationUnitModuleD.orgUnit
-          .byId(submission.orgUnit!)
+  final DAssignment? assignment = submission.assignment != null
+      ? await D2Remote.assignmentModuleD.assignment
+          .byId(submission.assignment!)
           .getOne()
       : null;
 
-  final formData = submission.formData.map<String, dynamic>((k, v) => MapEntry(
-      formConfig.getFieldDisplayName(k),
-      formConfig.getUserFriendlyValue(k, v)));
+  final OrgUnit? orgUnit = assignment != null
+      ? await D2Remote.organisationUnitModuleD.orgUnit
+          .byId(assignment.orgUnit!)
+          .getOne()
+      : null;
+
+  // final extract = extractValues(
+  //     submission.formData, formConfig.allFields.unlockView.values.toList(),
+  //     criteria: (Template t) => t.mainField == true);
+  // final formData = extract.map((k, v) => MapEntry(
+  //     formConfig.getFieldDisplayName(k),
+  //     formConfig.getUserFriendlyValue(k, v)));
 
   return SubmissionItemSummaryModel(
       syncStatus: SubmissionListUtil.getSyncStatus(submission)!,
       code: orgUnit?.code,
       orgUnit: '${orgUnit?.displayName ?? getItemLocalString(orgUnit?.label)}',
-      formData: formData);
+      formData: submission.formData);
 }

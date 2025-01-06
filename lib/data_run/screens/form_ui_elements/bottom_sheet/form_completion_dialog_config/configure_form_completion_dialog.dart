@@ -8,7 +8,7 @@ import 'package:datarun/data_run/screens/form_ui_elements/bottom_sheet/form_comp
 import 'package:datarun/generated/l10n.dart';
 import 'package:datarun/utils/navigator_key.dart';
 import 'package:flutter/material.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class ConfigureFormCompletionDialog {
   const ConfigureFormCompletionDialog();
@@ -37,8 +37,8 @@ class ConfigureFormCompletionDialog {
   FormCompletionButton _getMainButton(SectionInstance rootSection) {
     if (rootSection.form.hasErrors) {
       return FormCompletionButton(
-          buttonStyle: DialogButtonStyle.mainButton(
-              text: S.current.reviewFormData),
+          buttonStyle:
+              DialogButtonStyle.mainButton(text: S.current.reviewFormData),
           action: FormBottomDialogActionType.CheckFields);
     } else {
       return FormCompletionButton(
@@ -53,11 +53,10 @@ class ConfigureFormCompletionDialog {
           buttonStyle: DialogButtonStyle.secondaryButton(
               text: S.current.checkFieldsLater),
           action: FormBottomDialogActionType.NotNow);
-      ;
     } else {
       return FormCompletionButton(
-          buttonStyle: DialogButtonStyle.secondaryButton(
-              text: S.current.notNow),
+          buttonStyle:
+              DialogButtonStyle.secondaryButton(text: S.current.notNow),
           action: FormBottomDialogActionType.NotNow);
     }
   }
@@ -65,7 +64,6 @@ class ConfigureFormCompletionDialog {
   BottomSheetBodyModel _getBody(SectionInstance rootSection) {
     bool controlHasErrors = rootSection.form.hasErrors;
     // bool elementHasErrors = rootSection.elementState.errors.isNotEmpty;
-    final controlErrors = rootSection.form.errors;
     // final elementErrors =rootSection.elementState.errors;
     return controlHasErrors
         ? BottomSheetBodyModel.errorsBody(
@@ -75,7 +73,8 @@ class ConfigureFormCompletionDialog {
             message: S.current.makeFormFinalOrSaveBody);
   }
 
-  Map<String, dynamic> flattenErrorMap(Map<String, dynamic> errorMap, {String prefix = ''}) {
+  Map<String, dynamic> flattenErrorMap(Map<String, dynamic> errorMap,
+      {String prefix = ''}) {
     Map<String, dynamic> flatMap = {};
 
     errorMap.forEach((key, value) {
@@ -87,7 +86,8 @@ class ConfigureFormCompletionDialog {
       } else if (value is List) {
         // If the value is a list, iterate through each item and flatten
         for (int i = 0; i < value.length; i++) {
-          flatMap.addAll(flattenErrorMap({i.toString(): value[i]}, prefix: '$newKey.$i'));
+          flatMap.addAll(
+              flattenErrorMap({i.toString(): value[i]}, prefix: '$newKey.$i'));
         }
       } else {
         // Otherwise, it's a leaf node (error value), add it to the flatMap
@@ -100,14 +100,14 @@ class ConfigureFormCompletionDialog {
 
   Map<String, List<FieldWithIssue>> _getFieldsWithIssues(
       SectionInstance rootSection) {
-    // logDebug(info: 'formErrorsMap: $formErrors');
-    // logDebug(info: 'formErrorsMapFlatt: $formErrorsFlatt');
+    // logDebug('formErrorsMap: $formErrors');
+    // logDebug('formErrorsMapFlatt: $formErrorsFlatt');
     final Iterable<FieldInstance<dynamic>> fieldsWithErrors =
         getFormElementIterator<FieldInstance<dynamic>>(rootSection)
-            .where((field) => field.elementControl!.hasErrors && field.visible);
+            .where((field) => field.elementControl.hasErrors && field.visible);
     final fieldsIssues = fieldsWithErrors.map((element) => FieldWithIssue(
         parent: element.parentSection?.label,
-        fieldPath: element.pathRecursive,
+        fieldPath: element.elementPath!,
         fieldName: element.label,
         message: _getErrorMessage(element)));
 
@@ -117,11 +117,11 @@ class ConfigureFormCompletionDialog {
   }
 
   String _getErrorMessage(FieldInstance<dynamic> field) {
-    final errorKey = field.elementControl!.errors.keys.first;
+    final errorKey = field.elementControl.errors.keys.first;
     final validationMessage = _findValidationMessage(errorKey);
 
     return validationMessage != null
-        ? validationMessage(field.elementControl!.getError(errorKey)!)
+        ? validationMessage(field.elementControl.getError(errorKey)!)
         : errorKey;
   }
 

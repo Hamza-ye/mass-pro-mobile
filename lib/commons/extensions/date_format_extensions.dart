@@ -1,12 +1,12 @@
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:intl/intl.dart';
-import 'package:datarun/commons/logging/logging.dart';
 
 extension DateFormatExtension on DateFormat {
   DateTime? parseOrNull(String value) {
     try {
       return parse(value);
     } catch (e) {
-      logError(info: 'DateFormatExtension: dateTime FormatException');
+      logError('DateFormatExtension: dateTime FormatException');
       return null;
     }
   }

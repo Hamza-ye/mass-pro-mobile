@@ -1,6 +1,5 @@
 // Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:datarun/commons/constants.dart';
 import 'package:datarun/utils/mass_utils/colors.dart';
 
 class ListDivider extends StatelessWidget {
@@ -8,7 +7,7 @@ class ListDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color? color = convertHexStringToColor(kDefaultLightBorderColor);
+    final Color? color = convertHexStringToColor('#dfdfdf');
     return Container(
       color: color,
       child: Divider(

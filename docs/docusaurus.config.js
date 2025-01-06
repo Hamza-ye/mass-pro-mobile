@@ -2,12 +2,12 @@
 module.exports = {
   title: "D2Remote (DHIS2 Flutter SDK)",
   url: "https://Hamza-ye.github.io",
-  baseUrl: "/datarun-mobile/",
+  baseUrl: "/datarunmobile/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
   favicon: "img/favicon.ico",
   organizationName: "Hamza-ye",
-  projectName: "datarun-mobile",
+  projectName: "datarunmobile",
   themeConfig: {
     navbar: {
       title: "D2Remote (DHIS2 Flutter SDK)",
@@ -23,7 +23,7 @@ module.exports = {
           position: "left",
         },
         {
-          href: "https://github.com/Hamza-ye/datarun-mobile/tree/develop/docs/",
+          href: "https://github.com/Hamza-ye/datarunmobile/tree/develop/docs/",
           label: "GitHub",
           position: "right",
         },
@@ -42,7 +42,7 @@ module.exports = {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
           editUrl:
-            "https://github.com/Hamza-ye/datarun-mobile/edit/develop/docs/",
+            "https://github.com/Hamza-ye/datarunmobile/edit/develop/docs/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),

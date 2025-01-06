@@ -1,9 +1,93 @@
 import 'package:flutter/material.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/custom_reactive_widget/reactive_chip_option.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 /// A list of `Chip`s that acts like radio buttons
 class ReactiveChoiceChips<T> extends ReactiveFormField<T, T> {
+
+  /// Creates a list of `Chip`s that acts like radio buttons
+  ReactiveChoiceChips({
+    super.key,
+    super.formControlName,
+    super.formControl,
+    super.validationMessages,
+    super.valueAccessor,
+    super.showErrors,
+    super.focusNode,
+    required this.options,
+    this.alignment = WrapAlignment.start,
+    InputDecoration decoration = const InputDecoration(),
+    this.avatarBorder = const CircleBorder(),
+    this.backgroundColor,
+    this.crossAxisAlignment = WrapCrossAlignment.start,
+    this.direction = Axis.horizontal,
+    this.disabledColor,
+    this.elevation,
+    this.labelPadding,
+    this.labelStyle,
+    this.materialTapTargetSize,
+    this.padding,
+    this.pressElevation,
+    this.runAlignment = WrapAlignment.start,
+    this.runSpacing = 0.0,
+    this.selectedColor,
+    this.selectedShadowColor,
+    this.shadowColor,
+    this.shape,
+    this.spacing = 0.0,
+    this.textDirection,
+    this.verticalDirection = VerticalDirection.down,
+    this.visualDensity,
+    ReactiveFormFieldCallback<T>? onChanged,
+  }) : super(builder: (field) {
+          final state = field;
+          final effectiveDecoration = decoration
+              .applyDefaults(Theme.of(state.context).inputDecorationTheme);
+
+          return InputDecorator(
+            decoration:
+                effectiveDecoration.copyWith(errorText: state.errorText),
+            child: Wrap(
+              direction: direction,
+              alignment: alignment,
+              crossAxisAlignment: crossAxisAlignment,
+              runAlignment: runAlignment,
+              runSpacing: runSpacing,
+              spacing: spacing,
+              textDirection: textDirection,
+              verticalDirection: verticalDirection,
+              children: <Widget>[
+                for (ReactiveChipOption<T> option in options)
+                  ChoiceChip(
+                    label: option,
+                    shape: shape,
+                    selected: field.value == option.value,
+                    onSelected: state.control.enabled
+                        ? (selected) {
+                            final choice = selected ? option.value : null;
+                            state.didChange(choice);
+                            onChanged?.call(field.control);
+                          }
+                        : null,
+                    avatar: option.avatar,
+                    selectedColor: selectedColor,
+                    disabledColor: disabledColor,
+                    backgroundColor: backgroundColor,
+                    shadowColor: shadowColor,
+                    selectedShadowColor: selectedShadowColor,
+                    elevation: elevation,
+                    pressElevation: pressElevation,
+                    materialTapTargetSize: materialTapTargetSize,
+                    labelStyle: labelStyle,
+                    labelPadding: labelPadding,
+                    padding: padding,
+                    visualDensity: visualDensity,
+                    avatarBorder: avatarBorder,
+                  ),
+              ],
+            ),
+          );
+        });
   final List<ReactiveChipOption<T>> options;
   final double? elevation;
   final double? pressElevation;
@@ -234,90 +318,6 @@ class ReactiveChoiceChips<T> extends ReactiveFormField<T, T> {
   final VerticalDirection verticalDirection;
 
   final ShapeBorder avatarBorder;
-
-  /// Creates a list of `Chip`s that acts like radio buttons
-  ReactiveChoiceChips({
-    super.key,
-    super.formControlName,
-    super.formControl,
-    super.validationMessages,
-    super.valueAccessor,
-    super.showErrors,
-    super.focusNode,
-    required this.options,
-    this.alignment = WrapAlignment.start,
-    InputDecoration decoration = const InputDecoration(),
-    this.avatarBorder = const CircleBorder(),
-    this.backgroundColor,
-    this.crossAxisAlignment = WrapCrossAlignment.start,
-    this.direction = Axis.horizontal,
-    this.disabledColor,
-    this.elevation,
-    this.labelPadding,
-    this.labelStyle,
-    this.materialTapTargetSize,
-    this.padding,
-    this.pressElevation,
-    this.runAlignment = WrapAlignment.start,
-    this.runSpacing = 0.0,
-    this.selectedColor,
-    this.selectedShadowColor,
-    this.shadowColor,
-    this.shape,
-    this.spacing = 0.0,
-    this.textDirection,
-    this.verticalDirection = VerticalDirection.down,
-    this.visualDensity,
-    ReactiveFormFieldCallback<T>? onChanged,
-  }) : super(builder: (field) {
-          final state = field;
-          final effectiveDecoration = decoration
-              .applyDefaults(Theme.of(state.context).inputDecorationTheme);
-
-          return InputDecorator(
-            decoration:
-                effectiveDecoration.copyWith(errorText: state.errorText),
-            child: Wrap(
-              direction: direction,
-              alignment: alignment,
-              crossAxisAlignment: crossAxisAlignment,
-              runAlignment: runAlignment,
-              runSpacing: runSpacing,
-              spacing: spacing,
-              textDirection: textDirection,
-              verticalDirection: verticalDirection,
-              children: <Widget>[
-                for (ReactiveChipOption<T> option in options)
-                  ChoiceChip(
-                    label: option,
-                    shape: shape,
-                    selected: field.value == option.value,
-                    onSelected: state.control.enabled
-                        ? (selected) {
-                            final choice = selected ? option.value : null;
-                            state.didChange(choice);
-                            onChanged?.call(field.control);
-                          }
-                        : null,
-                    avatar: option.avatar,
-                    selectedColor: selectedColor,
-                    disabledColor: disabledColor,
-                    backgroundColor: backgroundColor,
-                    shadowColor: shadowColor,
-                    selectedShadowColor: selectedShadowColor,
-                    elevation: elevation,
-                    pressElevation: pressElevation,
-                    materialTapTargetSize: materialTapTargetSize,
-                    labelStyle: labelStyle,
-                    labelPadding: labelPadding,
-                    padding: padding,
-                    visualDensity: visualDensity,
-                    avatarBorder: avatarBorder,
-                  ),
-              ],
-            ),
-          );
-        });
 
   ReactiveFormFieldState<T, T> createState() => ReactiveFormFieldState<T, T>();
 }

@@ -38,7 +38,7 @@ To install Data-Run-Mobile on your device, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/Hamza-ye/datarun-mobile.git
+   git clone https://github.com/Hamza-ye/datarunmobile.git
    ```
 2. **Navigate to the Project Directory**:
    ```bash

@@ -1,11 +1,6 @@
 import 'package:datarun/data_run/screens/form_module/form_template/form_element_template.dart';
 
 class FormValueCache {
-  final Map<String, dynamic> _formValueMap = {};
-  final FormFlatTemplate formFlatTemplate;
-
-  /// Store metadata for parent and nested repeat sections
-  final Map<String, Map<String, dynamic>> metadata = {};
 
   FormValueCache({
     Map<String, dynamic> formElementMap = const {},
@@ -13,6 +8,11 @@ class FormValueCache {
   }) {
     _formValueMap.addAll(formElementMap);
   }
+  final Map<String, dynamic> _formValueMap = {};
+  final FormFlatTemplate formFlatTemplate;
+
+  /// Store metadata for parent and nested repeat sections
+  final Map<String, Map<String, dynamic>> metadata = {};
 
   /// Store metadata for repeat sections
   void updateMetadata(String sectionPath, String itemId, dynamic metadataValue) {

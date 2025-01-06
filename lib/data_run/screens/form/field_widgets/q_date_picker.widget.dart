@@ -3,8 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
 import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
 import 'package:datarun/data_run/screens/form/inherited_widgets/form_metadata_inherit_widget.dart';
-import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 import 'package:d2_remote/core/datarun/utilities/date_utils.dart' as sdk;
 
 class QDatePickerField<T> extends ConsumerWidget {
@@ -18,15 +17,15 @@ class QDatePickerField<T> extends ConsumerWidget {
         .watch(
             formInstanceProvider(formMetadata: FormMetadataWidget.of(context)))
         .requireValue;
-    formInstance.form.control(element.pathRecursive) as FormControl<T>;
+    formInstance.form.control(element.elementPath!) as FormControl<T>;
     return ReactiveTextField<String>(
       // formControl: element.elementControl,
-      formControl: formInstance.form.control(element.pathRecursive)
+      formControl: formInstance.form.control(element.elementPath!)
           as FormControl<String>,
       readOnly: true,
       valueAccessor: QDateTimeValueAccessor(),
       decoration: InputDecoration(
-        enabled: element.elementControl!.enabled,
+        enabled: element.elementControl.enabled,
         labelText: element.label,
         suffixIcon: ReactiveDatePicker<String?>(
           formControl: element.elementControl as FormControl<String?>,
@@ -35,7 +34,7 @@ class QDatePickerField<T> extends ConsumerWidget {
           builder: (context, picker, child) {
             return IconButton(
               onPressed:
-                  element.elementControl!.enabled ? picker.showPicker : null,
+                  element.elementControl.enabled ? picker.showPicker : null,
               icon: const Icon(Icons.date_range),
             );
           },
@@ -51,7 +50,7 @@ class QDateTimeValueAccessor<T> extends ControlValueAccessor<String, String> {
   /// Converts value from UI data type to [control] data type.
   @override
   String? modelToViewValue(String? modelValue) {
-    return modelValue == null ? null : sdk.DateUtils.format(modelValue);
+    return modelValue == null ? null : sdk.DDateUtils.format(modelValue);
   }
 
   /// Returns the value that must be supplied to the UI widget.
@@ -59,6 +58,6 @@ class QDateTimeValueAccessor<T> extends ControlValueAccessor<String, String> {
   /// Converts value from [control] data type to UI data type.
   @override
   String? viewToModelValue(String? viewValue) {
-    return viewValue == null ? null : sdk.DateUtils.formatForDb(viewValue);
+    return viewValue == null ? null : sdk.DDateUtils.formatForDb(viewValue);
   }
 }

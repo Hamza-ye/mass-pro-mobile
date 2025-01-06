@@ -1,6 +1,5 @@
 import 'package:d2_remote/modules/datarun/common/standard_extensions.dart';
 import 'package:d2_remote/modules/metadatarun/project/entities/d_project.entity.dart';
-import 'package:datarun/commons/logging/logging.dart';
 import 'package:datarun/core/common/state.dart';
 import 'package:datarun/core/sync_manager/nmc_worker/sync_status_controller.dart';
 import 'package:datarun/core/sync_manager/nmc_worker/sync_status_data.dart';
@@ -20,22 +19,8 @@ HomeItemModel homeItemModel(HomeItemModelRef ref) {
 class HomeItemsModelsNotifier extends _$HomeItemsModelsNotifier {
   @override
   Future<IList<HomeItemModel>> build() async {
-    logInfo(
-        info: 'HomeItemsModelsNotifier', runtimeType: HomeItemsModelsNotifier);
     final syncStatusData = ref.watch(syncStatusControllerInstanceProvider
         .select((value) => value.syncStatusData));
-
-    ref.onCancel(() => logInfo(
-        info: 'onCancel HomeItemsModelsNotifier',
-        runtimeType: HomeItemsModelsNotifier));
-
-    ref.onDispose(() => logInfo(
-        info: 'onDispose HomeItemsModelsNotifier',
-        runtimeType: HomeItemsModelsNotifier));
-
-    ref.onDispose(() => logInfo(
-        info: 'onDispose HomeItemsModelsNotifier',
-        runtimeType: HomeItemsModelsNotifier));
 
     final IList<DProject> projects =
         await ref.watch(activitiesAccessRepositoryProvider).getActiveProjects();

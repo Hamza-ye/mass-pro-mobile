@@ -2,10 +2,6 @@ import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart
 import 'package:datarun/data_run/screens/form_module/form_template/form_element_template.dart';
 
 class FormStructureManager {
-  final Map<String, dynamic> _formValueMapBackup = {};
-  final Map<String, dynamic> _formValueMap = {};
-  final FormVersion formVersion;
-  final FormFlatTemplate formFlatTemplate;
 
   FormStructureManager(
       {Map<String, dynamic> formValueMap = const {},
@@ -14,6 +10,10 @@ class FormStructureManager {
     _formValueMapBackup.addAll({...formValueMap});
     _formValueMap.addAll({...formValueMap});
   }
+  final Map<String, dynamic> _formValueMapBackup = {};
+  final Map<String, dynamic> _formValueMap = {};
+  final FormVersion formVersion;
+  final FormFlatTemplate formFlatTemplate;
 
   void resetForm() {
     _formValueMap.clear();

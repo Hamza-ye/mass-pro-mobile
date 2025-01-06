@@ -3,13 +3,14 @@ import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/datarun_shared/utilities/authenticated_user.dart';
 import 'package:datarun/commons/constants.dart';
 import 'package:datarun/commons/errors_management/d_exception_reporter.dart';
-import 'package:datarun/commons/logging/logging.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/core/auth/user_session_manager.dart';
-import 'package:datarun/core/network/connectivy_service.dart';
 import 'package:datarun/data_run/screens/login_screen/login_page.dart';
 import 'package:datarun/utils/navigator_key.dart';
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+import '../network/connectivy_service.dart';
 
 part 'auth_service.g.dart';
 
@@ -19,17 +20,17 @@ AuthService authService(AuthServiceRef ref) {
 }
 
 class AuthService {
-  final UserSessionManager _sessionManager;
 
   AuthService(this._sessionManager);
+  final UserSessionManager _sessionManager;
 
   Future<bool> isAuthenticatedOnline() async {
     WidgetsFlutterBinding.ensureInitialized();
     final networkAvailable =
         await ConnectivityService.instance.isNetworkAvailable();
-    final isOnline = await ConnectivityService.instance.isOnline;
+    // final isOnline = await ConnectivityService.instance.isOnline;
 
-    if (!networkAvailable || !isOnline) {
+    if (!networkAvailable/* || !isOnline*/) {
       return await _attemptNetworkAuthentication();
     } else {
       /// Allow offline access with valid session
@@ -50,8 +51,7 @@ class AuthService {
       // log the user out
       if (sessionData == null) {
         logDebug(
-            info:
-                'No Active Session, user should not be logged in, logging-user-out');
+            'No Active Session, user should not be logged in, logging-user-out');
         await logout();
 
         throw AccountException(
@@ -132,7 +132,7 @@ class AuthService {
     final networkAvailable =
         await ConnectivityService.instance.isNetworkAvailable();
     if (_sessionManager.isFirstSession && !networkAvailable) {
-      logDebug(info: 'First time login user needs an active network');
+      logDebug('First time login user needs an active network');
       throw DError(
           errorCode: DErrorCode.noAuthenticatedUser,
           errorComponent: DErrorComponent.SDK,

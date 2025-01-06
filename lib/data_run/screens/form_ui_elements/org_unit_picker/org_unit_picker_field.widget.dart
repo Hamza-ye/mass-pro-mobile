@@ -20,8 +20,7 @@ class OrgUnitPickerField extends StatefulWidget {
       this.onChanged,
       this.focusNode,
       this.validator,
-      this.onSaved,
-      this.prefixIcon})
+      this.onSaved})
       : super(key: key);
 
   final String? initialValueUid;
@@ -31,7 +30,6 @@ class OrgUnitPickerField extends StatefulWidget {
 
   final ValueChanged<String?>? onSaved;
   final ValueChanged<String?>? onChanged;
-  final Widget? prefixIcon;
   final TreeNodeDataSource dataSource;
   final String? errorInvalidText;
   final String? fieldHintText;
@@ -156,6 +154,7 @@ class _OrgUnitPickerFieldState extends State<OrgUnitPickerField/*<T>*/ > {
       validator: widget.validator,
       decoration: InputDecoration(
         isDense: true,
+        prefixIcon: Icon(Icons.location_on),
         suffixIcon: _selectedNode != null && widget.showClearButton
             ? IconButton(
                 padding: EdgeInsets.zero,

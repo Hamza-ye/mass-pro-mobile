@@ -1,27 +1,33 @@
-import 'package:d2_remote/modules/datarun/form/shared/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
+import 'package:d2_remote/modules/datarun/form/shared/template_extensions/form_traverse_extension.dart';
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:datarun/data_run/screens/form/element/validation/form_element_validator.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class TemplateFormControlBuilder {
-  static AbstractControl<dynamic> createElementControl(
-      FieldTemplate fieldTemplate,
+  static AbstractControl<dynamic> createElementControl(Template fieldTemplate,
       {initialValue}) {
-    if (fieldTemplate.type.isSection) {
-      return createSectionFormGroup(fieldTemplate, initialValue: initialValue);
-    } else if (fieldTemplate.type.isRepeatSection) {
-      return createRepeatFormArray(fieldTemplate, initialValue: initialValue);
+    if (fieldTemplate.isSection) {
+      return createSectionFormGroup(fieldTemplate as SectionTemplate,
+          initialValue: initialValue);
+    } else if (fieldTemplate.isRepeat) {
+      return createRepeatFormArray(fieldTemplate as SectionTemplate,
+          initialValue: initialValue);
     } else {
-      return createFieldFormControl(fieldTemplate, initialValue: initialValue);
+      return createFieldFormControl(fieldTemplate as FieldTemplate,
+          initialValue: initialValue);
     }
   }
 
-  static FormGroup createSectionFormGroup<T>(FieldTemplate fieldTemplate,
+  static FormGroup createSectionFormGroup<T>(SectionTemplate fieldTemplate,
       {dynamic initialValue}) {
     final Map<String, AbstractControl<dynamic>> controls = {};
-    fieldTemplate.fields.sort((a, b) => (a.order).compareTo(b.order));
+    // fieldTemplate.fields.sort((a, b) => (a.order).compareTo(b.order));
 
-    for (var childTemplate in fieldTemplate.fields) {
+    for (var childTemplate
+        in fieldTemplate.fields.sort((a, b) => (a.order).compareTo(b.order))) {
       controls[childTemplate.name!] = createElementControl(childTemplate,
           initialValue: initialValue?[childTemplate.name]);
     }
@@ -29,7 +35,7 @@ class TemplateFormControlBuilder {
   }
 
   static FormArray<Map<String, Object?>> createRepeatFormArray(
-      FieldTemplate fieldTemplate,
+      SectionTemplate fieldTemplate,
       {dynamic initialValue}) {
     final formArray = FormArray<Map<String, Object?>>((initialValue ?? [])
         .map<FormGroup>(
@@ -45,6 +51,12 @@ class TemplateFormControlBuilder {
     switch (fieldTemplate.type) {
       case ValueType.Text:
       case ValueType.OrganisationUnit:
+      case ValueType.Team:
+        return FormControl<String>(
+          value: initialValue ?? fieldTemplate.defaultValue,
+          validators: FieldValidators.getValidators(fieldTemplate),
+        );
+      case ValueType.Progress:
         return FormControl<String>(
           value: initialValue ?? fieldTemplate.defaultValue,
           validators: FieldValidators.getValidators(fieldTemplate),

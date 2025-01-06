@@ -1304,10 +1304,10 @@ class S {
     );
   }
 
-  /// `MOH, NMCP Yemen`
+  /// `NMCP Yemen`
   String get developer {
     return Intl.message(
-      'MOH, NMCP Yemen',
+      'NMCP Yemen',
       name: 'developer',
       desc: '',
       args: [],
@@ -1464,13 +1464,73 @@ class S {
     );
   }
 
-  /// `At least ${error} Item must be provided`
-  String atLeastErrorItemMustBeProvided(Object error) {
+  /// `Save and Edit Next`
+  String get saveAndEditNext {
     return Intl.message(
-      'At least \$$error Item must be provided',
-      name: 'atLeastErrorItemMustBeProvided',
+      'Save and Edit Next',
+      name: 'saveAndEditNext',
       desc: '',
-      args: [error],
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get saveAndClose {
+    return Intl.message(
+      'Save',
+      name: 'saveAndClose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Another`
+  String get saveAndAddAnother {
+    return Intl.message(
+      'Add Another',
+      name: 'saveAndAddAnother',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Item`
+  String get newItem {
+    return Intl.message(
+      'New Item',
+      name: 'newItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Item`
+  String get editItem {
+    return Intl.message(
+      'Edit Item',
+      name: 'editItem',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unsaved changes`
+  String get unsavedChangesWarning {
+    return Intl.message(
+      'Unsaved changes',
+      name: 'unsavedChangesWarning',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Close without saving?`
+  String get closeWithoutSaving {
+    return Intl.message(
+      'Close without saving?',
+      name: 'closeWithoutSaving',
+      desc: '',
+      args: [],
     );
   }
 
@@ -1489,6 +1549,590 @@ class S {
     return Intl.message(
       'Barcode/QR Code',
       name: 'barcodeQrScan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accept code?`
+  String get acceptCode {
+    return Intl.message(
+      'Accept code?',
+      name: 'acceptCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scan barcode`
+  String get scanBarcode {
+    return Intl.message(
+      'Scan barcode',
+      name: 'scanBarcode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid scanned code!`
+  String get invalidScannedCode {
+    return Intl.message(
+      'Invalid scanned code!',
+      name: 'invalidScannedCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rescan`
+  String get rescan {
+    return Intl.message(
+      'Rescan',
+      name: 'rescan',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `GTIN`
+  String get gtin {
+    return Intl.message(
+      'GTIN',
+      name: 'gtin',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Batch`
+  String get batch {
+    return Intl.message(
+      'Batch',
+      name: 'batch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Serial`
+  String get serial {
+    return Intl.message(
+      'Serial',
+      name: 'serial',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Count`
+  String get count {
+    return Intl.message(
+      'Count',
+      name: 'count',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Production Date`
+  String get productionDate {
+    return Intl.message(
+      'Production Date',
+      name: 'productionDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Controller not ready.`
+  String get controllerNotReady {
+    return Intl.message(
+      'Controller not ready.',
+      name: 'controllerNotReady',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Permission denied`
+  String get permissionDenied {
+    return Intl.message(
+      'Permission denied',
+      name: 'permissionDenied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scanning is unsupported on this device`
+  String get scanningIsUnsupportedOnThisDevice {
+    return Intl.message(
+      'Scanning is unsupported on this device',
+      name: 'scanningIsUnsupportedOnThisDevice',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Generic Error`
+  String get genericError {
+    return Intl.message(
+      'Generic Error',
+      name: 'genericError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message(
+      'No',
+      name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `dueDate`
+  String get dueDate {
+    return Intl.message(
+      'dueDate',
+      name: 'dueDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `dueDay`
+  String get dueDay {
+    return Intl.message(
+      'dueDay',
+      name: 'dueDay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Scope`
+  String get scope {
+    return Intl.message(
+      'Scope',
+      name: 'scope',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forms`
+  String get formsAssigned {
+    return Intl.message(
+      'Forms',
+      name: 'formsAssigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View Details`
+  String get viewDetails {
+    return Intl.message(
+      'View Details',
+      name: 'viewDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resources`
+  String get resources {
+    return Intl.message(
+      'Resources',
+      name: 'resources',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Team`
+  String get team {
+    return Intl.message(
+      'Team',
+      name: 'team',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Started`
+  String get not_started {
+    return Intl.message(
+      'Not Started',
+      name: 'not_started',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `In Progress`
+  String get in_progress {
+    return Intl.message(
+      'In Progress',
+      name: 'in_progress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancelled`
+  String get cancelled {
+    return Intl.message(
+      'Cancelled',
+      name: 'cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Completed`
+  String get completed {
+    return Intl.message(
+      'Completed',
+      name: 'completed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rescheduled`
+  String get rescheduled {
+    return Intl.message(
+      'Rescheduled',
+      name: 'rescheduled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Merged`
+  String get merged {
+    return Intl.message(
+      'Merged',
+      name: 'merged',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reassigned`
+  String get reassigned {
+    return Intl.message(
+      'Reassigned',
+      name: 'reassigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assigned`
+  String get assigned {
+    return Intl.message(
+      'Assigned',
+      name: 'assigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Managed`
+  String get managed {
+    return Intl.message(
+      'Managed',
+      name: 'managed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Entity`
+  String get entity {
+    return Intl.message(
+      'Entity',
+      name: 'entity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Forms`
+  String get forms {
+    return Intl.message(
+      'Forms',
+      name: 'forms',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assignment Detail`
+  String get assignmentDetail {
+    return Intl.message(
+      'Assignment Detail',
+      name: 'assignmentDetail',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Activity`
+  String get activity {
+    return Intl.message(
+      'Activity',
+      name: 'activity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Status`
+  String get status {
+    return Intl.message(
+      'Status',
+      name: 'status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Allocated Resources`
+  String get allocatedResources {
+    return Intl.message(
+      'Allocated Resources',
+      name: 'allocatedResources',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reported Resources`
+  String get reportedResources {
+    return Intl.message(
+      'Reported Resources',
+      name: 'reportedResources',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Error Opening Form`
+  String get errorOpeningForm {
+    return Intl.message(
+      'Error Opening Form',
+      name: 'errorOpeningForm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Submissions`
+  String get noSubmissions {
+    return Intl.message(
+      'No Submissions',
+      name: 'noSubmissions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search...`
+  String get search {
+    return Intl.message(
+      'Search...',
+      name: 'search',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Day`
+  String get day {
+    return Intl.message(
+      'Day',
+      name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Toggle List/Table View`
+  String get toggleListTableView {
+    return Intl.message(
+      'Toggle List/Table View',
+      name: 'toggleListTableView',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Clear Filters`
+  String get clearFilters {
+    return Intl.message(
+      'Clear Filters',
+      name: 'clearFilters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assigned Team`
+  String get assignedTeam {
+    return Intl.message(
+      'Assigned Team',
+      name: 'assignedTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Managed Teams`
+  String get managedTeams {
+    return Intl.message(
+      'Managed Teams',
+      name: 'managedTeams',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assigned Assignments`
+  String get assignedAssignments {
+    return Intl.message(
+      'Assigned Assignments',
+      name: 'assignedAssignments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Managed Assignments`
+  String get managedAssignments {
+    return Intl.message(
+      'Managed Assignments',
+      name: 'managedAssignments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start Date`
+  String get startDate {
+    return Intl.message(
+      'Start Date',
+      name: 'startDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `End Date`
+  String get endDate {
+    return Intl.message(
+      'End Date',
+      name: 'endDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count, plural, =0{No Syncable submissions} =1{1 submission} =2{2 submissions} other{{count} submissions}}`
+  String syncSubmissions(num count) {
+    return Intl.plural(
+      count,
+      zero: 'No Syncable submissions',
+      one: '1 submission',
+      two: '2 submissions',
+      other: '$count submissions',
+      name: 'syncSubmissions',
+      desc: 'A plural message',
+      args: [count],
+    );
+  }
+
+  /// `All Submissions`
+  String get allSubmissions {
+    return Intl.message(
+      'All Submissions',
+      name: 'allSubmissions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Created Date`
+  String get createdDate {
+    return Intl.message(
+      'Created Date',
+      name: 'createdDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `LastModified Date`
+  String get lastmodifiedDate {
+    return Intl.message(
+      'LastModified Date',
+      name: 'lastmodifiedDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Population`
+  String get population {
+    return Intl.message(
+      'Population',
+      name: 'population',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Households`
+  String get households {
+    return Intl.message(
+      'Households',
+      name: 'households',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ITNs`
+  String get itns {
+    return Intl.message(
+      'ITNs',
+      name: 'itns',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Form`
+  String get selectForm {
+    return Intl.message(
+      'Select Form',
+      name: 'selectForm',
       desc: '',
       args: [],
     );

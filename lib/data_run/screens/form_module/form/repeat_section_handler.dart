@@ -1,9 +1,9 @@
 import 'package:datarun/data_run/screens/form_module/form/form_value_cache.dart';
 
 class RepeatSectionHandler {
-  final FormValueCache formValueCache;
 
   RepeatSectionHandler(this.formValueCache);
+  final FormValueCache formValueCache;
 
   // Add new item to nested repeat section
   void addNestedItem(String parentPath, String parentId, String nestedId, dynamic value) {

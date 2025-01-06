@@ -3,9 +3,8 @@ import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/core/auth/internet_aware_screen.dart';
 import 'package:datarun/core/auth/user_session_manager.dart';
 import 'package:datarun/core/sync_manager/sync_service.dart';
+import 'package:datarun/data_run/d_activity/activity_page.dart';
 import 'package:datarun/data_run/screens/home_screen/drawer/settings_page.dart';
-import 'package:datarun/data_run/screens/home_screen/home_deck/home_deck.widget.dart';
-import 'package:datarun/data_run/screens/home_screen/home_deck/home_items_models_notifier.dart';
 import 'package:datarun/data_run/screens/sync_screen/sync_screen.widget.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:datarun/utils/navigator_key.dart';
@@ -68,9 +67,12 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreen> {
                   title: Text(S.of(context).fetchUpdates),
                   subtitle: lastSyncTime != null
                       ? Text(
-                      sdk.DateUtils.dateTimeFormat().format(lastSyncTime))
+                          sdk.DDateUtils.dateTimeFormat().format(lastSyncTime))
                       : Text(S.of(context).noSyncYet),
-                  trailing: Icon(Icons.check_circle, color: userSessionManager.syncDone ? Colors.green : Colors.red),
+                  trailing: Icon(Icons.check_circle,
+                      color: userSessionManager.syncDone
+                          ? Colors.green
+                          : Colors.red),
                   onTap: () {
                     Navigator.pop(context);
                     Navigator.push(
@@ -83,7 +85,8 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreen> {
               ],
             ),
           ),
-          body: const HomeDeck(), // Main content
+          // body: const HomeDeck(), // Main content
+          body: const ActivityPage(), // Main content
         );
       },
     );
@@ -111,7 +114,7 @@ class _HomeScreenWidgetState extends ConsumerState<HomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.refresh(homeItemsModelsNotifierProvider);
+      // ref.refresh(homeItemsModelsNotifierProvider);
     });
   }
 }

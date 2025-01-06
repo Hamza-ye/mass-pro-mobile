@@ -32,18 +32,18 @@ class _InternetAwareAppBarState extends State<InternetAwareAppBar> {
     });
   }
 
-  void _showNoInternetBanner() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(S.of(context).noInternetAccess),
-      duration: const Duration(days: 1), // Make the banner stay persistent
-      action: SnackBarAction(
-        label: S.of(context).openSettings,
-        onPressed: () {
-          // Open the device's internet settings
-        },
-      ),
-    ));
-  }
+  // void _showNoInternetBanner() {
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //     content: Text(S.of(context).noInternetAccess),
+  //     duration: const Duration(days: 1), // Make the banner stay persistent
+  //     action: SnackBarAction(
+  //       label: S.of(context).openSettings,
+  //       onPressed: () {
+  //         // Open the device's internet settings
+  //       },
+  //     ),
+  //   ));
+  // }
 
   @override
   Widget build(BuildContext context) {

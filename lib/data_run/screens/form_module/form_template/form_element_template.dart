@@ -1,12 +1,11 @@
 import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/attribute_type.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/scanned_code_properties.dart';
 import 'package:d2_remote/modules/datarun/form/shared/form_option.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/option_set.entity.dart';
-import 'package:d2_remote/modules/datarun/form/shared/reference_field_info.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/rule.dart';
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:datarun/data_run/screens/form_module/form_template/form_element_template_iterator.dart';
-import 'package:equatable/equatable.dart';
 import 'package:datarun/data_run/screens/form_module/form_template/flat_template_factory.dart';
 import 'package:datarun/data_run/screens/form_module/form_template/path_walking_service.dart';
 
@@ -60,7 +59,7 @@ class FormFlatTemplate with PathWalkingService {
 
   String get defaultLocal => formTemplate.defaultLocal;
 
-  String get activity => formTemplate.activity;
+  // String get activity => formTemplate.activity;
 
   int get version => formTemplate.version;
 
@@ -80,11 +79,11 @@ class FormFlatTemplate with PathWalkingService {
 
   Map<String, String> get label => Map.unmodifiable(formTemplate.label);
 
-  List<String> get orgUnits => List.unmodifiable(formTemplate.orgUnits);
+  List<String> get orgUnits => <String>[];//List.unmodifiable(formTemplate.orgUnits);
 }
 
 // @immutable
-sealed class FormElementTemplate with TreeElement, EquatableMixin {
+sealed class FormElementTemplate with TreeElement/*, EquatableMixin*/ {
   FormElementTemplate({
     this.name,
     this.path,
@@ -93,7 +92,7 @@ sealed class FormElementTemplate with TreeElement, EquatableMixin {
     this.order = 0,
     this.fieldValueRenderingType,
     Iterable<Rule> rules = const [],
-    Map<String, String> label = const {},
+    Map<String, dynamic> label = const {},
     Map<String, dynamic> properties = const {},
     Iterable<String> ruleDependencies = const [],
   }) {
@@ -111,7 +110,7 @@ sealed class FormElementTemplate with TreeElement, EquatableMixin {
   final String? runtimePath;
   final int order;
   final String? fieldValueRenderingType;
-  final Map<String, String> _label = {};
+  final Map<String, dynamic> _label = {};
   final List<Rule> _rules = [];
   final List<String> _ruleDependencies = [];
   final Map<String, dynamic> _properties = {};
@@ -156,9 +155,9 @@ sealed class FormElementTemplate with TreeElement, EquatableMixin {
     _ruleDependencies.addAll(ruleDependencies);
   }
 
-  @override
-  List<Object?> get props =>
-      [type, name, path, order, _rules, _label, fieldValueRenderingType];
+  // @override
+  // List<Object?> get props =>
+  //     [type, name, path, order, _rules, _label, fieldValueRenderingType];
 }
 
 // @immutable
@@ -179,10 +178,10 @@ class FieldElementTemplate extends FormElementTemplate {
     this.mandatory = false,
     this.calculation,
     this.listName,
-    this.referenceInfo,
     this.choiceFilter,
     this.defaultValue,
     this.attributeType,
+    this.scannedCodeProperties,
     Iterable<FormOption> options = const [],
     Iterable<String> filterDependencies = const [],
   }) {
@@ -194,11 +193,11 @@ class FieldElementTemplate extends FormElementTemplate {
   final String? listName;
   final bool mainField;
   final bool mandatory;
-  final ReferenceInfo? referenceInfo;
   final String? choiceFilter;
   final dynamic defaultValue;
   final AttributeType? attributeType;
   final String? calculation;
+  final ScannedCodeProperties? scannedCodeProperties;
   final List<FormOption> _options = [];
 
   /// <name, path>
@@ -255,8 +254,8 @@ class SectionElementTemplate extends FormElementTemplate {
     _children.addAll(children);
   }
 
-  @override
-  List<Object?> get props => super.props..addAll([itemTitle]);
+  // @override
+  // List<Object?> get props => super.props..addAll([itemTitle]);
 
   @override
   ValueType get type => ValueType.Section;
@@ -291,6 +290,6 @@ class RepeatElementTemplate extends SectionElementTemplate {
   @override
   ValueType get type => ValueType.RepeatableSection;
 
-  @override
-  List<Object?> get props => super.props..addAll([itemTitle]);
+  // @override
+  // List<Object?> get props => super.props..addAll([itemTitle]);
 }

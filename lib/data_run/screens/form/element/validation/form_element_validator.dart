@@ -1,18 +1,26 @@
-import 'package:d2_remote/modules/datarun/form/shared/field_template.entity.dart';
+import 'package:d2_remote/modules/datarun/form/shared/field_template/field_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:datarun/generated/l10n.dart';
-import 'package:reactive_forms_annotations/reactive_forms_annotations.dart';
+import 'package:flutter/material.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 class FieldValidators {
-  static List<Validator<dynamic>> getValidators(ElementAttributesMixin element) {
+  static String ArReg1 =
+      r'^[\u0621-\u064A]{2,}[ ]{1}[\u0621-\u064A]{2,}[ ]{1}[\u0621-\u064A]{2,}[ ]{1}[\u0621-\u064A]{2,}[ ]{0,1}[\u0621-\u064A]{0,}[ ]{0,1}$';
+  static String ArReg2 = r'^([\u0621-\u064A]+\s){3}[\u0621-\u064A]+$';
+
+  static List<Validator<dynamic>> getValidators(
+      ElementAttributesMixin element) {
     Set<Validator<dynamic>> validators = Set();
 
+    if (element.type == ValueType.FullName)
+      validators.add(Validators.pattern(ArReg1));
     if (element.mandatory) validators.add(Validators.required);
     if (element.type == ValueType.Email) validators.add(Validators.email);
     if (element.type == ValueType.Age)
       validators
           .add(Validators.number(allowedDecimals: 2, allowNegatives: false));
-    if (element.type.isInteger) validators.add(Validators.number());
+    if (element.type?.isInteger ?? false) validators.add(Validators.number());
     if (element.type == ValueType.IntegerZeroOrPositive)
       validators.addAll(
           [Validators.number(allowNegatives: false), Validators.min(0)]);
@@ -29,13 +37,15 @@ class FieldValidators {
       ElementAttributesMixin element) {
     final Map<String, String Function(Object error)> messages = {};
 
-    if (element.mandatory) messages['required'] = (error) => 'This field is mandatory.';
-    if (element.type == ValueType.Email) messages['email'] = (error) => 'Invalid email format.';
+    if (element.mandatory)
+      messages['required'] = (error) => 'This field is mandatory.';
+    if (element.type == ValueType.Email)
+      messages['email'] = (error) => 'Invalid email format.';
     if (element.type == ValueType.Age) {
       messages['number'] = (error) => 'Age must be a valid number.';
       messages['min'] = (error) => 'Age cannot be negative.';
     }
-    if (element.type.isInteger) {
+    if (element.type?.isInteger ?? false) {
       messages['number'] = (error) => 'Please enter an integer.';
     }
     if (element.type == ValueType.IntegerZeroOrPositive) {
@@ -58,13 +68,13 @@ class FieldValidators {
   }
 }
 
-
-Map<String, ValidationMessageFunction> validationMessages(BuildContext context) => {
-  'required': (error) => S.current.thisFieldIsRequired,
-  'email': (error) => S.current.pleaseEnterAValidEmailAddress,
-  'number': (error) => S.current.enterAValidNumber,
-  'min': (error) => S.current.valueMustBeGreaterThanOrEqualToError(error),
-  'max': (error) => S.current.valueMustBeLessThanOrEqualToError(error),
-  'maxLength': (error) => S.current.maximumAllowedLengthIsError(error),
-  'minLength': (error) => S.of(context).atLeastErrorItemMustBeProvided(error),
-};
+Map<String, ValidationMessageFunction> validationMessages(
+        BuildContext context) =>
+    {
+      'required': (error) => S.current.thisFieldIsRequired,
+      'email': (error) => S.current.pleaseEnterAValidEmailAddress,
+      'number': (error) => S.current.enterAValidNumber,
+      'min': (error) => S.current.valueMustBeGreaterThanOrEqualToError(error),
+      'max': (error) => S.current.valueMustBeLessThanOrEqualToError(error),
+      'maxLength': (error) => S.current.maximumAllowedLengthIsError(error),
+    };
