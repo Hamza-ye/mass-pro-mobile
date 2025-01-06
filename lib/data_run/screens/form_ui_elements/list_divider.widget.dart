@@ -8,7 +8,7 @@ class ListDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color? color = convertHexStringToColor(kDefaultLightBorderColor);
+    final Color? color = convertHexStringToColor('#dfdfdf');
     return Container(
       color: color,
       child: Divider(

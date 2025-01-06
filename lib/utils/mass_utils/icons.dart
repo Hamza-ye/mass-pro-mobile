@@ -37,22 +37,22 @@ IconData? getFileTypeIcon(String type) {
       return null;
   }
 }
-
-IconData getSettingIcon(String section) {
-  switch (section) {
-    case kSettingsUserDetails:
-      return Icons.person;
-    // case kSettingsLocalization:
-    //   return Icons.language;
-    case kSettingsImportExport:
-      return Icons.import_export;
-    case kSettingsDeviceSettings:
-      return Icons.settings;
-    case kSettingsUserManagement:
-      return Icons.people;
-    case kSettingsAccountManagement:
-      return MdiIcons.shieldAccount;
-    default:
-      return Icons.question_mark;
-  }
-}
+//
+// IconData getSettingIcon(String section) {
+//   switch (section) {
+//     case kSettingsUserDetails:
+//       return Icons.person;
+//     // case kSettingsLocalization:
+//     //   return Icons.language;
+//     case kSettingsImportExport:
+//       return Icons.import_export;
+//     case kSettingsDeviceSettings:
+//       return Icons.settings;
+//     case kSettingsUserManagement:
+//       return Icons.people;
+//     case kSettingsAccountManagement:
+//       return MdiIcons.shieldAccount;
+//     default:
+//       return Icons.question_mark;
+//   }
+// }

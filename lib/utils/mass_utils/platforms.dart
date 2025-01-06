@@ -153,61 +153,23 @@ String getPlatformName() {
 //   }
 // }
 
-String getNativeAppUrl(String platform) {
-  switch (platform) {
-    case kPlatformAndroid:
-      return kGoogleStoreUrl;
-    case kPlatformiPhone:
-      return kAppleStoreUrl;
-    case kPlatformWindows:
-      return kWindowsUrl;
-    case kPlatformMacOS:
-      return kMacOSUrl;
-    case kPlatformLinux:
-      return kLinuxUrl;
-  }
+// String getNativeAppUrl(String platform) {
+//   switch (platform) {
+//     case kPlatformAndroid:
+//       return kGoogleStoreUrl;
+//     case kPlatformiPhone:
+//       return kAppleStoreUrl;
+//     case kPlatformWindows:
+//       return kWindowsUrl;
+//     case kPlatformMacOS:
+//       return kMacOSUrl;
+//     case kPlatformLinux:
+//       return kLinuxUrl;
+//   }
+//
+//   return '';
+// }
 
-  return '';
-}
-
-IconData? getNativeAppIcon(String platform) {
-  switch (platform) {
-    case kPlatformAndroid:
-      return Icons.android;
-    case kPlatformiPhone:
-      return MdiIcons.apple;
-    case kPlatformWindows:
-      return MdiIcons.microsoft;
-    case kPlatformMacOS:
-      return MdiIcons.apple;
-    case kPlatformLinux:
-      return MdiIcons.linux;
-  }
-
-  return null;
-}
-
-String getPlatform(BuildContext context) =>
-    Theme.of(context).platform == TargetPlatform.iOS ? 'ios' : 'android';
-
-String getRateAppURL(BuildContext context) {
-  if (kIsWeb) {
-    return kCapterralUrl;
-  }
-
-  switch (Theme.of(context).platform) {
-    case TargetPlatform.android:
-      return kGoogleStoreUrl;
-    case TargetPlatform.iOS:
-      return kAppleStoreUrl;
-    case TargetPlatform.macOS:
-      return kMacOSUrl;
-    case TargetPlatform.windows:
-      return kWindowsUrl;
-    default:
-      return kCapterralUrl;
-  }
-}
 
 // AppLayout getLayout(BuildContext context) =>
 //     context.read<AppBloc>().state.prefState.appLayout;
