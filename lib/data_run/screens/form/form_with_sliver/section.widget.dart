@@ -39,6 +39,7 @@ class SectionWidget extends HookConsumerWidget {
           child: Text(element.label, style: TextStyle(color: Colors.white)),
         ),
         sliver: MultiSliver(
+          pushPinnedChildren: true,
           children: buildSliverList(element.elements.values),
         ));
   }

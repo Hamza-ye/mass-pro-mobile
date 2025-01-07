@@ -1,5 +1,6 @@
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
+import 'package:datarun/core/utils/get_item_local_string.dart';
 import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
 import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
@@ -21,14 +22,13 @@ class FormSubmissionCreate extends ConsumerStatefulWidget {
 }
 
 class FormSubmissionCreateState extends ConsumerState<FormSubmissionCreate> {
-  bool _isLoading = false;
+  // bool _isLoading = false;
 
   Future<DataFormSubmission> _createEntity(
       BuildContext context, FormVersion formTemplate) async {
     final activityModel = ActivityInheritedWidget.of(context);
-    final submissionInitialRepository = ref.read(
-        formSubmissionsProvider(formTemplate.formTemplate)
-            .notifier);
+    final submissionInitialRepository =
+        ref.read(formSubmissionsProvider(formTemplate.formTemplate).notifier);
 
     final submission = await submissionInitialRepository.createNewSubmission(
       formVersion: formTemplate.id,
@@ -42,21 +42,21 @@ class FormSubmissionCreateState extends ConsumerState<FormSubmissionCreate> {
 
   Future<void> createAndPopupWithResult(
       BuildContext context, FormVersion formTemplate) async {
-    setState(() {
-      _isLoading = true;
-    });
+    // setState(() {
+    //   _isLoading = true;
+    // });
 
     DataFormSubmission? createdSubmission;
     try {
       createdSubmission = await _createEntity(context, formTemplate);
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
       widget.onNewFormCreated.call(createdSubmission);
     } catch (e) {
-      setState(() {
-        _isLoading = false;
-      });
+      // setState(() {
+      //   _isLoading = false;
+      // });
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${S.of(context).errorOpeningNewForm}: $e')),
       );
@@ -65,47 +65,85 @@ class FormSubmissionCreateState extends ConsumerState<FormSubmissionCreate> {
 
   @override
   Widget build(BuildContext context) {
-    // final formTemplateAsync =
-    //     ref.watch(assignmentFormsProvider(widget.assignment.id));
-    // final formName = getItemLocalString(formTemplates[index].label,
-    //     defaultString: formTemplates[index].name);
-    return Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Text(
-        '${S.of(context).selectForm} (${S.of(context).form(widget.assignment.forms.length)})',
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.document_scanner, size: 30, color: Theme.of(context).primaryColor),
+              const SizedBox(width: 8.0),
+              Expanded(
+                child: Text(
+                  S.of(context).selectForm,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8.0),
+              Text(
+                '(${S.of(context).form(widget.assignment.forms.length)})',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20.0),
+          Divider(color: Colors.grey.shade300, thickness: 1.0),
+          const SizedBox(height: 10.0),
 
-        style: Theme.of(context).textTheme.titleMedium,
+          Expanded(
+            child: ListView.builder(
+              itemCount: widget.assignment.forms.length,
+              itemBuilder: (context, index) {
+                final form = widget.assignment.forms[index];
+                if (!ActivityInheritedWidget.of(context).assignedForms.contains(form)) {
+                  return const SizedBox.shrink();
+                }
+
+                final formTemplateAsync = ref.watch(
+                  latestFormTemplateProvider(formId: form),
+                );
+
+                return AsyncValueWidget(
+                  value: formTemplateAsync,
+                  valueBuilder: (formTemplate) {
+                    return ListTile(
+                      leading: Icon(Icons.description, color: Theme.of(context).primaryColor),
+                      title: Text(
+                        getItemLocalString(formTemplate.label),
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        softWrap: true,
+                      ),
+                      subtitle: formTemplate.description != null
+                          ? Text(
+                        formTemplate.description!,
+                        style: Theme.of(context).textTheme.bodySmall,
+                        softWrap: true,
+                      )
+                          : null,
+                      onTap: () => createAndPopupWithResult(context, formTemplate),
+                      trailing: const Icon(Icons.chevron_right),
+                      contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      tileColor: Colors.grey.shade100,
+                      hoverColor: Theme.of(context).primaryColor.withOpacity(0.1),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
-    ),
-    Divider(),
-    Expanded(
-      child: ListView(
-        children: widget.assignment.forms
-            .where((f) =>
-                ActivityInheritedWidget.of(context).assignedForms.contains(f))
-            .map((f) {
-          final formTemplateAsync =
-              ref.watch(latestFormTemplateProvider(formId: f));
-          return AsyncValueWidget(
-              value: formTemplateAsync,
-              valueBuilder: (formTemplate) {
-                return _isLoading
-                    ? Center(child: CircularProgressIndicator())
-                    : ListTile(
-                        title: Text(formTemplate.name!),
-                        // subtitle: Text(
-                        //     '${formTemplate.name}'),
-                        onTap: () =>
-                            createAndPopupWithResult(context, formTemplate),
-                      );
-              });
-        }).toList(),
-      ),
-    ),
-  ],
-);
+    );
   }
 }

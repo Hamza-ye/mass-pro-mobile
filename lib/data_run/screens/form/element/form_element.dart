@@ -39,13 +39,13 @@ part '../../../form/scanned_code/gs1_scanned_item.dart';
 typedef ElementControl<T> = AbstractControl<T>? Function(String path);
 
 sealed class FormElementInstance<T> {
-
   FormElementInstance(
       {required this.form,
       required Template template,
       required FormElementState elementState})
       : _elementState = elementState,
         _template = template;
+
   Stream<FormElementState> get propertiesChanged =>
       (propertiesChangedSubject ??=
               BehaviorSubject<FormElementState>.seeded(_elementState))
@@ -182,6 +182,9 @@ sealed class FormElementInstance<T> {
 
   void markAsVisible({bool updateParent = true, bool emitEvent = true}) {
     logDebug('${name}, mark as visible');
+    if (template is FieldTemplate && (template as FieldTemplate).mandatory) {
+      markAsMandatory(emitEvent: false);
+    }
     if (!hidden) {
       return;
     }

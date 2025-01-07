@@ -4,13 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AddMetadataSubmissionForm extends StatefulHookConsumerWidget {
-  final Function(MetadataSubmissionUpdate) onSubmit;
-
-  // orgUnit
-  final String resourceId;
-  final String submissionId;
-  final MetadataSubmissionUpdate? initialData;
-
   const AddMetadataSubmissionForm({
     super.key,
     required this.onSubmit,
@@ -18,6 +11,13 @@ class AddMetadataSubmissionForm extends StatefulHookConsumerWidget {
     required this.submissionId,
     required this.resourceId,
   });
+
+  final Function(MetadataSubmissionUpdate) onSubmit;
+
+  // orgUnit
+  final String resourceId;
+  final String submissionId;
+  final MetadataSubmissionUpdate? initialData;
 
   @override
   _AddMetadataSubmissionFormState createState() =>

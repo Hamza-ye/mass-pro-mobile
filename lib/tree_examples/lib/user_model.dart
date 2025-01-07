@@ -1,8 +1,12 @@
 class UserModel {
-  final String id;
-  final DateTime createdAt;
-  final String name;
-  final String avatar;
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'],
+      createdAt: DateTime.parse(json['createdAt']),
+      name: json['name'],
+      avatar: json['avatar'],
+    );
+  }
 
   UserModel({
     required this.id,
@@ -11,16 +15,12 @@ class UserModel {
     required this.avatar,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    return UserModel(
-      id: json["id"],
-      createdAt: DateTime.parse(json["createdAt"]),
-      name: json["name"],
-      avatar: json["avatar"],
-    );
-  }
+  final String id;
+  final DateTime createdAt;
+  final String name;
+  final String avatar;
 
-  static List<UserModel> fromJsonList(List list) {
+  static List<UserModel> fromJsonList(List<dynamic> list) {
     return list.map((item) => UserModel.fromJson(item)).toList();
   }
 

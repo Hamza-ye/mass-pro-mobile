@@ -236,8 +236,6 @@ class _EagerInitialization extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final formInstance = ref.watch(
         formInstanceProvider(formMetadata: FormMetadataWidget.of(context)));
-    final submissions = ref.watch(formSubmissionsProvider(
-        FormMetadataWidget.of(context).formId.split('_').first));
     if (formInstance.isLoading) {
       return const Center(child: CircularProgressIndicator());
     } else if (formInstance.hasError) {

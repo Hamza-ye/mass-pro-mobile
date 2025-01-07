@@ -13,7 +13,7 @@ class ManageTeamsScreen extends ConsumerWidget {
 
     // Apply filter and sorting logic
     final filteredTeams = teams
-        .where((team) => filter == null || team.name.contains(filter!))
+        .where((team) => filter == null || team.name.contains(filter))
         .toList()
       ..sort((a, b) {
         if (sort == 'Alphabetical') return a.name.compareTo(b.name);

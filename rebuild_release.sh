@@ -1,5 +1,5 @@
 # dart fix --apply --code unused_import
-# flutter build appbundle
+# flutter build appbundle --release
 
 # split per platform ARM64, ARM, x86_64
 #flutter build apk --split-per-abi

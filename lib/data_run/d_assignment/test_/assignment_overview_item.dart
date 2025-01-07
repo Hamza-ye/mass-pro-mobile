@@ -27,7 +27,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchQuery =
-    ref.watch(filterQueryProvider.select((value) => value.searchQuery));
+        ref.watch(filterQueryProvider.select((value) => value.searchQuery));
     final activityModel = ActivityInheritedWidget.of(context);
     return Card(
       color: getCardColor(assignment.status),
@@ -53,9 +53,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
             _buildDetailRow(
               context,
               icon: Icons.category,
-              label: S
-                  .of(context)
-                  .scope,
+              label: S.of(context).scope,
               value: Intl.message(assignment.scope.name.toLowerCase()),
               style: TextStyle(color: Colors.grey[700]),
             ),
@@ -71,9 +69,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
             const SizedBox(height: 8),
             _buildDetailIcon(
                 Icons.group,
-                '${S
-                    .of(context)
-                    .team}: ${assignment.teamCode}',
+                '${S.of(context).team}: ${assignment.teamCode}',
                 searchQuery,
                 context),
             const SizedBox(height: 16),
@@ -82,43 +78,33 @@ class AssignmentOverviewItem extends ConsumerWidget {
               _buildDetailRow(
                 context,
                 icon: Icons.calendar_today,
-                label: S
-                    .of(context)
-                    .dueDate,
+                label: S.of(context).dueDate,
                 value: formatDate(assignment.dueDate!, context),
                 style: assignment.dueDate!.isBefore(DateTime.now())
-                    ? Theme
-                    .of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.red)
-                    : Theme
-                    .of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.grey[700]),
+                    ? Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.red)
+                    : Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.grey[700]),
               ),
             if (assignment.startDay != null)
               _buildDetailRow(
                 context,
                 icon: Icons.calendar_today,
-                label: S
-                    .of(context)
-                    .dueDay,
-                value: '${S
-                    .of(context)
-                    .day} ${assignment.startDay}',
+                label: S.of(context).dueDay,
+                value: '${S.of(context).day} ${assignment.startDay}',
                 style: assignment.dueDate!.isBefore(DateTime.now())
-                    ? Theme
-                    .of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.red)
-                    : Theme
-                    .of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.grey[700]),
+                    ? Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.red)
+                    : Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.grey[700]),
               ),
             if (assignment.rescheduledDate != null)
               _buildDetailIcon(
@@ -131,13 +117,8 @@ class AssignmentOverviewItem extends ConsumerWidget {
 
             // Forms Section
             Text(
-              '${S
-                  .of(context)
-                  .formsAssigned}: ${assignment.forms.length}',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .labelMedium,
+              '${S.of(context).formsAssigned}: ${assignment.forms.length}',
+              style: Theme.of(context).textTheme.labelMedium,
               softWrap: true,
             ),
 
@@ -145,10 +126,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
             // Resources Section
 
             _buildResourcesComparison(context,
-                ActivityInheritedWidget
-                    .of(context)
-                    .managedTeams
-                    .length > 0),
+                ActivityInheritedWidget.of(context).managedTeams.length > 0),
 
             const SizedBox(height: 16),
 
@@ -166,20 +144,16 @@ class AssignmentOverviewItem extends ConsumerWidget {
                               context, assignment, activityModel);
                           ref.invalidate(assignmentsProvider);
                         },
-                        icon: const Icon(Icons.file_open),
+                        icon: const Icon(Icons.document_scanner),
                         label: Text(
-                          S
-                              .of(context)
-                              .openNewForm,
+                          S.of(context).openNewForm,
                           softWrap: true,
                         ),
                       ),
                       TextButton.icon(
                         onPressed: onViewDetails,
                         icon: const Icon(Icons.info_outline),
-                        label: Text(S
-                            .of(context)
-                            .viewDetails, softWrap: true),
+                        label: Text(S.of(context).viewDetails, softWrap: true),
                       ),
                     ],
                   ),
@@ -209,17 +183,13 @@ class AssignmentOverviewItem extends ConsumerWidget {
   }
 
   Color? getCardColor(AssignmentStatus status) {
-    if (assignment.status.isNotStarted() ||
-        assignment.status.isRescheduled()) {
-      return Colors.grey
-          .withOpacity(0.3); // Set the color to gray
+    if (assignment.status.isNotStarted() || assignment.status.isRescheduled()) {
+      return Colors.grey.withOpacity(0.3); // Set the color to gray
     }
     if (assignment.status.isDone()) {
       return null; // Set the color to gray
     }
-    return Colors.greenAccent
-        .withOpacity(0.3); // Use default color
-
+    return Colors.greenAccent.withOpacity(0.3); // Use default color
   }
 
   //
@@ -254,8 +224,8 @@ class AssignmentOverviewItem extends ConsumerWidget {
   //   }
   // }
   //
-  Widget _buildHighlightedText(String text, String searchQuery,
-      BuildContext context) {
+  Widget _buildHighlightedText(
+      String text, String searchQuery, BuildContext context) {
     if (searchQuery.isEmpty) {
       return Text(text, softWrap: true);
     }
@@ -285,14 +255,12 @@ class AssignmentOverviewItem extends ConsumerWidget {
 
     return RichText(
       text:
-      TextSpan(style: DefaultTextStyle
-          .of(context)
-          .style, children: spans),
+          TextSpan(style: DefaultTextStyle.of(context).style, children: spans),
     );
   }
 
-  Widget _buildDetailIcon(IconData icon, String value, String searchQuery,
-      BuildContext context) {
+  Widget _buildDetailIcon(
+      IconData icon, String value, String searchQuery, BuildContext context) {
     return Row(
       children: [
         Icon(icon, size: 20, color: Colors.grey[600]),
@@ -307,13 +275,8 @@ class AssignmentOverviewItem extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          S
-              .of(context)
-              .resources,
-          style: Theme
-              .of(context)
-              .textTheme
-              .labelMedium,
+          S.of(context).resources,
+          style: Theme.of(context).textTheme.labelMedium,
         ),
         const SizedBox(height: 8),
         ...assignment.allocatedResources.keys.map((key) {
@@ -324,17 +287,11 @@ class AssignmentOverviewItem extends ConsumerWidget {
             children: [
               Text(
                 Intl.message(key.toLowerCase()),
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .bodySmall,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
               Text(
                 showTarget ? '${reported} / $allocated' : '$reported',
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .bodySmall,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ],
           );
@@ -345,10 +302,10 @@ class AssignmentOverviewItem extends ConsumerWidget {
 
   Widget _buildDetailRow(BuildContext context,
       {required IconData icon,
-        required String label,
-        required String value,
-        String searchQuery = '',
-        TextStyle? style}) {
+      required String label,
+      required String value,
+      String searchQuery = '',
+      TextStyle? style}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(

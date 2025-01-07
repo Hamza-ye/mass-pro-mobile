@@ -19,22 +19,6 @@ class AssignmentTableView extends HookConsumerWidget {
     final assignmentsAsync = ref.watch(filterAssignmentsProvider(scope));
     final searchQuery = ref.watch(filterQueryProvider).searchQuery;
 
-    // final _sortColumnIndex = useState<int?>(null);
-    // final _sortAscending = useState(true);
-    //
-    // void _sort<T>(Comparable<T> Function(AssignmentModel d) getField,
-    //     int columnIndex, bool ascending) {
-    //   submissions.value.sort((a, b) {
-    //     final aValue = getField(a);
-    //     final bValue = getField(b);
-    //     return ascending
-    //         ? Comparable.compare(aValue, bValue)
-    //         : Comparable.compare(bValue, aValue);
-    //   });
-    //   _sortColumnIndex.value = columnIndex;
-    //   _sortAscending.value = ascending;
-    // }
-
     return AsyncValueWidget(
       value: assignmentsAsync,
       valueBuilder: (assignments) {
@@ -45,26 +29,42 @@ class AssignmentTableView extends HookConsumerWidget {
 
   Widget _buildTable(BuildContext context, List<AssignmentModel> assignments,
       String searchQuery) {
+    Map<String, dynamic>? allocatedHeaders =
+        assignments.firstOrNull?.allocatedResources;
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: DataTable(
+          showCheckboxColumn: false,
           columns: <DataColumn>[
             DataColumn(label: Text(S.current.dueDay)),
             DataColumn(label: Text(S.current.status)),
             DataColumn(label: Text(S.current.entity)),
             DataColumn(label: Text(S.current.team)),
+            if (allocatedHeaders != null)
+              ...allocatedHeaders.entries
+                  .map((entry) => DataColumn(
+                          label: Text(
+                        Intl.message(entry.key.toLowerCase()),
+                      )))
+                  .toList(),
+            if (allocatedHeaders != null)
+              ...allocatedHeaders.entries
+                  .map((entry) => DataColumn(
+                          label: Text(
+                        '${Intl.message(entry.key.toLowerCase())} ${S.of(context).reported}',
+                      )))
+                  .toList(),
             DataColumn(label: Text(S.current.scope)),
             DataColumn(label: Text(S.current.dueDate)),
             DataColumn(label: Text(S.current.rescheduled)),
-            DataColumn(label: Text(S.current.allocatedResources)),
-            DataColumn(label: Text(S.current.reportedResources)),
           ],
           rows: assignments
               .map((assignment) => DataRow(
-                    color: MaterialStateProperty.resolveWith<Color?>(
-                      (Set<MaterialState> states) {
+                    color: WidgetStateProperty.resolveWith<Color?>(
+                      (Set<WidgetState> states) {
                         if (assignment.status.isNotStarted() ||
                             assignment.status.isRescheduled()) {
                           return Colors.grey
@@ -73,8 +73,7 @@ class AssignmentTableView extends HookConsumerWidget {
                         if (assignment.status.isDone()) {
                           return null; // Set the color to gray
                         }
-                        return Colors.greenAccent
-                            .withOpacity(0.3);
+                        return Colors.greenAccent.withOpacity(0.3);
                       },
                     ),
                     cells: <DataCell>[
@@ -82,14 +81,36 @@ class AssignmentTableView extends HookConsumerWidget {
                           '${S.of(context).day} ${assignment.startDay}',
                           searchQuery)),
                       DataCell(buildStatusBadge(assignment.status)),
-                      DataCell(_buildHighlightedText(
-                          '${assignment.entityCode} - ${assignment.entityName}',
-                          searchQuery)),
-                      DataCell(Row(children: [
-                        Icon(Icons.group),
-                        SizedBox(width: 4),
-                        Text('${assignment.teamCode}')
-                      ])),
+                      DataCell(Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            _buildHighlightedText(
+                                '${assignment.entityCode}', searchQuery),
+                            _buildHighlightedText(
+                                '${assignment.entityName}', searchQuery)
+                          ])),
+                      DataCell(Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.group),
+                            Text('${assignment.teamCode}'),
+                            // SizedBox(width: 4),
+                          ])),
+                      if (allocatedHeaders != null)
+                        ...assignment.allocatedResources.entries
+                            .map((entry) => DataCell(Text(
+                                  entry.value?.toString() ?? '-',
+                                ))),
+                      if (allocatedHeaders != null)
+                        ...assignment.allocatedResources.keys
+                            .map((key) => DataCell(Text(
+                                  assignment
+                                          .reportedResources[key.toLowerCase()]
+                                          ?.toString() ??
+                                      '-',
+                                ))),
                       DataCell(Text(
                           Intl.message(assignment.scope.name.toLowerCase()))),
                       DataCell(Text(assignment.dueDate != null
@@ -100,8 +121,6 @@ class AssignmentTableView extends HookConsumerWidget {
                           ? sdk.DDateUtils.uiDateFormat()
                               .format(assignment.rescheduledDate!)
                           : '')),
-                      DataCell(Text(assignment.allocatedResources.toString())),
-                      DataCell(Text(assignment.reportedResources.toString())),
                     ],
                     onSelectChanged: (_) => onViewDetails(assignment),
                   ))

@@ -1,8 +1,5 @@
-import 'package:d2_remote/d2_remote.dart';
-import 'package:d2_remote/modules/datarun/form/entities/metadata_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/entities/metadata_submission_update.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
-import 'package:datarun/data_run/screens/form/field_widgets/reference_search/add_metadata_submission_form.dart';
 import 'package:datarun/data_run/screens/form/field_widgets/reference_search/metadata_submission_update_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -140,30 +137,26 @@ class QReferenceDropDownSearchFieldState
     );
   }
 
-  Future<void> _openAddNewForm(
-      BuildContext context, String submissionId, String orgUnit) async {
-    MetadataSubmission _metadataSubmission = await D2Remote
-        .formModule.metaSubmission
-        .where(attribute: 'resourceId', value: orgUnit)
-        .getOne();
-
-    return showDialog(
-      context: context,
-      builder: (_) => Dialog(
-        child: AddMetadataSubmissionForm(
-          onSubmit: (newItem) {
-            // Handle adding new item to the dropdown's list
-            ref
-                .read(metadataSubmissionUpdatesProvider(orgUnit).notifier)
-                .add(newItem);
-            _dropDownCustomBGKey.currentState?.changeSelectedItem(newItem.id);
-          },
-          submissionId: submissionId,
-          resourceId: orgUnit,
-        ),
-      ),
-    );
-  }
+  // Future<void> _openAddNewForm(
+  //     BuildContext context, String submissionId, String orgUnit) async {
+  //
+  //   return showDialog(
+  //     context: context,
+  //     builder: (_) => Dialog(
+  //       child: AddMetadataSubmissionForm(
+  //         onSubmit: (newItem) {
+  //           // Handle adding new item to the dropdown's list
+  //           ref
+  //               .read(metadataSubmissionUpdatesProvider(orgUnit).notifier)
+  //               .add(newItem);
+  //           _dropDownCustomBGKey.currentState?.changeSelectedItem(newItem.id);
+  //         },
+  //         submissionId: submissionId,
+  //         resourceId: orgUnit,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget buildDropdownItem(BuildContext context, MetadataSubmissionUpdate item,
       bool isDisabled, bool isSelected) {

@@ -16,7 +16,7 @@ extension ApplyAction on RuleAction {
       {bool updateParent = true, bool emitEvent = true}) {
     if (element.mandatory && element.hidden) {
       element.markAsUnMandatory(
-          updateParent: updateParent, emitEvent: emitEvent);
+          updateParent: updateParent, emitEvent: false);
     }
 
     switch (action) {

@@ -77,7 +77,8 @@ class FormSubmissionsTable extends HookConsumerWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(formVersion.name!,
+              Text(getItemLocalString(formVersion.label,
+              defaultString: formVersion.name),
                   style: Theme.of(context).textTheme.titleMedium),
               if (selectedSubmissions.value.isNotEmpty)
                 Row(

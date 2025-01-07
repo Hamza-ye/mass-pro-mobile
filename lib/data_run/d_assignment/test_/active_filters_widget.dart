@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ActiveFiltersWidget extends StatelessWidget {
-  final Map<String, dynamic> activeFilters;
-  final VoidCallback onClearAll;
-  final Function(String) onRemoveFilter;
-
   const ActiveFiltersWidget({
     required this.activeFilters,
     required this.onClearAll,
     required this.onRemoveFilter,
     super.key,
   });
+
+  final Map<String, dynamic> activeFilters;
+  final VoidCallback onClearAll;
+  final Function(String) onRemoveFilter;
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +38,15 @@ class ActiveFiltersWidget extends StatelessWidget {
 }
 
 class FilterModel {
-  final String label;
-  final List<String> options;
-  final bool isMultiSelect;
-  final IconData? icon;
-
   FilterModel({
     required this.label,
     required this.options,
     this.isMultiSelect = false,
     this.icon,
   });
+
+  final String label;
+  final List<String> options;
+  final bool isMultiSelect;
+  final IconData? icon;
 }

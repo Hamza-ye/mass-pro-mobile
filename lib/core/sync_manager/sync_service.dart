@@ -2,7 +2,6 @@ import 'package:d2_remote/modules/datarun_shared/sync/call/d2_progress.dart';
 import 'package:d2_remote/modules/datarun_shared/sync/sync_metadata.dart';
 import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:datarun/generated/l10n.dart';
-import 'package:datarun/utils/user_preferences/preference.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -42,44 +41,32 @@ class SyncService extends _$SyncService {
   @override
   FutureOr<void> build() async {
     // Initialize
+    // return needsSync();
   }
 
-  Future<void> setSyncInterval(SyncInterval interval) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(SYNC_INTERVAL, interval.milliseconds);
-  }
-
-  SyncInterval getSyncInterval() {
-    final prefs = ref.watch(sharedPreferencesProvider);
-    final intervalMs =
-        prefs.getInt(SYNC_INTERVAL) ?? SyncInterval.daily.milliseconds;
-    return SyncInterval.values.firstWhere(
-        (interval) => interval.milliseconds == intervalMs,
-        orElse: () => SyncInterval.daily);
-  }
-
-  Future<bool> needsSync() async {
-    final prefs = await SharedPreferences.getInstance();
-    final lastSyncTime = prefs.getInt(LAST_SYNC_TIME) ?? 0;
-    final syncInterval = await getSyncInterval();
-    final syncDone = prefs.getBool(SYNC_DONE) ?? false;
-    if (!syncDone) return true;
-
-    final currentTime = DateTime.now().millisecondsSinceEpoch;
-    return (currentTime - lastSyncTime) > syncInterval.milliseconds;
-  }
-
+  // Future<void> setSyncInterval(SyncInterval interval) async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.setInt(SYNC_INTERVAL, interval.milliseconds);
+  // }
+  //
+  // SyncInterval getSyncInterval() {
+  //   final prefs = ref.watch(sharedPreferencesProvider);
+  //   final intervalMs =
+  //       prefs.getInt(SYNC_INTERVAL) ?? SyncInterval.daily.milliseconds;
+  //   return SyncInterval.values.firstWhere(
+  //       (interval) => interval.milliseconds == intervalMs,
+  //       orElse: () => SyncInterval.daily);
+  // }
+  //
   // Future<bool> needsSync() async {
   //   final prefs = await SharedPreferences.getInstance();
   //   final lastSyncTime = prefs.getInt(LAST_SYNC_TIME) ?? 0;
-  //   final syncInterval = prefs.getInt(SYNC_INTERVAL) ??
-  //       24 * 60 * 60 * 1000; // Default to 24 hours
+  //   final syncInterval = await getSyncInterval();
   //   final syncDone = prefs.getBool(SYNC_DONE) ?? false;
-  //
   //   if (!syncDone) return true;
   //
   //   final currentTime = DateTime.now().millisecondsSinceEpoch;
-  //   return (currentTime - lastSyncTime) > syncInterval;
+  //   return (currentTime - lastSyncTime) > syncInterval.milliseconds;
   // }
 
   Future<void> performSync(

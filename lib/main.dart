@@ -17,7 +17,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
-import 'package:sentry_flutter/sentry_flutter.dart';
 
 AuthenticationResult? authenticationResult;
 
@@ -49,6 +48,7 @@ Future<void> main() async {
 
   // does the user have active session in preference (local check)
   final bool hasExistingSession = userSessionManager.isAuthenticated;
+  final bool needsSync = userSessionManager.needsSync();
 
   // is has active session initialize, otherwise it will be initialized
   // by user login in.
@@ -56,45 +56,52 @@ Future<void> main() async {
     await D2Remote.initialize();
   }
 
-  await SentryFlutter.init(
-    (options) {
-      options.dsn =
-          'https://c39a75530f4b8694183508a689bbafb7@o4504831846645760.ingest.us.sentry.io/4507587127214080';
-      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-      // We recommend adjusting this value in production.
-      // options.tracesSampleRate = 1.0;
-      // The sampling rate for profiling is relative to tracesSampleRate
-      // Setting to 1.0 will profile 100% of sampled transactions:
-      // options.profilesSampleRate = 1.0;
-    },
-    appRunner: () => runApp(ProviderScope(
-      overrides: [
-        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-        authServiceProvider.overrideWithValue(authService),
-        userSessionManagerProvider.overrideWithValue(userSessionManager),
-      ],
-      child: App(
-        isAuthenticated: hasExistingSession,
-      ),
-    )),
-  );
+  // await SentryFlutter.init(
+  //   (options) {
+  //     options.dsn =
+  //         'https://c39a75530f4b8694183508a689bbafb7@o4504831846645760.ingest.us.sentry.io/4507587127214080';
+  //     // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  //     // We recommend adjusting this value in production.
+  //     // options.tracesSampleRate = 1.0;
+  //     // The sampling rate for profiling is relative to tracesSampleRate
+  //     // Setting to 1.0 will profile 100% of sampled transactions:
+  //     // options.profilesSampleRate = 1.0;
+  //   },
+  //   appRunner: () => runApp(ProviderScope(
+  //     overrides: [
+  //       sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+  //       authServiceProvider.overrideWithValue(authService),
+  //       userSessionManagerProvider.overrideWithValue(userSessionManager),
+  //     ],
+  //     child: App(
+  //       isAuthenticated: hasExistingSession,
+  //     ),
+  //   )),
+  // );
 
-  // runApp(ProviderScope(
-  //   overrides: [
-  //     sharedPreferencesProvider.overrideWithValue(sharedPreferences),
-  //     authServiceProvider.overrideWithValue(authService),
-  //     userSessionManagerProvider.overrideWithValue(userSessionManager),
-  //   ],
-  //   child: App(
-  //     isAuthenticated: hasExistingSession,
-  //   ),
-  // ));
+  runApp(ProviderScope(
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      authServiceProvider.overrideWithValue(authService),
+      userSessionManagerProvider.overrideWithValue(userSessionManager),
+    ],
+    child: App(
+      key: ValueKey('DATARUN_MAIN_APP'),
+      isAuthenticated: hasExistingSession,
+      needsSync: needsSync,
+    ),
+  ));
 }
 
 class App extends ConsumerWidget {
-  const App({super.key, required this.isAuthenticated});
+  const App({
+    super.key,
+    required this.isAuthenticated,
+    required this.needsSync,
+  });
 
   final bool isAuthenticated;
+  final bool needsSync;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -112,7 +119,10 @@ class App extends ConsumerWidget {
       localizationsDelegates: localizationsDelegates,
       supportedLocales: supportedLocales,
       locale: locale,
-      home: AuthWrapper(isAuthenticated: isAuthenticated),
+      home: AuthSyncWrapper(
+        isAuthenticated: isAuthenticated,
+        needsSync: needsSync,
+      ),
     );
   }
 

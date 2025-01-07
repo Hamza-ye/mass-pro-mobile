@@ -62,7 +62,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
         return Scaffold(
             key: ValueKey(formMetadata.formId),
             appBar: AppBar(
-              title: Text(formMetadata.assignmentModel.activity ?? ''),
+              title: Text(formMetadata.assignmentModel.activity),
             ),
             body: Column(
               children: [
@@ -165,7 +165,7 @@ class SubmissionListState extends ConsumerState<SubmissionListScreen> {
       return;
     }
 
-    final formMetadata = FormMetadataWidget.of(context);
+    // final formMetadata = FormMetadataWidget.of(context);
     // final String? result = await showDialog<String?>(
     //     context: context,
     //     builder: (BuildContext context) {
