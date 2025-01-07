@@ -180,7 +180,7 @@ Future<List<AssignmentModel>> filterAssignments(FilterAssignmentsRef ref,
       if (key == 'teams' &&
           value is Iterable &&
           value.isNotEmpty &&
-          (assignment.teamId == null || !value.contains(assignment.teamId))) {
+          (!value.contains(assignment.teamId))) {
         return false;
       }
     }

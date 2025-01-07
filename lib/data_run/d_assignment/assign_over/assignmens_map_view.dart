@@ -14,7 +14,6 @@ class AssignmentMapPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final assignmentsAsync = ref.watch(filterAssignmentsProvider(scope));
-    final searchQuery = ref.watch(filterQueryProvider).searchQuery;
 
     return AsyncValueWidget(
       value: assignmentsAsync,

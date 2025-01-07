@@ -15,7 +15,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("DropdownSearch Menu Demo")),
+      appBar: AppBar(title: Text('DropdownSearch Menu Demo')),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: Form(
@@ -25,7 +25,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
             padding: EdgeInsets.all(4),
             children: <Widget>[
               ///************************[simple examples for single and multi selection]************///
-              Text("[simple examples for custom mode]"),
+              Text('[simple examples for custom mode]'),
               Divider(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,7 +33,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
                   DropdownSearch<String>.multiSelection(
                     mode: Mode.custom,
                     items: (f, cs) => [
-                      "Monday",
+                      'Monday',
                       'Tuesday',
                       'Wednesday',
                       'Thursday',
@@ -53,9 +53,9 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
                         ClickProps(borderRadius: BorderRadius.circular(20)),
                     mode: Mode.custom,
                     items: (f, cs) => [
-                      ("Red", Colors.red),
-                      ("Black", Colors.black),
-                      ("Yellow", Colors.yellow),
+                      ('Red', Colors.red),
+                      ('Black', Colors.black),
+                      ('Yellow', Colors.yellow),
                       ('Blue', Colors.blue),
                     ],
                     compareFn: (item1, item2) => item1.$1 == item2.$1,
@@ -124,7 +124,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
               ),
 
               Padding(padding: EdgeInsets.all(8)),
-              Text("[simple examples for single and multi Selection]"),
+              Text('[simple examples for single and multi Selection]'),
               Divider(),
               Row(
                 children: [
@@ -149,7 +149,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
               ),
 
               Padding(padding: EdgeInsets.all(8)),
-              Text("[example for async items]"),
+              Text('[example for async items]'),
               Row(
                 children: [
                   Expanded(
@@ -206,7 +206,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
                 ),
                 child: Column(
                   children: [
-                    Text("Example for customized menu"),
+                    Text('Example for customized menu'),
                     Padding(padding: EdgeInsets.all(8)),
                     DropdownSearch<(IconData, String)>(
                       selectedItem: (Icons.person, 'Your Profile'),
@@ -356,7 +356,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
                     Padding(padding: EdgeInsets.only(top: 32)),
                     DropdownSearch<String>(
                       items: (filter, loadProps) =>
-                          ["Item 1", "Item 2", "Item 3", "Item 4"],
+                          ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
                             labelText: 'Bottom Left Menu',
@@ -375,7 +375,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
                             border: OutlineInputBorder()),
                       ),
                       items: (filter, loadProps) =>
-                          ["Item 1", "Item 2", "Item 3", "Item 4"],
+                          ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
                       popupProps: PopupProps.menu(
                         constraints: BoxConstraints.tight(Size(250, 250)),
                         menuProps: MenuProps(align: MenuAlign.bottomCenter),
@@ -389,7 +389,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
                             border: OutlineInputBorder()),
                       ),
                       items: (filter, loadProps) =>
-                          ["Item 1", "Item 2", "Item 3", "Item 4"],
+                          ['Item 1', 'Item 2', 'Item 3', 'Item 4'],
                       popupProps: PopupProps.menu(
                         constraints: BoxConstraints.tight(Size(250, 250)),
                         menuProps: MenuProps(align: MenuAlign.topEnd),
@@ -401,7 +401,7 @@ class _MaterialMenuExamplesPageState extends State<MaterialMenuExamplesPage> {
 
               ///************************[validation examples]********************************///
               Padding(padding: EdgeInsets.all(32)),
-              Text("[validation examples]"),
+              Text('[validation examples]'),
               Divider(),
               Row(
                 children: [

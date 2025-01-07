@@ -1,9 +1,9 @@
 name: datarun
-description: A new Flutter project.
+description: Datarun, runs and manages you activities data workflows.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.2+2
+version: 2.0.0+3
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -46,6 +46,7 @@ dependencies:
   riverpod_annotation: 3.0.0-dev.3
   flutter_map: ^4.0.0
   latlong2: ^0.8.2
+  package_info_plus: ^8.1.2
 #  flutter_barcode_scanner: ^2.0.0
 #  sentry_flutter: ^8.3.0
 

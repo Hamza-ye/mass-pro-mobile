@@ -50,7 +50,7 @@
   "finalData": "بيانات نهائية",
   "discard": "تجاهل",
   "open": "فتح",
-  "openNewForm": "فتح استمارة جديدة",
+  "openNewForm": "استمارة جديدة",
   "errorOpeningNewForm": "حدث خطأ أثناء فتح الإستمارة",
   "markAsFinalData": "حقول مكتملة، هل تبريد تعيين هذه البيانات كنهائية وجاهزة للإرسال؟",
   "notNow": "ليس الآن",
@@ -243,5 +243,6 @@
   "population": "سكان",
   "households": "منازل",
   "itns": "ناموسيات",
-  "selectForm": "اختر استمارة"
+  "selectForm": "اختر استمارة",
+  "reported": "Reported"
 }

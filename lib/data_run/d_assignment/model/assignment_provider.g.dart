@@ -6,7 +6,7 @@ part of 'assignment_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$filterAssignmentsHash() => r'cee709ebd9ebc44c06da669a6f75702b43ed6a28';
+String _$filterAssignmentsHash() => r'b0d346a4f2e2fa053a2902c84c09b95dac80a91b';
 
 /// Copied from Dart SDK
 class _SystemHash {

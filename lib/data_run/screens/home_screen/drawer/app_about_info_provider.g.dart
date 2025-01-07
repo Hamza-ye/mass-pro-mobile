@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'sync_service.dart';
+part of 'app_about_info_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$syncServiceHash() => r'00f37307ea3affcd136d20e808758b1f3b0d796f';
+String _$appAboutInfoHash() => r'f40157c49475e7e3cfb34da55d2094025fdc9334';
 
-/// See also [SyncService].
-@ProviderFor(SyncService)
-final syncServiceProvider =
-    AutoDisposeAsyncNotifierProvider<SyncService, void>.internal(
-  SyncService.new,
-  name: r'syncServiceProvider',
+/// See also [appAboutInfo].
+@ProviderFor(appAboutInfo)
+final appAboutInfoProvider = AutoDisposeFutureProvider<AppAbout>.internal(
+  appAboutInfo,
+  name: r'appAboutInfoProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$syncServiceHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$appAboutInfoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SyncService = AutoDisposeAsyncNotifier<void>;
+typedef AppAboutInfoRef = AutoDisposeFutureProviderRef<AppAbout>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, inference_failure_on_uninitialized_variable, inference_failure_on_function_return_type, inference_failure_on_untyped_parameter, deprecated_member_use_from_same_package

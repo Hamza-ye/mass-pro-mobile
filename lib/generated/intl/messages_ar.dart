@@ -228,8 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("موافق"),
         "online": MessageLookupByLibrary.simpleMessage("متصل"),
         "open": MessageLookupByLibrary.simpleMessage("فتح"),
-        "openNewForm":
-            MessageLookupByLibrary.simpleMessage("فتح استمارة جديدة"),
+        "openNewForm": MessageLookupByLibrary.simpleMessage("استمارة جديدة"),
         "openSettings": MessageLookupByLibrary.simpleMessage("فتح الإعدادات"),
         "orgUnitDialogTitle":
             MessageLookupByLibrary.simpleMessage("ابحث عن المكان"),
@@ -251,6 +250,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "productionDate": MessageLookupByLibrary.simpleMessage("تاريخ الانتاج"),
         "reassigned":
             MessageLookupByLibrary.simpleMessage("إعادة تعيين فريق آخر"),
+        "reported": MessageLookupByLibrary.simpleMessage("Reported"),
         "reportedResources":
             MessageLookupByLibrary.simpleMessage("موارد المرسلة"),
         "rescan": MessageLookupByLibrary.simpleMessage("إعادة مسح"),

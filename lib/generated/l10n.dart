@@ -464,10 +464,10 @@ class S {
     );
   }
 
-  /// `Open New Form`
+  /// `New Submission`
   String get openNewForm {
     return Intl.message(
-      'Open New Form',
+      'New Submission',
       name: 'openNewForm',
       desc: 'initial entity dialog info submit button label',
       args: [],
@@ -2133,6 +2133,16 @@ class S {
     return Intl.message(
       'Select Form',
       name: 'selectForm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Reported`
+  String get reported {
+    return Intl.message(
+      'Reported',
+      name: 'reported',
       desc: '',
       args: [],
     );

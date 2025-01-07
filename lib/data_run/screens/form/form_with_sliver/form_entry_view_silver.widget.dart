@@ -23,6 +23,7 @@ class FormInstanceEntryViewSliver extends HookConsumerWidget {
         .requireValue;
 
     return CustomScrollView(
+      shrinkWrap: true,
       controller: scrollController,
       slivers: buildSliverList(
           formInstance.formSection.elements.values, context, ref),

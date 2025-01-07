@@ -56,41 +56,41 @@ class _AssignmentOverviewScreenState extends State<AssignmentOverviewScreen> {
   ];
 
   // Function to handle form submission
-  void _submitForm(String assignmentId) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Submitting form for assignment: $assignmentId')),
-    );
-  }
+  // void _submitForm(String assignmentId) {
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(content: Text('Submitting form for assignment: $assignmentId')),
+  //   );
+  // }
 
   // Function to handle status change
-  void _changeStatus(String assignmentId, String newStatus) {
-    setState(() {
-      final assignment =
-      assignments.firstWhere((a) => a['assignmentId'] == assignmentId);
-      assignment['status'] = newStatus;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Status updated to $newStatus for $assignmentId')),
-    );
-  }
+  // void _changeStatus(String assignmentId, String newStatus) {
+  //   setState(() {
+  //     final assignment =
+  //     assignments.firstWhere((a) => a['assignmentId'] == assignmentId);
+  //     assignment['status'] = newStatus;
+  //   });
+  //
+  //   ScaffoldMessenger.of(context).showSnackBar(
+  //     SnackBar(content: Text('Status updated to $newStatus for $assignmentId')),
+  //   );
+  // }
 
   // Function to view details
-  void _viewDetails(String assignmentId) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        title: const Text('Assignment Details'),
-        content: Text('Details for assignment: $assignmentId'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
+  // void _viewDetails(String assignmentId) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (_) => AlertDialog(
+  //       title: const Text('Assignment Details'),
+  //       content: Text('Details for assignment: $assignmentId'),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: const Text('Close'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {

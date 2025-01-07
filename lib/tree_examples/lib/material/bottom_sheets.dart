@@ -19,26 +19,26 @@ class _MaterialBottomSheetExamplesPageState
   final _dropdownMultiLevelKey =
       GlobalKey<DropdownSearchState<MultiLevelString>>();
   final List<MultiLevelString> myMultiLevelItems = [
-    MultiLevelString(level1: "1"),
-    MultiLevelString(level1: "2"),
+    MultiLevelString(level1: '1'),
+    MultiLevelString(level1: '2'),
     MultiLevelString(
-      level1: "3",
+      level1: '3',
       subLevel: [
-        MultiLevelString(level1: "sub3-1"),
-        MultiLevelString(level1: "sub3-2"),
-        MultiLevelString(level1: "sub3-3"),
-        MultiLevelString(level1: "sub3-4"),
+        MultiLevelString(level1: 'sub3-1'),
+        MultiLevelString(level1: 'sub3-2'),
+        MultiLevelString(level1: 'sub3-3'),
+        MultiLevelString(level1: 'sub3-4'),
       ],
     ),
-    MultiLevelString(level1: "4"),
-    MultiLevelString(level1: "5"),
-    MultiLevelString(level1: "6"),
+    MultiLevelString(level1: '4'),
+    MultiLevelString(level1: '5'),
+    MultiLevelString(level1: '6'),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("DropdownSearch BottomSheet Demo")),
+      appBar: AppBar(title: Text('DropdownSearch BottomSheet Demo')),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: Form(
@@ -47,7 +47,7 @@ class _MaterialBottomSheetExamplesPageState
           child: ListView(
             padding: EdgeInsets.all(4),
             children: <Widget>[
-              Text("[simple examples]"),
+              Text('[simple examples]'),
               Divider(),
               Padding(padding: EdgeInsets.all(4)),
               Row(
@@ -57,8 +57,8 @@ class _MaterialBottomSheetExamplesPageState
                       items: (f, cs) => List.generate(30, (i) => i + 1),
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
-                            labelText: "Dialog with title",
-                            hintText: "Select an Int"),
+                            labelText: 'Dialog with title',
+                            hintText: 'Select an Int'),
                       ),
                       popupProps: PopupProps.bottomSheet(
                         title: Container(
@@ -93,8 +93,8 @@ class _MaterialBottomSheetExamplesPageState
                       items: (f, cs) => [1, 2, 3, 4, 5, 6, 7],
                       decoratorProps: DropDownDecoratorProps(
                         decoration: InputDecoration(
-                          labelText: "Modal mode",
-                          hintText: "Select an Int",
+                          labelText: 'Modal mode',
+                          hintText: 'Select an Int',
                           filled: true,
                         ),
                       ),
@@ -108,7 +108,7 @@ class _MaterialBottomSheetExamplesPageState
 
               ///********************************************[suggested items examples]**********************************///
               Padding(padding: EdgeInsets.all(16)),
-              Text("[Suggested examples]"),
+              Text('[Suggested examples]'),
               Divider(),
               Row(
                 children: [
@@ -124,7 +124,7 @@ class _MaterialBottomSheetExamplesPageState
                           showSuggestedItems: true,
                           suggestedItems: (us) {
                             return us
-                                .where((e) => e.name.contains("Mrs"))
+                                .where((e) => e.name.contains('Mrs'))
                                 .toList();
                           },
                         ),
@@ -143,7 +143,7 @@ class _MaterialBottomSheetExamplesPageState
                           showSuggestedItems: true,
                           suggestedItems: (us) {
                             return us
-                                .where((e) => e.name.contains("Mrs"))
+                                .where((e) => e.name.contains('Mrs'))
                                 .toList();
                           },
                           // itemProps: SuggestedItemProps(),
@@ -156,11 +156,11 @@ class _MaterialBottomSheetExamplesPageState
 
               ///**************************************[custom popup background examples]********************************///
               Padding(padding: EdgeInsets.all(16)),
-              Text("[custom popup background examples]"),
+              Text('[custom popup background examples]'),
               Divider(),
               DropdownSearch<String>.multiSelection(
                 key: _dropDownCustomBGKey,
-                items: (f, cs) => List.generate(30, (index) => "$index"),
+                items: (f, cs) => List.generate(30, (index) => '$index'),
                 popupProps: PopupPropsMultiSelection.bottomSheet(
                   bottomSheetProps:
                       BottomSheetProps(backgroundColor: Colors.grey.shade200),
@@ -216,7 +216,7 @@ class _MaterialBottomSheetExamplesPageState
 
               ///**********************************************[dropdownBuilder examples]********************************///
               Padding(padding: EdgeInsets.all(16)),
-              Text("[DropDownSearch builder examples]"),
+              Text('[DropDownSearch builder examples]'),
               Divider(),
               Row(
                 children: [
@@ -278,7 +278,7 @@ class _MaterialBottomSheetExamplesPageState
 
               ///**********************************************[multiLevel items example]********************************///
               Padding(padding: EdgeInsets.all(16)),
-              Text("[multiLevel items example]"),
+              Text('[multiLevel items example]'),
               Divider(),
               DropdownSearch<MultiLevelString>(
                 key: _dropdownMultiLevelKey,

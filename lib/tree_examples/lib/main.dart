@@ -12,8 +12,8 @@ void main() => runApp(MyApp());
 
 Future<List<UserModel>> getData(filter) async {
   var response = await Dio().get(
-    "https://63c1210999c0a15d28e1ec1d.mockapi.io/users",
-    queryParameters: {"filter": filter},
+    'https://63c1210999c0a15d28e1ec1d.mockapi.io/users',
+    queryParameters: {'filter': filter},
   );
 
   final data = response.data;
@@ -180,7 +180,7 @@ class MyHomePage extends StatelessWidget {
                       throw UnimplementedError();
                   }
                 },
-                child: Text("Go"),
+                child: Text('Go'),
               )
             ],
           ),

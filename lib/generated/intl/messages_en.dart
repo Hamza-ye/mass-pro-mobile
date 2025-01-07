@@ -233,7 +233,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "online": MessageLookupByLibrary.simpleMessage("online!"),
         "open": MessageLookupByLibrary.simpleMessage("Open"),
-        "openNewForm": MessageLookupByLibrary.simpleMessage("Open New Form"),
+        "openNewForm": MessageLookupByLibrary.simpleMessage("New Submission"),
         "openSettings": MessageLookupByLibrary.simpleMessage("Open settings"),
         "orgUnitDialogTitle": MessageLookupByLibrary.simpleMessage(
             "Search for and Select OrgUnit"),
@@ -254,6 +254,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "productionDate":
             MessageLookupByLibrary.simpleMessage("Production Date"),
         "reassigned": MessageLookupByLibrary.simpleMessage("Reassigned"),
+        "reported": MessageLookupByLibrary.simpleMessage("Reported"),
         "reportedResources":
             MessageLookupByLibrary.simpleMessage("Reported Resources"),
         "rescan": MessageLookupByLibrary.simpleMessage("Rescan"),

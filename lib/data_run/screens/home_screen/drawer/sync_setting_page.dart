@@ -11,8 +11,9 @@ class SyncSettingTab extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final syncService = ref.watch(syncServiceProvider.notifier);
-    final selectedInterval = useState(syncService.getSyncInterval());
+    final userSessionManager = ref.watch(userSessionManagerProvider);
+    final selectedInterval = useState(userSessionManager.getSyncInterval());
+
     return ListView(
       padding: const EdgeInsets.all(16.0),
       children: [
@@ -21,7 +22,9 @@ class SyncSettingTab extends HookConsumerWidget {
 
         Card(
           child: ListTile(
-            leading: Icon(MdiIcons.update, ),
+            leading: Icon(
+              MdiIcons.update,
+            ),
             title: Text(S.of(context).syncInterval),
             subtitle: DropdownButton<SyncInterval>(
               value: selectedInterval.value,
@@ -33,7 +36,7 @@ class SyncSettingTab extends HookConsumerWidget {
               }).toList(),
               onChanged: (newInterval) async {
                 if (newInterval != null) {
-                  await syncService.setSyncInterval(newInterval);
+                  await userSessionManager.setSyncInterval(newInterval);
                   selectedInterval.value = newInterval;
                 }
               },

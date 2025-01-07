@@ -74,7 +74,7 @@
   "@open": {
     "description": "open button label"
   },
-  "openNewForm": "Open New Form",
+  "openNewForm": "New Submission",
   "@openNewForm": {
     "description": "initial entity dialog info submit button label"
   },
@@ -281,5 +281,6 @@
   "population": "Population",
   "households": "Households",
   "itns": "ITNs",
-  "selectForm": "Select Form"
+  "selectForm": "Select Form",
+  "reported": "Reported"
 }

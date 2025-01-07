@@ -85,13 +85,35 @@ class UserSessionManager {
     return sessionData;
   }
 
+  ////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////
   DateTime? get lastSyncTime => DateTime.fromMillisecondsSinceEpoch(
       prefs.getInt(SyncService.LAST_SYNC_TIME) ?? 0);
 
-  int get syncInterval => prefs.getInt(SyncService.SYNC_INTERVAL) ?? 15;
-
   bool get syncDone => prefs.getBool(SyncService.SYNC_DONE) ?? false;
 
+  Future<bool> setSyncInterval(SyncInterval interval) async {
+    return prefs.setInt(SyncService.SYNC_INTERVAL, interval.milliseconds);
+  }
+
+  SyncInterval getSyncInterval() {
+    // final prefs = ref.watch(sharedPreferencesProvider);
+    final intervalMs =
+        prefs.getInt(SyncService.SYNC_INTERVAL) ?? SyncInterval.daily.milliseconds;
+    return SyncInterval.values.firstWhere(
+            (interval) => interval.milliseconds == intervalMs,
+        orElse: () => SyncInterval.daily);
+  }
+
+  bool needsSync() {
+    final lastSyncTime = prefs.getInt(SyncService.LAST_SYNC_TIME) ?? 0;
+    final syncInterval = getSyncInterval();
+    final syncDone = prefs.getBool(SyncService.SYNC_DONE) ?? false;
+    if (!syncDone) return true;
+
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+    return (currentTime - lastSyncTime) > syncInterval.milliseconds;
+  }
   // Clear user data from SharedPreferences
   Future<void> clearSessionFromPreferences() async {
     prefs.remove(D2Remote.currentDatabaseNameKey);

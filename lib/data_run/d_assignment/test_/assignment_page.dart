@@ -2,7 +2,6 @@ import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.ent
 import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
-import 'package:datarun/data_run/d_assignment/assign_over/assignmens_map_view.dart';
 import 'package:datarun/data_run/d_assignment/assign_over/assignment_detail/assignment_detail_page.dart';
 import 'package:datarun/data_run/d_assignment/assign_over/assignment_table_view.dart';
 import 'package:datarun/data_run/d_assignment/assign_over/assignments_card_view.dart';
@@ -13,7 +12,6 @@ import 'package:datarun/data_run/screens/form/form_tab_screen.widget.dart';
 import 'package:datarun/data_run/screens/form/inherited_widgets/form_metadata_inherit_widget.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -130,19 +128,19 @@ class AssignmentPage extends HookConsumerWidget {
     );
   }
 
-  Widget _buildDraggableMap(BuildContext context, WidgetRef ref) {
-    return DraggableScrollableSheet(
-      initialChildSize: 0.5,
-      minChildSize: 0.2,
-      maxChildSize: 0.8,
-      builder: (BuildContext context, ScrollController scrollController) {
-        return Container(
-          color: Colors.white,
-          child: AssignmentMapPage(),
-        );
-      },
-    );
-  }
+  // Widget _buildDraggableMap(BuildContext context, WidgetRef ref) {
+  //   return DraggableScrollableSheet(
+  //     initialChildSize: 0.5,
+  //     minChildSize: 0.2,
+  //     maxChildSize: 0.8,
+  //     builder: (BuildContext context, ScrollController scrollController) {
+  //       return Container(
+  //         color: Colors.white,
+  //         child: AssignmentMapPage(),
+  //       );
+  //     },
+  //   );
+  // }
 
   void _navigateToDetails(BuildContext context, AssignmentModel assignment) {
     final activityModel = ActivityInheritedWidget.of(context);

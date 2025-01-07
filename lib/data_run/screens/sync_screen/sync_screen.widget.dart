@@ -5,6 +5,7 @@ import 'package:datarun/core/sync_manager/sync_service.dart';
 import 'package:datarun/data_run/screens/home_screen/home_screen.widget.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:datarun/utils/mass_utils/utils.dart';
+import 'package:datarun/utils/navigator_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -29,7 +30,8 @@ class _SyncScreenState extends ConsumerState<SyncScreen> {
           child: Center(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: SyncProgressCircularIndicator(syncProgressInfo: syncProgressInfo),
+              child: SyncProgressCircularIndicator(
+                  syncProgressInfo: syncProgressInfo),
             ),
           )),
     );
@@ -82,9 +84,9 @@ class _SyncScreenState extends ConsumerState<SyncScreen> {
   }
 
   void goToMain() {
-    Navigator.of(context).pushAndRemoveUntil(
+    Navigator.of(navigatorKey.currentContext!).pushAndRemoveUntil(
         MaterialPageRoute<void>(
-            builder: (BuildContext context) => const HomeScreen()),
+            builder: (BuildContext context) => HomeScreen(refresh: true)),
         (route) => false);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:d2_remote/modules/datarun_shared/utilities/authenticated_user.dart';
 import 'package:datarun/commons/constants.dart';
 import 'package:datarun/commons/errors_management/d_exception_reporter.dart';
 import 'package:datarun/core/auth/auth_service.dart';
@@ -14,7 +15,6 @@ LoginReactiveFormModel loginReactiveFormModel(LoginReactiveFormModelRef ref) {
 }
 
 class LoginReactiveFormModel {
-
   LoginReactiveFormModel(this._authService, this.userSessionManager)
       : this.form = FormGroup({
           'username': FormControl<String>(validators: [Validators.required]),
@@ -39,17 +39,31 @@ class LoginReactiveFormModel {
   FormControl<String> get serverUrlControl =>
       form.control('serverUrl') as FormControl<String>;
 
-  Future<bool> login() async {
+  Future<AuthenticationResult> login() async {
     form.markAsDisabled();
+    final authResult = AuthenticationResult();
     try {
-      final result = await _authService.login(usernameControl.value!,
+      final authResult = await _authService.login(usernameControl.value!,
           passwordControl.value!, serverUrlControl.value ?? kApiBaseUrl);
-      return result.success;
+
+      if (authResult.success) {
+        // save UserCredentials to preference
+        await userSessionManager.saveUserCredentials(
+            serverUrl: authResult.sessionUser!.baseUrl,
+            username: authResult.sessionUser!.username!,
+            pass: authResult.sessionUser!.password!);
+
+        // return successful result
+        return authResult.copyWith(
+            success: true, sessionUser: authResult.sessionUser);
+      }
     } catch (e) {
-      form.markAsEnabled();
+      usernameControl.markAsEnabled();
+      passwordControl.markAsEnabled();
       userSessionManager.clearSessionFromPreferences();
       DExceptionReporter.instance.report(e, showToUser: true);
-      return false;
     }
+    return authResult.copyWith(
+        success: false, sessionUser: authResult.sessionUser);
   }
 }

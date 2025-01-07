@@ -1,4 +1,4 @@
-import 'package:datarun/data_run/screens/home_screen/home_screen.widget.dart';
+import 'package:datarun/data_run/screens/login_screen/auth_wrapper.dart';
 import 'package:datarun/data_run/screens/login_screen/login_header.dart';
 import 'package:datarun/data_run/screens/login_screen/login_submit_button.dart';
 import 'package:datarun/data_run/screens/login_screen/reactive_form_state/login_reactive_form_model.dart';
@@ -115,11 +115,13 @@ class LoginPage extends HookConsumerWidget {
                           width: double.infinity,
                           child: LoginSubmitButton(
                             onPressed: () async {
-                              final success = await loginFormModel.login();
-                              if (success) {
+                              final result = await loginFormModel.login();
+                              if (result.success) {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                      builder: (context) => HomeScreen()),
+                                      builder: (context) => AuthSyncWrapper(
+                                          isAuthenticated: result.success,
+                                          needsSync: true)),
                                 );
                               }
                             },

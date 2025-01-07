@@ -531,15 +531,15 @@ Widget userModelPopupItem(
 }
 
 class MultiLevelString {
-  final String level1;
-  final List<MultiLevelString> subLevel;
-  bool isExpanded;
-
   MultiLevelString({
     this.level1 = '',
     this.subLevel = const [],
     this.isExpanded = false,
   });
+
+  final String level1;
+  final List<MultiLevelString> subLevel;
+  bool isExpanded;
 
   @override
   String toString() => level1;
