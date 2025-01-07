@@ -7,7 +7,7 @@ part of 'ou_picker_data_source.provider.dart';
 // **************************************************************************
 
 String _$ouPickerDataSourceHash() =>
-    r'dec5e13a4f699a121717264a501e5c8bd4d5fd81';
+    r'537edfc16f18b37b00504d48a6e315cc0b238264';
 
 /// Copied from Dart SDK
 class _SystemHash {
