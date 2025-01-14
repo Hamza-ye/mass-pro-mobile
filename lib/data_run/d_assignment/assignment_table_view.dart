@@ -1,7 +1,7 @@
 import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
-import 'package:datarun/data_run/d_assignment/test_/assignment_page.dart';
+import 'package:datarun/data_run/d_assignment/assignment_page.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

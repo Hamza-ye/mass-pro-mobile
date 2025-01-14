@@ -2,9 +2,9 @@ import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.ent
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/data_run/d_activity/activity_card.dart';
 import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
-import 'package:datarun/data_run/d_assignment/assign_over/assignment_detail/assignment_detail_page.dart';
+import 'package:datarun/data_run/d_assignment/assignment_detail/assignment_detail_page.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
-import 'package:datarun/data_run/d_assignment/test_/assignment_page.dart';
+import 'package:datarun/data_run/d_assignment/assignment_page.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -39,13 +39,13 @@ dependencies:
 #  image_picker: ^1.1.2
   sentry_flutter: ^8.10.1
 #  dropdown_search: ^6.0.1
-  fl_chart: ^0.69.2
+#  fl_chart: ^0.69.2
   flutter_riverpod: 3.0.0-dev.3
   hooks_riverpod: 3.0.0-dev.3
   freezed_annotation: ^2.4.1
   riverpod_annotation: 3.0.0-dev.3
-  flutter_map: ^4.0.0
-  latlong2: ^0.8.2
+#  flutter_map: ^4.0.0
+#  latlong2: ^0.8.2
   package_info_plus: ^8.1.2
 #  flutter_barcode_scanner: ^2.0.0
 #  sentry_flutter: ^8.3.0
@@ -62,8 +62,6 @@ dev_dependencies:
   riverpod_generator: 3.0.0-dev.11
   riverpod_lint: 3.0.0-dev.4
   custom_lint: ^0.5.11
-#  injectable_generator: ^2.6.2
-#  flutter_launcher_icons: ^0.14.1
   flutter_launcher_icons: ^0.13.1
 
 #flutter_launcher_icons:

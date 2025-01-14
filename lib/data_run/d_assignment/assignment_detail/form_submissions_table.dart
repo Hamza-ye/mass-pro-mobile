@@ -10,7 +10,7 @@ import 'package:datarun/core/common/state.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
 import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
-import 'package:datarun/data_run/d_assignment/test_/assignment_page.dart';
+import 'package:datarun/data_run/d_assignment/assignment_page.dart';
 import 'package:datarun/data_run/form/form_submission/submission_list.provider.dart';
 import 'package:datarun/data_run/form/form_submission/submission_list_util.dart';
 import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
