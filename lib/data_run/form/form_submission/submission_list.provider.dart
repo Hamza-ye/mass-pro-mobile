@@ -29,18 +29,20 @@ FormSubmissionRepository formSubmissionRepository(
 class FormSubmissions extends _$FormSubmissions {
   Future<IList<DataFormSubmission>> build(String form) async {
     final submissions =
-        await ref.watch(formSubmissionRepositoryProvider).getSubmissions(form);
+    await ref.watch(formSubmissionRepositoryProvider).getSubmissions(form);
     return submissions;
   }
 
   Future<void> markSubmissionAsFinal(String uid) async {
     final String? completedDate =
-        DDateUtils.databaseDateFormat().format(DateTime.now().toUtc());
+    DDateUtils.databaseDateFormat().format(DateTime.now().toUtc());
     final DataFormSubmission? submission =
-        await D2Remote.formModule.dataFormSubmission.byId(uid).getOne();
+    await D2Remote.formModule.dataFormSubmission.byId(uid).getOne();
     submission!
-      // ..status = EntryStatus.COMPLETED.name
+    // ..status = EntryStatus.COMPLETED.name
       ..isFinal = true
+      ..lastModifiedDate =
+      DDateUtils.databaseDateFormat().format(DateTime.now().toUtc())
       ..finishedEntryTime = completedDate;
 
     await D2Remote.formModule.dataFormSubmission
@@ -56,7 +58,7 @@ class FormSubmissions extends _$FormSubmissions {
     await future;
 
     final DataFormSubmission? submission =
-        await D2Remote.formModule.dataFormSubmission.byId(uid).getOne();
+    await D2Remote.formModule.dataFormSubmission.byId(uid).getOne();
 
     return updateSubmission(submission!..assignment = orgUnit);
   }
@@ -64,12 +66,12 @@ class FormSubmissions extends _$FormSubmissions {
   /// injecting the arguments from the context
   Future<DataFormSubmission> createNewSubmission(
       {required formVersion,
-      required String assignmentId,
-      required String team,
-      required String form,
-      required int version,
-      Map<String, dynamic> formData = const {},
-      Geometry? geometry}) async {
+        required String assignmentId,
+        required String team,
+        required String form,
+        required int version,
+        Map<String, dynamic> formData = const {},
+        Geometry? geometry}) async {
     final DataFormSubmission submission = DataFormSubmission(
         status: AssignmentStatus.IN_PROGRESS,
         form: form,
@@ -84,9 +86,9 @@ class FormSubmissions extends _$FormSubmissions {
         deleted: false,
         isFinal: false,
         lastModifiedDate:
-            DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()),
+        DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()),
         startEntryTime:
-            DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()));
+        DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()));
 
     if (geometry != null) {
       submission.geometry = geometry;
@@ -96,7 +98,9 @@ class FormSubmissions extends _$FormSubmissions {
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
-    final savedSubmission = await D2Remote.formModule.dataFormSubmission.byId(submission.id!).getOne();
+    final savedSubmission = await D2Remote.formModule.dataFormSubmission
+        .byId(submission.id!)
+        .getOne();
     return savedSubmission;
   }
 
@@ -106,43 +110,42 @@ class FormSubmissions extends _$FormSubmissions {
 
   Future<DataFormSubmission> updateSubmission(
       DataFormSubmission submission) async {
-    submission.status = AssignmentStatus.IN_PROGRESS;
     submission.dirty = true;
+    submission.lastModifiedDate =
+        DDateUtils.databaseDateFormat().format(DateTime.now().toUtc());
+
+    // if (submission.assignment != null && submission.status != null) {
+    //   DAssignment? assignment = await D2Remote.assignmentModuleD.assignment
+    //       .byId(submission.assignment!)
+    //       .getOne();
+    //   if (assignment != null) {
+    //     assignment.status = submission.status!;
+    //     assignment.lastModifiedDate =
+    //         DDateUtils.databaseDateFormat().format(DateTime.now().toUtc());
+    //     await DAssignmentQuery()
+    //         .setData(assignment)
+    //         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
+    //   }
+    // }
 
     await D2Remote.formModule.dataFormSubmission
         .setData(submission)
         .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
 
-    ref.invalidateSelf();
-    // ref.invalidate(formSubmissionsProvider);
-    // ref.invalidate(formSubmissionsProvider(form));
-
-    return submission;
-  }
-
-  Future<DataFormSubmission> updateStatus(
-      DataFormSubmission submission) async {
-    submission.status = AssignmentStatus.IN_PROGRESS;
-    submission.dirty = true;
-
-    await D2Remote.formModule.dataFormSubmission
-        .setData(submission)
-        .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
+    final savedSubmission = await D2Remote.formModule.dataFormSubmission
+        .byId(submission.id!)
+        .getOne();
 
     ref.invalidateSelf();
-    // ref.invalidate(formSubmissionsProvider);
-    // ref.invalidate(formSubmissionsProvider(form));
-
-    return submission;
+    await future;
+    return savedSubmission;
   }
 
   Future<bool> deleteSubmission(Iterable<String?> syncableIds) async {
     try {
       await Future.forEach(syncableIds,
-          (uid) => D2Remote.formModule.dataFormSubmission.byId(uid!).delete());
+              (uid) => D2Remote.formModule.dataFormSubmission.byId(uid!).delete());
       ref.invalidateSelf();
-      // ref.invalidate(formSubmissionsProvider);
-      // ref.invalidate(formSubmissionsProvider(form));
 
       await future;
       return true;
@@ -182,7 +185,7 @@ Future<IMap<String, dynamic>> formSubmissionData(FormSubmissionDataRef ref,
       .getSubmission(submissionUid);
   final submissionData = await ref.watch(
       formSubmissionsProvider(formSubmission!.form!).selectAsync(
-          (IList<DataFormSubmission> submissions) => submissions
+              (IList<DataFormSubmission> submissions) => submissions
               .firstWhere((item) => item.uid == submissionUid)
               .formData));
   return IMap.withConfig(submissionData, ConfigMap(cacheHashCode: false));
@@ -192,8 +195,8 @@ Future<IMap<String, dynamic>> formSubmissionData(FormSubmissionDataRef ref,
 Future<List<DataFormSubmission>> submissionFilteredByState(
     SubmissionFilteredByStateRef ref,
     {required String form,
-    SyncStatus? status,
-    String sortBy = 'name'}) async {
+      SyncStatus? status,
+      String sortBy = 'name'}) async {
   final allSubmissions = await ref.watch(formSubmissionsProvider(form).future);
 
   final filteredSubmission = allSubmissions
@@ -210,21 +213,21 @@ Future<List<DataFormSubmission>> submissionFilteredByState(
 Future<SubmissionItemSummaryModel> submissionInfo(SubmissionInfoRef ref,
     {required FormMetadata formMetadata}) async {
   final allSubmissions =
-      await ref.watch(formSubmissionsProvider(formMetadata.formId).future);
+  await ref.watch(formSubmissionsProvider(formMetadata.formId).future);
 
   final submission =
-      allSubmissions.firstWhere((t) => t.uid == formMetadata.submission!);
+  allSubmissions.firstWhere((t) => t.uid == formMetadata.submission!);
 
   final DAssignment? assignment = submission.assignment != null
       ? await D2Remote.assignmentModuleD.assignment
-          .byId(submission.assignment!)
-          .getOne()
+      .byId(submission.assignment!)
+      .getOne()
       : null;
 
   final OrgUnit? orgUnit = assignment != null
       ? await D2Remote.organisationUnitModuleD.orgUnit
-          .byId(assignment.orgUnit!)
-          .getOne()
+      .byId(assignment.orgUnit!)
+      .getOne()
       : null;
 
   // final extract = extractValues(

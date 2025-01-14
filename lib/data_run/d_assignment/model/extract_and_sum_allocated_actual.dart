@@ -2,17 +2,20 @@ import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.ent
 
 Map<String, dynamic> sumActualResources(
     List<DataFormSubmission> submissions, List<String> resourceKeys) {
-  Map<String, dynamic> totalResources = {};
+  try {
+    Map<String, dynamic> totalResources = {};
 
-  for (var submission in submissions) {
-    var actualResources =
-        extractAndSumValues(submission.formData, resourceKeys);
-    actualResources.forEach((key, value) {
-      totalResources[key] = (totalResources[key] ?? 0) + value;
-    });
-  }
+    for (var submission in submissions) {
+      var actualResources =
+          extractAndSumValues(submission.formData, resourceKeys);
+      actualResources.forEach((key, value) {
+        totalResources[key] = (totalResources[key] ?? 0) + value;
+      });
+    }
 
-  return totalResources;
+    return totalResources;
+  } catch (e) {}
+  return {'itns': 0, 'population': 0, 'households': 0};
 }
 
 Map<String, dynamic> extractAndSumValues(

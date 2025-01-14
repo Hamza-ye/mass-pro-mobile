@@ -6,6 +6,7 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 class FormSubmissionRepository {
   FormSubmissionRepository();
 
+  // final DataFormSubmissionQuery _query;
   DataFormSubmissionQuery get _query => D2Remote.formModule.dataFormSubmission;
 
   Future<IList<DataFormSubmission>> getSubmissions(String form,

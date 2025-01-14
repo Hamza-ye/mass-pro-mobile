@@ -24,20 +24,20 @@ const versionControlName = 'formData';
 class FormInstance {
   FormInstance(FormInstanceRef ref,
       {required this.form,
-      required this.formFlatTemplate,
-      required this.formMetadata,
-      Map<String, Object?> initialValue = const {},
-      required SectionInstance rootSection,
-      Map<String, FormElementInstance<dynamic>> elements = const {},
-      required this.enabled})
+        required this.formFlatTemplate,
+        required this.formMetadata,
+        Map<String, Object?> initialValue = const {},
+        required SectionInstance rootSection,
+        Map<String, FormElementInstance<dynamic>> elements = const {},
+        required this.enabled})
       : _ref = ref,
-        /*  _formDataUid =
+  /*  _formDataUid =
             initialValue['_${formUid}'] ?? CodeGenerator.generateCompositeUid(),*/
         _formSection = rootSection {
     var formElementMap = {
       for (var x
-          in getFormElementIterator<FormElementInstance<dynamic>>(rootSection)
-              .where((e) => e.elementPath != null))
+      in getFormElementIterator<FormElementInstance<dynamic>>(rootSection)
+          .where((e) => e.elementPath != null))
         x.elementPath!: x
     };
     _forElementMap.addAll(formElementMap);
@@ -74,28 +74,35 @@ class FormInstance {
 
   Future<DataFormSubmission> saveFormData() async {
     final formSubmission =
-        await formSubmissionList.getSubmission(submissionUid!);
+    await formSubmissionList.getSubmission(submissionUid!);
 
+    return _saveSubmission(formSubmission!);
+  }
+
+  Future<DataFormSubmission> _saveSubmission(
+      DataFormSubmission formSubmission) async {
     formSection.value.forEach((key, value) {
       _initialValue.update(
         key,
-        (_) => value,
+            (_) => value,
         ifAbsent: () => value,
       );
     });
 
-    formSubmission!.formData
+    formSubmission.formData
       ..clear()
       ..addAll(_initialValue);
 
-    return formSubmissionList.updateSubmission(formSubmission);
+    final updatedSubmission =
+    await formSubmissionList.updateSubmission(formSubmission);
+    return updatedSubmission;
   }
 
   Future<DataFormSubmission> onChangeStatus(AssignmentStatus? status) async {
     final formSubmission =
-        await formSubmissionList.getSubmission(submissionUid!);
+    await formSubmissionList.getSubmission(submissionUid!);
     formSubmission!.status = status;
-    return saveFormData();
+    return _saveSubmission(formSubmission);
   }
 
   RepeatItemInstance onAddRepeatedItem(RepeatInstance parent) {

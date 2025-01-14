@@ -30,7 +30,7 @@ class AssignmentOverviewItem extends ConsumerWidget {
         ref.watch(filterQueryProvider.select((value) => value.searchQuery));
     final activityModel = ActivityInheritedWidget.of(context);
     return Card(
-      color: getCardColor(assignment.status),
+      color: statusColor(assignment.status),
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

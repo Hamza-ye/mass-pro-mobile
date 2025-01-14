@@ -1,3 +1,4 @@
+import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
 import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
@@ -21,9 +22,6 @@ class Assignments extends _$Assignments {
   @override
   Future<List<AssignmentModel>> build() async {
     final query = D2Remote.assignmentModuleD.assignment;
-    // if (scope != null) {
-    //   query.where(attribute: 'scope', value: scope.name);
-    // }
     final List<DAssignment> assignments = await query.get();
     final futures =
         assignments.map<Future<AssignmentModel>>((assignment) async {
@@ -59,14 +57,14 @@ class Assignments extends _$Assignments {
 
       AssignmentStatus status;
 
-      if (submissions.isEmpty) {
-        status = AssignmentStatus.NOT_STARTED;
-      } else {
-        // final sortedSubmissions = submissions.toList()
-        //   ..sort((a, b) => b.lastModifiedDate!.compareTo(a.lastModifiedDate!));
-        // status = sortedSubmissions.first.status!;
-        status = assignment.status;
-      }
+      // if (submissions.isEmpty) {
+      //   status = AssignmentStatus.NOT_STARTED;
+      // } else {
+      //   final sortedSubmissions = submissions.toList()
+      //     ..sort((a, b) => b.lastModifiedDate!.compareTo(a.lastModifiedDate!));
+      //   status = sortedSubmissions.first.status!;
+      status = assignment.status ?? AssignmentStatus.NOT_STARTED;
+      // }
 
       return AssignmentModel(
         id: assignment.id!,
@@ -108,16 +106,17 @@ class Assignments extends _$Assignments {
   void updateStatus(AssignmentStatus? status, String assignmentId) async {
     // final previousState = await future;
 
-    // final assignment = previousState.firstWhere((a) => a.id == assignmentId);
-    DAssignment assignment =
+    DAssignment? assignment =
         await D2Remote.assignmentModuleD.assignment.byId(assignmentId).getOne();
+    if (assignment != null) {
+      assignment.status = status;
+      assignment.lastModifiedDate =
+          DDateUtils.databaseDateFormat().format(DateTime.now().toUtc());
+      await D2Remote.assignmentModuleD.assignment
+          .setData(assignment)
+          .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
+    }
 
-    final assignmentUpdate =
-        DAssignment.fromJson({...assignment.toJson(), 'status': status?.name});
-
-    await D2Remote.assignmentModuleD.assignment
-        .setData(assignmentUpdate)
-        .save(saveOptions: SaveOptions(skipLocalSyncStatus: false));
     ref.invalidateSelf();
     await future;
   }

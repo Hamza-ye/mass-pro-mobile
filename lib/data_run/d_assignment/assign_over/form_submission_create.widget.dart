@@ -121,13 +121,13 @@ class FormSubmissionCreateState extends ConsumerState<FormSubmissionCreate> {
                         ),
                         softWrap: true,
                       ),
-                      subtitle: formTemplate.description != null
-                          ? Text(
-                        formTemplate.description!,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        softWrap: true,
-                      )
-                          : null,
+                      // subtitle: formTemplate.description != null
+                      //     ? Text(
+                      //   formTemplate.description!,
+                      //   style: Theme.of(context).textTheme.bodySmall,
+                      //   softWrap: true,
+                      // )
+                      //     : null,
                       onTap: () => createAndPopupWithResult(context, formTemplate),
                       trailing: const Icon(Icons.chevron_right),
                       contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
