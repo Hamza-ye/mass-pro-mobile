@@ -29,9 +29,9 @@ class ActivityCard extends StatelessWidget {
               Text(
                 activity.activity?.name ?? '',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  // color: Theme.of(context).primaryColor,
-                ),
+                      fontWeight: FontWeight.bold,
+                      // color: Theme.of(context).primaryColor,
+                    ),
               ),
               const SizedBox(height: 8.0),
 
@@ -100,11 +100,11 @@ class ActivityCard extends StatelessWidget {
   }
 
   Widget _infoRow(
-      BuildContext context, {
-        required IconData icon,
-        required String label,
-        required String value,
-      }) {
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required String value,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
@@ -129,6 +129,7 @@ String formatDate(DateTime date, BuildContext context) {
 
 String formatDateString(String date, BuildContext context) {
   final dateFormat = DateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", 'en_US');
-  final formattedDate = dateFormat.parse(date);
+  final formattedDate = dateFormat.tryParse(date);
+  if (formattedDate == null) return '';
   return MaterialLocalizations.of(context).formatFullDate(formattedDate);
 }

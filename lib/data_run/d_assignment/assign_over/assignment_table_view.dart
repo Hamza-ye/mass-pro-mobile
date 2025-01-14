@@ -65,15 +65,7 @@ class AssignmentTableView extends HookConsumerWidget {
               .map((assignment) => DataRow(
                     color: WidgetStateProperty.resolveWith<Color?>(
                       (Set<WidgetState> states) {
-                        if (assignment.status.isNotStarted() ||
-                            assignment.status.isRescheduled()) {
-                          return Colors.grey
-                              .withOpacity(0.3); // Set the color to gray
-                        }
-                        if (assignment.status.isDone()) {
-                          return null; // Set the color to gray
-                        }
-                        return Colors.greenAccent.withOpacity(0.3);
+                     return   statusColor(assignment.status);
                       },
                     ),
                     cells: <DataCell>[
@@ -162,21 +154,4 @@ class AssignmentTableView extends HookConsumerWidget {
 
     return RichText(text: highlightedText);
   }
-
-// Color _statusColor(AssignmentStatus status) {
-//   switch (status) {
-//     case AssignmentStatus.NOT_STARTED:
-//       return Colors.grey;
-//     case AssignmentStatus.IN_PROGRESS:
-//       return Colors.blue;
-//     case AssignmentStatus.COMPLETED:
-//       return Colors.green;
-//     case AssignmentStatus.RESCHEDULED:
-//       return Colors.orange;
-//     case AssignmentStatus.CANCELLED:
-//       return Colors.red;
-//     default:
-//       return Colors.black;
-//   }
-// }
 }

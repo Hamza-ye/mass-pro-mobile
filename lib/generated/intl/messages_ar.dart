@@ -250,7 +250,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "productionDate": MessageLookupByLibrary.simpleMessage("تاريخ الانتاج"),
         "reassigned":
             MessageLookupByLibrary.simpleMessage("إعادة تعيين فريق آخر"),
-        "reported": MessageLookupByLibrary.simpleMessage("Reported"),
+        "reported": MessageLookupByLibrary.simpleMessage("مرسل"),
         "reportedResources":
             MessageLookupByLibrary.simpleMessage("موارد المرسلة"),
         "rescan": MessageLookupByLibrary.simpleMessage("إعادة مسح"),

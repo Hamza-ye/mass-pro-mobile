@@ -77,8 +77,9 @@ class FormSubmissionsTable extends HookConsumerWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(getItemLocalString(formVersion.label,
-              defaultString: formVersion.name),
+              Text(
+                  getItemLocalString(formVersion.label,
+                      defaultString: formVersion.name),
                   style: Theme.of(context).textTheme.titleMedium),
               if (selectedSubmissions.value.isNotEmpty)
                 Row(
@@ -139,10 +140,16 @@ class FormSubmissionsTable extends HookConsumerWidget {
                         DataColumn(label: Text(S.of(context).delete)),
                       ],
                       rows: submissions.value.map((submission) {
-                        final extractedValues = _extractValues(
-                            submission.formData, formVersion, activityModel);
-                        final totalResources =
-                            _sumNumericResources(submission.formData);
+                        Map<String, dynamic> extractedValues = {};
+                        Map<String, dynamic> totalResources = {};
+                        try {
+                          extractedValues = _extractValues(
+                              submission.formData, formVersion, activityModel);
+                          totalResources =
+                              _sumNumericResources(submission.formData);
+                        } catch (e) {
+                          // log
+                        }
 
                         return DataRow(
                           selected:
@@ -207,29 +214,30 @@ class FormSubmissionsTable extends HookConsumerWidget {
 
     void _extract(Map<String, dynamic> data, List<Template> fields) {
       fields.forEach((field) {
-        if (field.type!.isSection && data.containsKey(field.name)) {
-          _extract(data[field.name], field.fields.toList());
-        } else if (field.type!.isRepeatSection &&
-            data.containsKey(field.name)) {
-          // extractedValues[field.name!] = data[field.name];
-        } else if (field.type == ValueType.Progress &&
-            data.containsKey(field.name)) {
-          extractedValues[field.name!] = Intl.message(
-            ((AssignmentStatus.values
-                            .firstOrNullWhere((t) => t.name == data[field.name])
-                            ?.name ??
-                        data[field.name]) as String?)
-                    ?.toLowerCase() ??
-                data[field.name],
-          );
-        } else if (field.type == ValueType.Team &&
-            data.containsKey(field.name)) {
-          extractedValues[field.name!] = activityModel.managedTeams
-                  .firstOrNullWhere((t) => t.id == data[field.name])
-                  ?.name ??
-              data[field.name];
-        } else if (data.containsKey(field.name)) {
-          extractedValues[field.name!] = data[field.name];
+        if (field.name != null) {
+          if (field.type!.isSection && data.containsKey(field.name)) {
+            _extract(data[field.name], field.fields.toList());
+          } else if (field.type!.isRepeatSection &&
+              data.containsKey(field.name)) {
+            // extractedValues[field.name!] = data[field.name];
+          } else if (field.type == ValueType.Progress &&
+              data.containsKey(field.name)) {
+            final value = ((AssignmentStatus.values
+                        .firstOrNullWhere((t) => t.name == data[field.name])
+                        ?.name ??
+                    data[field.name])
+                ?.toString());
+            extractedValues[field.name!] =
+                value != null ? Intl.message(value.toLowerCase()) : '-';
+          } else if (field.type == ValueType.Team &&
+              data.containsKey(field.name)) {
+            extractedValues[field.name!] = activityModel.managedTeams
+                    .firstOrNullWhere((t) => t.id == data[field.name])
+                    ?.name ??
+                data[field.name];
+          } else if (data.containsKey(field.name)) {
+            extractedValues[field.name!] = data[field.name];
+          }
         }
       });
     }
@@ -347,6 +355,9 @@ Widget buildStatusIcon(SyncStatus? status) {
 
 String _formatDate(String? dateStr) {
   if (dateStr == null) return '';
-  final dateTime = DateTime.parse(dateStr);
+  final dateTime = DateTime.tryParse(dateStr);
+  if(dateTime == null) {
+    return '';
+  }
   return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
 }

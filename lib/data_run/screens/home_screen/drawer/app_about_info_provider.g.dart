@@ -6,7 +6,7 @@ part of 'app_about_info_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appAboutInfoHash() => r'f40157c49475e7e3cfb34da55d2094025fdc9334';
+String _$appAboutInfoHash() => r'a0c1e0c24cf1cb61267f643f53946a9a03e4210c';
 
 /// See also [appAboutInfo].
 @ProviderFor(appAboutInfo)

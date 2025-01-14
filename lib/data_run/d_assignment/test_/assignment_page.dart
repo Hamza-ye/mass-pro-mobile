@@ -190,7 +190,6 @@ Widget buildStatusBadge(AssignmentStatus status) {
     default:
       statusIcon = MdiIcons.helpCircleOutline; // More expressive icon
       badgeColor = Colors.black;
-
   }
 
   // return Badge(
@@ -211,21 +210,22 @@ Widget buildStatusBadge(AssignmentStatus status) {
   );
 }
 
-
-Color statusColor(AssignmentStatus status) {
+Color? statusColor(AssignmentStatus? status) {
   switch (status) {
-    case AssignmentStatus.NOT_STARTED:
-      return Colors.grey;
     case AssignmentStatus.IN_PROGRESS:
-      return Colors.blue;
+      return Colors.greenAccent.withOpacity(0.5);
     case AssignmentStatus.DONE:
-      return Colors.green;
-    case AssignmentStatus.RESCHEDULED:
-      return Colors.orange;
+      return null;
     case AssignmentStatus.CANCELLED:
-      return Colors.red;
+    case AssignmentStatus.MERGED:
+    case AssignmentStatus.REASSIGNED:
+      return Colors.orangeAccent.withOpacity(0.5);
+    case AssignmentStatus.NOT_STARTED:
+    case AssignmentStatus.RESCHEDULED:
+      return Colors.grey.withOpacity(0.3);
     default:
-      return Colors.black;
+      return Colors.grey.withOpacity(0.3);
+
   }
 }
 
