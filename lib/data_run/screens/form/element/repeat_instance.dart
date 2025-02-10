@@ -1,8 +1,8 @@
 part of 'form_element.dart';
 
-class RepeatInstance extends SectionElement<List<Map<String, Object?>?>> {
+class RepeatSection extends SectionElement<List<Map<String, Object?>?>> {
 
-  RepeatInstance({
+  RepeatSection({
     required super.template,
     required super.form,
     List<RepeatItemInstance> elements = const [],

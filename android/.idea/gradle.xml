@@ -7,9 +7,9 @@
         <compositeConfiguration>
           <compositeBuild compositeDefinitionSource="SCRIPT">
             <builds>
-              <build path="D:/Hamza/android-tools/flutter/packages/flutter_tools/gradle" name="gradle">
+              <build path="$PROJECT_DIR$/../../../Hamza/android-tools/flutter/packages/flutter_tools/gradle" name="gradle">
                 <projects>
-                  <project path="D:/Hamza/android-tools/flutter/packages/flutter_tools/gradle" />
+                  <project path="$PROJECT_DIR$/../../../Hamza/android-tools/flutter/packages/flutter_tools/gradle" />
                 </projects>
               </build>
             </builds>
@@ -17,7 +17,8 @@
         </compositeConfiguration>
         <option name="testRunner" value="CHOOSE_PER_TEST" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
+        <option name="gradleHome" value="C:/Gradle/gradle-8.10.1" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/connectivity_plus-6.1.0/android" />
@@ -27,9 +28,9 @@
             <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/shared_preferences_android-2.3.4/android" />
             <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/sqflite_android-2.4.0/android" />
             <option value="$USER_HOME$/AppData/Local/Pub/Cache/hosted/pub.dev/sqflite_sqlcipher-3.1.0+1/android" />
+            <option value="$PROJECT_DIR$/../../../Hamza/android-tools/flutter/packages/flutter_tools/gradle" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="D:/Hamza/android-tools/flutter/packages/flutter_tools/gradle" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

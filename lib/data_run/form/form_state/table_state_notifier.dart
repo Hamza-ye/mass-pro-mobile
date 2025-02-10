@@ -1,15 +1,15 @@
-import 'package:datarun/data_run/form/form_state/table_state.dart';
-import 'package:fast_immutable_collections/fast_immutable_collections.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+// import 'package:datarun/data_run/form/form_state/table_state.dart';
+// import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+// import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'table_state_notifier.g.dart';
+// part 'table_state_notifier.g.dart';
 
-@riverpod
-class TableStateNotifier extends _$TableStateNotifier {
-  @override
-  IMap<String, RowState> build() {
-    throw UnimplementedError();
-  }
+// @riverpod
+// class TableStateNotifier extends _$TableStateNotifier {
+//   @override
+//   IMap<String, RowState> build() {
+//     throw UnimplementedError();
+//   }
 
 // TableStateNotifier(SectionTemplate template)
 //     : super(instantiateTableFromTemplate(template));
@@ -27,4 +27,4 @@ class TableStateNotifier extends _$TableStateNotifier {
 //     state = {...state, rowId: row.copyWith(cells: updatedCells)};
 //   }
 // }
-}
+// }

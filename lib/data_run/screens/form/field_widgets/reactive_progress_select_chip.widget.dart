@@ -1,5 +1,5 @@
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
-import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:datarun/data_run/d_assignment/assignment_provider.dart';
 import 'package:datarun/data_run/d_assignment/assignment_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

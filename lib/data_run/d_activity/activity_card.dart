@@ -1,7 +1,8 @@
-import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:datarun/generated/l10n.dart';
+
+import 'activity_model.dart';
 
 class ActivityCard extends StatelessWidget {
   const ActivityCard({required this.activity, required this.onTap, super.key});

@@ -10,9 +10,16 @@ extension ElementDependencyHandler<T> on FormElementInstance<T> {
 
   calculationFriendlyValue(FormElementInstance<dynamic> dependency) {
     if (!dependency.visible) {
-      return dependency.template.isNumeric ? 0 : null;
+      return dependency.template.isNumeric
+          ? 0
+          : dependency.template.type!.isBoolean
+              ? false
+              : null;
     } else if (dependency.template.isNumeric && dependency.value == null) {
       return 0;
+    } else if (dependency.template.type!.isBoolean &&
+        dependency.value == null) {
+      return false;
     } else {
       return dependency.value;
     }
@@ -106,9 +113,9 @@ extension ElementDependencyHandler<T> on FormElementInstance<T> {
     }
 
     if (current is SectionElement) {
-      final childElements = current is SectionInstance
+      final childElements = current is Section
           ? current.elements.values
-          : (current as RepeatInstance).elements;
+          : (current as RepeatSection).elements;
       for (var nestedElement in childElements) {
         var result = walkTreeForDependency(nestedElement, name);
         if (result != null) {

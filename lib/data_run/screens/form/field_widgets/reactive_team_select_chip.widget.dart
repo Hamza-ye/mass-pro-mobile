@@ -1,4 +1,5 @@
 import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
+import 'package:datarun/data_run/d_team/team_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
@@ -35,9 +36,9 @@ class QReactiveTeamSelectChip extends ConsumerWidget {
         ));
   }
 
-  List<ReactiveChipOption<String>> _getChipOptions(List<DRunEntity> teams) {
+  List<ReactiveChipOption<String>> _getChipOptions(List<TeamModel> teams) {
     return teams
-        .map((DRunEntity team) => ReactiveChipOption<String>(
+        .map((TeamModel team) => ReactiveChipOption<String>(
               value: team.id!,
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

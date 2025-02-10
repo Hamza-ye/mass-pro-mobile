@@ -1,4 +1,4 @@
-import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/datarun/data_value/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
 import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';

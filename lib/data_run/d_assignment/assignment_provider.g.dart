@@ -214,7 +214,7 @@ class _FilterAssignmentsProviderElement
   EntityScope? get scope => (origin as FilterAssignmentsProvider).scope;
 }
 
-String _$assignmentsHash() => r'53192bead722e63d50c6647ec92c48d19198bf91';
+String _$assignmentsHash() => r'6808ba4c0ecc0a36c2b1d345981c0e029cd1c883';
 
 /// a notifier that retrieves all assignments with their data populated
 ///

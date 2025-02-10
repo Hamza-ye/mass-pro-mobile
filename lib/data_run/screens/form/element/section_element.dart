@@ -1,7 +1,7 @@
 part of 'form_element.dart';
 
 /// SectionElement is a Form Element representing the
-/// father of either a [SectionInstance] element or a [RepeatSection] element
+/// father of either a [Section] element or a [RepeatSection] element
 sealed class SectionElement<T> extends FormElementInstance<T> {
   SectionElement(
       {required SectionTemplate template,

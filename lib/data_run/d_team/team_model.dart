@@ -1,3 +1,46 @@
+import 'package:d2_remote/modules/datarun_shared/utilities/team_form_permission.dart';
+import 'package:d2_remote/shared/entities/identifiable.entity.dart';
+import 'package:datarun/core/models/d_run_entity.dart';
+import 'package:equatable/equatable.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+
+class TeamModel with EquatableMixin {
+  factory TeamModel.fromIdentifiable(
+      {required IdentifiableEntity identifiableEntity,
+      String? activity,
+      Iterable<TeamFormPermission> formPermissions = const IListConst([])}) {
+    return TeamModel._(
+        activity: activity,
+        team:
+            DRunEntity.fromIdentifiable(identifiableEntity: identifiableEntity),
+        formPermissions: formPermissions);
+  }
+
+  TeamModel._(
+      {required DRunEntity team,
+      Iterable<TeamFormPermission>? formPermissions,
+      this.activity})
+      : this._team = team,this.formPermissions = IList.orNull(formPermissions) ?? IList();
+
+  final DRunEntity _team;
+
+  String? get name => _team.name;
+
+  String? get id => _team.id;
+
+  bool get disabled => _team.disabled;
+
+  IMap<String, dynamic> get label => _team.label;
+
+  IMap<String, dynamic> get properties => _team.properties;
+
+  final String? activity;
+  final IList<TeamFormPermission> formPermissions;
+
+  @override
+  List<Object?> get props => [_team, formPermissions];
+}
+
 class TeamSummary {
   TeamSummary({
     required this.id,
@@ -29,7 +72,6 @@ class Resource {
   int allocated;
   int used;
 }
-
 
 class ActivityFeedItem {
   ActivityFeedItem({

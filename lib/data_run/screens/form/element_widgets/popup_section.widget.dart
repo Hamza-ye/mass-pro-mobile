@@ -9,7 +9,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class PopupSectionWidget extends HookConsumerWidget {
   PopupSectionWidget({super.key, required this.element, String path = ''});
 
-  final SectionInstance element;
+  final Section element;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

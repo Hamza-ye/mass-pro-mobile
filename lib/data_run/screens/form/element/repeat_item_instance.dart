@@ -1,7 +1,7 @@
 part of 'form_element.dart';
 
 /// A section
-class RepeatItemInstance extends SectionInstance {
+class RepeatItemInstance extends Section {
   RepeatItemInstance(
       {required super.template,
       required super.form,
@@ -24,14 +24,14 @@ class RepeatItemInstance extends SectionInstance {
     _uid = value;
   }
 
-  int get sectionIndex => (parentSection as RepeatInstance)
+  int get sectionIndex => (parentSection as RepeatSection)
       .sectionIndexWhere((section) => section == this);
 
   @override
   String get name => '$sectionIndex';
 
   set parentSection(SectionElement<dynamic>? parent) {
-    if (parent is! RepeatInstance?) {
+    if (parent is! RepeatSection?) {
       throw StateError(
           'A RepeatItemInstance\'s Parent can only be a RepeatInstance, parent: ${parent.runtimeType}');
     }

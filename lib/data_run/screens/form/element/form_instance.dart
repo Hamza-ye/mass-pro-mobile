@@ -1,4 +1,4 @@
-import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/datarun/data_value/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/data_run/form/form_element/form_element_iterators/form_element_iterator.dart';
@@ -27,7 +27,7 @@ class FormInstance {
         required this.formFlatTemplate,
         required this.formMetadata,
         Map<String, Object?> initialValue = const {},
-        required SectionInstance rootSection,
+        required Section rootSection,
         Map<String, FormElementInstance<dynamic>> elements = const {},
         required this.enabled})
       : _ref = ref,
@@ -56,14 +56,14 @@ class FormInstance {
 
   final FormInstanceRef _ref;
   final Map<String, FormElementInstance<dynamic>> _forElementMap = {};
-  final SectionInstance _formSection;
+  final Section _formSection;
 
   // final FormConfiguration formConfiguration;
 
   Map<String, FormElementInstance<dynamic>> get forElementMap =>
       Map.unmodifiable(_forElementMap);
 
-  SectionInstance get formSection => _formSection;
+  Section get formSection => _formSection;
 
   FormSubmissions get formSubmissionList => _ref.read(
       formSubmissionsProvider(formMetadata.formId.split('_').first).notifier);
@@ -105,7 +105,7 @@ class FormInstance {
     return _saveSubmission(formSubmission);
   }
 
-  RepeatItemInstance onAddRepeatedItem(RepeatInstance parent) {
+  RepeatItemInstance onAddRepeatedItem(RepeatSection parent) {
     final itemFormGroup = FormElementControlBuilder.createSectionFormGroup(
         formFlatTemplate, parent.template);
 
@@ -128,14 +128,14 @@ class FormInstance {
     return itemInstance;
   }
 
-  RepeatItemInstance onRemoveRepeatedItem(int index, RepeatInstance parent) {
+  RepeatItemInstance onRemoveRepeatedItem(int index, RepeatSection parent) {
     final removedItem = parent.removeAt(index);
     parent.elementControl.removeAt(index);
     parent.evaluate();
     return removedItem;
   }
 
-  RepeatItemInstance? onRemoveLastItem(RepeatInstance parent) {
+  RepeatItemInstance? onRemoveLastItem(RepeatSection parent) {
     try {
       final parentArray = form.control(parent.elementPath!) as FormArray;
       final lastParentItem = parent.elements.last;

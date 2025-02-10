@@ -5,50 +5,107 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0c7ca941-03ab-4d42-9254-9a21e20f5d13" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/barcode_scanner_widget.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/scanned_items_table.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/scanner_button_widgets.dart" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/scanner_error_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../.metadata" beforeDir="false" afterPath="$PROJECT_DIR$/../.metadata" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/appInsightsSettings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/commons/extensions/async_value_ui.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/data_value/data_value.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/element_state.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/element_state_factory.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/element_vistor/element_vistor.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/field_state/field_state.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/form_state.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/form_state_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/path.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/repeat_instance/repeat_row_state.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/repeat_instance/repeat_state.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/element_instance/sction_instance/section_state.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/evaluation_engine/context_manager.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/evaluation_engine/evaluation_context.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/exceptions/invalid_template_exception.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/expression_language/example/example1.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/expression_language/expression_evaluator.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/expression_language/expression_parser_service.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/expression_language/expression_service.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/expression_language/form_expression_context.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/models/d_run_entity.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/core/network/online_connectivity_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_repository.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/model/assignment_model.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/data_run/d_team/team_provider.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../lib/data_run/d_team/team_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.widget_preview/tmp/DataSubmissionScreen__data_submission_screen.widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.widget_preview/tmp/OrgUnitPickerField__org_unit_picker_field.widget.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.widget_preview/tmp/PrePopulatedIndexedTree__pre_populated_indexed_trees_sample.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/deviceStreaming.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/migrations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/migrations.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/studiobot.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/debug/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/debug/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/org/datarun/app/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/org/datarun/app/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/profile/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/profile/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mass_pro_android.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/docs/getting-started.md" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/docs/getting-started.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/docusaurus.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/docusaurus.config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../docs/src/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../docs/src/pages/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../flutter_launcher_icons.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../flutter_launcher_icons.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/scanned_code/gs1_scanned_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/scanned_code/gs1_scanned_item.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/enhanced_scanner.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/live_scanner.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/reactive_code_scan_field.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/reactive_code_scan_field.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/code_scanner/reactive_gs1_code_scan_details.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/scanned_code_element/barcode_scanner_simple.dart" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/scanned_code_element/barcode_scanner_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/scanned_code_element/barcode_scanner_widget.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/scanned_code_element/scanned_item_details.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/scanned_code_element/scanned_item_details.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/scanned_code_element/scanned_items_table.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/scanned_code_element/scanned_items_table.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../coverage/lcov.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data-run-sdk" beforeDir="false" afterPath="$PROJECT_DIR$/../data-run-sdk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/commons/constants.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/commons/constants.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/core/network/connectivy_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/network/connectivy_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_card.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_card.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_inherited_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_inherited_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_provider.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_activity/activity_provider.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_detail/assignment_detail_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_detail/assignment_detail_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_detail/form_submissions_table.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_detail/form_submissions_table.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_overview_item.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_overview_item.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_table_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_table_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignments_card_view.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignments_card_view.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/form_submission_create.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/form_submission_create.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/model/assignment_form.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/model/assignment_form.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/model/assignment_provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/model/assignment_provider.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/assignment_provider.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/model/extract_and_sum_allocated_actual.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/model/extract_and_sum_allocated_actual.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_assignment/search_filter_bar.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_assignment/search_filter_bar.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/d_team/team_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/d_team/team_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_element/form_element_iterators/form_element_iterator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_element/form_element_iterators/form_element_iterator.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_element/form_elements_factories.provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_element/form_elements_factories.provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_element_factories/form_element_builder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_element_factories/form_element_builder.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_element_factories/form_element_control_builder.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_element_factories/form_element_control_builder.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_state/extension.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_state/extension.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_state/field_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_state/field_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_state/form_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_state/form_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_state/table_state.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_state/table_state.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_state/table_state_notifier.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_state/table_state_notifier.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_state/table_state_notifier.g.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_submission/form_submission_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_submission/form_submission_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_submission/submission_list.provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_submission/submission_list.provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_submission/submission_list.provider.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_submission/submission_list.provider.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/form/form_submission/submission_list_util.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/form/form_submission/submission_list_util.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/extension/element_dependency.extension.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/extension/element_dependency.extension.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/field_instance.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/field_instance.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/form_element.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/form_element.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/form_instance.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/form_instance.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/form_metadata.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/form_metadata.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/providers/form_instance.provider.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/providers/form_instance.provider.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/providers/form_instance.provider.g.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/providers/form_instance.provider.g.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/repeat_instance.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/repeat_instance.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/repeat_item_instance.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/repeat_item_instance.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/section_element.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/section_element.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element/section_instance.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element/section_instance.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element_widgets/form_widget_factory.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element_widgets/form_widget_factory.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/element_widgets/popup_section.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/element_widgets/popup_section.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/reactive_progress_select_chip.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/reactive_progress_select_chip.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/reactive_team_select_chip.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/field_widgets/reactive_team_select_chip.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/form_entry_view_silver.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/form_entry_view_silver.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/repeat_table.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/repeat_table.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/repeat_table/edit_panel.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/repeat_table/edit_panel.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/repeat_table/repeat_table_rows_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/repeat_table/repeat_table_rows_source.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/repeat_table/repeat_table_sliver.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/repeat_table/repeat_table_sliver.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/section.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form/form_with_sliver/section.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form_module/form_template/flat_template_factory.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form_module/form_template/flat_template_factory.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form_module/form_template/form_element_template.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form_module/form_template/form_element_template.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form_module/form_template/form_element_template_iterator.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form_module/form_template/form_element_template_iterator.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form_module/form_template/path_walking_service.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/core/form_template/path_walking_service.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form_submission_list/submission_info.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form_submission_list/submission_info.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form_submission_list/submission_list_screen.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form_submission_list/submission_list_screen.widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/form_ui_elements/bottom_sheet/form_completion_dialog_config/configure_form_completion_dialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/form_ui_elements/bottom_sheet/form_completion_dialog_config/configure_form_completion_dialog.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/data_run/screens/home_screen/home_screen.widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/data_run/screens/home_screen/home_screen.widget.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../pubspec.lock" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../pubspec.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -76,20 +133,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "form-modeling",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Hamza/datarun/datarunmobile",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/datarun/datarunmobile/android&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="android.app.main" />

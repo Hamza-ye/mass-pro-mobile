@@ -1,6 +1,7 @@
 import 'package:d2_remote/modules/datarun/form/shared/field_template/field_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
+import 'package:d2_remote/modules/datarun/form/shared/rule/calculated_expression.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/choice_filter.dart';
 import 'package:d2_remote/modules/datarun/form/shared/rule/rule_parse_extension.dart';
 import 'package:d2_remote/modules/datarun/form/shared/template_extensions/form_traverse_extension.dart';
@@ -50,12 +51,12 @@ class FormElementBuilder {
     }
   }
 
-  static SectionInstance buildSectionInstance(FormGroup rootFormControl,
+  static Section buildSectionInstance(FormGroup rootFormControl,
       FormFlatTemplate formFlatTemplate, SectionTemplate template,
       {dynamic initialFormValue}) {
     final Map<String, FormElementInstance<dynamic>> elements = {};
 
-    final section = SectionInstance(form: rootFormControl, template: template);
+    final section = Section(form: rootFormControl, template: template);
 
     for (var childTemplate in template.fields) {
       elements[childTemplate.name!] = buildFormElement(
@@ -69,7 +70,8 @@ class FormElementBuilder {
 
   static RepeatItemInstance buildRepeatItem(FormGroup rootFormControl,
       FormFlatTemplate formFlatTemplate, SectionTemplate template,
-      {Map<String, Object?>? initialFormValue/*, required String parentUid*/}) {
+      {Map<String, Object?>? initialFormValue /*, required String parentUid*/
+      }) {
     final Map<String, FormElementInstance<dynamic>> elements = {};
 
     final repeatedSection = RepeatItemInstance(
@@ -118,19 +120,22 @@ class FormElementBuilder {
   //   return repeatedSection;
   // }
 
-  static RepeatInstance buildRepeatInstance(FormGroup rootFormControl,
+  static RepeatSection buildRepeatInstance(FormGroup rootFormControl,
       FormFlatTemplate formFlatTemplate, SectionTemplate template,
       {List<dynamic>? initialFormValue}) {
     final List<RepeatItemInstance> elements = initialFormValue
             ?.map((value) => buildRepeatItem(
-                rootFormControl, formFlatTemplate, template,
-                initialFormValue: value,
-                /*parentUid: value['parentUid'] as String*/))
+                  rootFormControl,
+                  formFlatTemplate,
+                  template,
+                  initialFormValue:
+                      value, /*parentUid: value['parentUid'] as String*/
+                ))
             .toList() ??
         [];
 
     final repeatedSection =
-        RepeatInstance(template: template, form: rootFormControl);
+        RepeatSection(template: template, form: rootFormControl);
 
     repeatedSection.addAll(elements);
     return repeatedSection;
@@ -156,6 +161,14 @@ class FormElementBuilder {
                 readOnly: templateElement.readOnly,
                 value: initialFormValue,
                 mandatory: templateElement.mandatory),
+            template: templateElement);
+      case ValueType.Calculated:
+        return CalculatedFieldInstance<dynamic>(
+            form: rootFormControl,
+            calculatedExpression: CalculatedExpression(
+                expression: templateElement.calculationExpression!),
+            elementProperties: FieldElementState<dynamic>(
+                readOnly: true, value: initialFormValue, mandatory: false),
             template: templateElement);
       case ValueType.Integer:
       case ValueType.IntegerPositive:

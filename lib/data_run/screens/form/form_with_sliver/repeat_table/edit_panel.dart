@@ -24,7 +24,7 @@ class EditPanel extends StatelessWidget {
   final String? title;
   final void Function(FormGroup form, EditActionType action) onSave;
 
-  final RepeatInstance repeatInstance;
+  final RepeatSection repeatInstance;
   final RepeatItemInstance item;
 
   @override

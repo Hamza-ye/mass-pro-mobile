@@ -13,7 +13,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class ConfigureFormCompletionDialog {
   const ConfigureFormCompletionDialog();
 
-  FormCompletionDialog call(SectionInstance rootSection) {
+  FormCompletionDialog call(Section rootSection) {
     final FormCompletionButton mainButton = _getMainButton(rootSection);
     final FormCompletionButton secondaryButton =
         _getSecondaryButton(rootSection);
@@ -34,7 +34,7 @@ class ConfigureFormCompletionDialog {
         secondaryButton: secondaryButton);
   }
 
-  FormCompletionButton _getMainButton(SectionInstance rootSection) {
+  FormCompletionButton _getMainButton(Section rootSection) {
     if (rootSection.form.hasErrors) {
       return FormCompletionButton(
           buttonStyle:
@@ -47,7 +47,7 @@ class ConfigureFormCompletionDialog {
     }
   }
 
-  FormCompletionButton _getSecondaryButton(SectionInstance rootSection) {
+  FormCompletionButton _getSecondaryButton(Section rootSection) {
     if (rootSection.form.hasErrors) {
       return FormCompletionButton(
           buttonStyle: DialogButtonStyle.secondaryButton(
@@ -61,7 +61,7 @@ class ConfigureFormCompletionDialog {
     }
   }
 
-  BottomSheetBodyModel _getBody(SectionInstance rootSection) {
+  BottomSheetBodyModel _getBody(Section rootSection) {
     bool controlHasErrors = rootSection.form.hasErrors;
     // bool elementHasErrors = rootSection.elementState.errors.isNotEmpty;
     // final elementErrors =rootSection.elementState.errors;
@@ -99,7 +99,7 @@ class ConfigureFormCompletionDialog {
   }
 
   Map<String, List<FieldWithIssue>> _getFieldsWithIssues(
-      SectionInstance rootSection) {
+      Section rootSection) {
     // logDebug('formErrorsMap: $formErrors');
     // logDebug('formErrorsMapFlatt: $formErrorsFlatt');
     final Iterable<FieldInstance<dynamic>> fieldsWithErrors =

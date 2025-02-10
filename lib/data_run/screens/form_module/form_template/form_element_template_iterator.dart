@@ -19,10 +19,6 @@ Iterable<TFormElement>
       formElements.addAll(formElement.children);
     }
 
-    if (formElement is RepeatElementTemplate) {
-      formElements.addAll(formElement.children);
-    }
-
     formElements.forEach((e) {
       if (!visitedElements.contains(e)) {
         stack.addLast(e);

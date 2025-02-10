@@ -1,4 +1,4 @@
-import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/datarun/data_value/entities/data_form_submission.entity.dart';
 
 Map<String, dynamic> sumActualResources(
     List<DataFormSubmission> submissions, List<String> resourceKeys) {

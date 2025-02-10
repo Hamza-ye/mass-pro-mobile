@@ -1,16 +1,16 @@
 import 'package:datarun/data_run/d_activity/activity_card.dart';
 import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
+import 'package:datarun/data_run/d_activity/activity_model.dart';
 import 'package:datarun/data_run/d_assignment/assignment_detail/form_submissions_table.dart';
-import 'package:datarun/data_run/d_assignment/form_submission_create.widget.dart';
-import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
 import 'package:datarun/data_run/d_assignment/assignment_page.dart';
+import 'package:datarun/data_run/d_assignment/form_submission_create.widget.dart';
+import 'package:datarun/data_run/d_assignment/model/assignment_model.dart';
 import 'package:datarun/data_run/form/form_submission/submission_list.provider.dart';
 import 'package:datarun/data_run/screens/form_ui_elements/get_error_widget.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:intl/intl.dart';
 
 class AssignmentDetailPage extends ConsumerWidget {
@@ -21,7 +21,8 @@ class AssignmentDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activityModel = ActivityInheritedWidget.of(context);
-
+    // final activityModel = ref.watch(activityModelProvider);
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).assignmentDetail),

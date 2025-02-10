@@ -1,4 +1,4 @@
-import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/datarun/data_value/entities/data_form_submission.entity.dart';
 import 'package:datarun/core/common/state.dart';
 
 typedef SubmissionFilterPredicate = bool Function(DataFormSubmission);

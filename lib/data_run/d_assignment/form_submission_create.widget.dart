@@ -1,8 +1,8 @@
-import 'package:d2_remote/modules/datarun/form/entities/data_form_submission.entity.dart';
+import 'package:d2_remote/modules/datarun/data_value/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
 import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
-import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:datarun/data_run/d_assignment/model/assignment_model.dart';
 import 'package:datarun/data_run/screens/form/element/providers/form_instance.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -121,13 +121,13 @@ class FormSubmissionCreateState extends ConsumerState<FormSubmissionCreate> {
                         ),
                         softWrap: true,
                       ),
-                      // subtitle: formTemplate.description != null
-                      //     ? Text(
-                      //   formTemplate.description!,
-                      //   style: Theme.of(context).textTheme.bodySmall,
-                      //   softWrap: true,
-                      // )
-                      //     : null,
+                      subtitle: formTemplate.description != null
+                          ? Text(
+                        formTemplate.description!,
+                        style: Theme.of(context).textTheme.bodySmall,
+                        softWrap: true,
+                      )
+                          : null,
                       onTap: () => createAndPopupWithResult(context, formTemplate),
                       trailing: const Icon(Icons.chevron_right),
                       contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),

@@ -24,11 +24,11 @@ class PopupFormElementWidgetFactory {
     return switch (element) {
       FieldInstance() =>
         FieldWidget(key: ValueKey(element.elementPath), element: element),
-      RepeatInstance() => RepeatTable(
+      RepeatSection() => RepeatTable(
           key: Key(element.elementPath!),
           repeatInstance: element,
         ),
-      SectionInstance() => PopupSectionWidget(
+      Section() => PopupSectionWidget(
           key: ValueKey(element.elementPath), element: element),
       // // TODO: Handle this case.
       // RepeatScanInstance() => throw UnimplementedError(),
@@ -54,6 +54,8 @@ class FieldFactory {
       case ValueType.Number:
       case ValueType.Age:
         return QTextTypeField(element: element);
+      case ValueType.Calculated:
+        return const SizedBox.shrink();
       case ValueType.Date:
       case ValueType.Time:
       case ValueType.DateTime:

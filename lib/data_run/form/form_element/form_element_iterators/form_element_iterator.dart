@@ -15,11 +15,11 @@ Iterable<TFormElement>
     }
     List<FormElementInstance<dynamic>> formElements = [];
 
-    if (formElement is SectionInstance) {
+    if (formElement is Section) {
       formElements.addAll(formElement.elements.values);
     }
 
-    if (formElement is RepeatInstance) {
+    if (formElement is RepeatSection) {
       formElements.addAll(formElement.elements);
     }
 

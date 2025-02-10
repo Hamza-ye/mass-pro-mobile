@@ -2,7 +2,6 @@ import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/extensions/list_extensions.dart';
 import 'package:datarun/core/utils/get_item_local_string.dart';
-import 'package:datarun/data_run/d_activity/activity_inherited_widget.dart';
 import 'package:datarun/data_run/d_assignment/assignment_page.dart';
 import 'package:datarun/data_run/form/form_element/form_element_iterators/form_element_iterator.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
@@ -11,6 +10,8 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:d2_remote/core/datarun/utilities/date_utils.dart' as sdk;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../../../d_activity/activity_model.dart';
 
 class RepeatTableDataSource extends DataTableSource {
   RepeatTableDataSource(

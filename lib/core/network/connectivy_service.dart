@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
+import 'package:datarun/commons/constants.dart';
+import 'package:http/http.dart' as http;
 
 class ConnectivityService {
-
   ConnectivityService._internal();
+
   static final ConnectivityService _instance = ConnectivityService._internal();
 
   static ConnectivityService get instance => _instance;
@@ -14,8 +17,9 @@ class ConnectivityService {
   Stream<bool> get connectivityStatusStream =>
       _connectivityStatusController.stream;
 
-
   // bool _isOnline = false;
+
+  // List<ConnectivityResult> _lastConnectivityCheckResult = [];
 
   // bool get isOnline =>
   //     _lastConnectivityCheckResult != ConnectivityResult.none && _isOnline;
@@ -34,7 +38,7 @@ class ConnectivityService {
   //       _lastConnectivityCheckResult = result;
   //     }
   //   });
-  //   return _checkInternetConnection();
+  //   return checkInternetConnection();
   // }
 
   Future<bool> isNetworkAvailable() async {
@@ -43,36 +47,38 @@ class ConnectivityService {
       return false;
     }
 
-   final result = connectivityResult.contains(ConnectivityResult.wifi) ||
+    final result = connectivityResult.contains(ConnectivityResult.wifi) ||
         connectivityResult.contains(ConnectivityResult.mobile);
     return result;
   }
 
-  // Future<bool> _checkInternetConnection() async {
-  //   try {
-  //     logDebug('checkInternetConnection: ping https://google.com ...',
-  //         data: {'runtimeType': this.runtimeType});
-  //     final response = await http
-  //         .get(Uri.parse('https://google.com'))
-  //         .timeout(Duration(seconds: 5));
-  //     if (response.statusCode == 200) {
-  //       logDebug('Device is online!', data: {'runtimeType': this.runtimeType});
-  //       _isOnline = true;
-  //       _connectivityStatusController.add(true);
-  //     } else {
-  //       logDebug('Device is offline!', data: {'runtimeType': this.runtimeType});
-  //       _isOnline = false;
-  //       _connectivityStatusController.add(false);
-  //     }
-  //   } catch (_) {
-  //     logDebug('Error checking internet Access, setting the status to offline!',
-  //         data: {'runtimeType': this.runtimeType});
-  //     _isOnline = false;
-  //     _connectivityStatusController.add(false);
-  //   }
-  //
-  //   return _isOnline;
-  // }
+  Future<bool> checkInternetConnection() async {
+    try {
+      logDebug('checkInternetConnection: ping $kApiPingUrl ...',
+          data: {'runtimeType': this.runtimeType});
+      final response =
+          await http.get(Uri.parse(kApiPingUrl)).timeout(Duration(seconds: 20));
+      if (response.statusCode == 200) {
+        logDebug('Device is online!', data: {'runtimeType': this.runtimeType});
+        return true;
+        // _isOnline = true;
+        // _connectivityStatusController.add(true);
+      } else {
+        logDebug('Device is offline!', data: {'runtimeType': this.runtimeType});
+        return false;
+        // _isOnline = false;
+        // _connectivityStatusController.add(false);
+      }
+    } catch (_) {
+      logDebug('Error checking internet Access, setting the status to offline!',
+          data: {'runtimeType': this.runtimeType});
+      return false;
+      // _isOnline = false;
+      // _connectivityStatusController.add(false);
+    }
+
+    // return _isOnline;
+  }
 
   void dispose() {
     _connectivityStatusController.close();

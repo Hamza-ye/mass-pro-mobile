@@ -1,18 +1,19 @@
+// import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
 // import 'package:datarun/data_run/form/form_state/form_state.dart';
 //
 // extension FormStateExtension on FormState {
-//   // TreeNodeWithChildren buildTree(String rootPath, List<TreeNode> allNodes) {
-//   //   final rootNode = allNodes.firstWhere((node) => node.path == rootPath);
-//   //   final children = getImmediateChildren(rootPath, allNodes)
-//   //       .map((child) => buildTree(child.path, allNodes))
-//   //       .toList();
-//   //   return TreeNodeWithChildren(
-//   //     id: rootNode.id,
-//   //     path: rootNode.path,
-//   //     data: rootNode.data,
-//   //     children: children,
-//   //   );
-//   // }
+//   Template buildTree(String rootPath, List<Template> allNodes) {
+//     final rootNode = allNodes.firstWhere((node) => node.path == rootPath);
+//     final children = getImmediateChildren(rootPath, allNodes)
+//         .map((child) => buildTree(child.path, allNodes))
+//         .toList();
+//     return TreeNodeWithChildren(
+//       id: rootNode.id,
+//       path: rootNode.path,
+//       data: rootNode.data,
+//       children: children,
+//     );
+//   }
 //   String _getBasePath(String path) {
 //     // Extract the base path before the UID
 //     final parts = path.split('.');

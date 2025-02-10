@@ -1,8 +1,8 @@
 part of 'form_element.dart';
 
 /// A section
-class SectionInstance extends SectionElement<Map<String, Object?>> {
-  SectionInstance({
+class Section extends SectionElement<Map<String, Object?>> {
+  Section({
     required super.template,
     required super.form,
     Map<String, FormElementInstance<dynamic>> elements = const {},

@@ -14,6 +14,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
+import '../../../d_activity/activity_model.dart';
+
 class RepeatTable extends StatefulHookConsumerWidget {
   const RepeatTable({
     super.key,
@@ -23,7 +25,7 @@ class RepeatTable extends StatefulHookConsumerWidget {
     // this.onAdd,
   });
 
-  final RepeatInstance repeatInstance;
+  final RepeatSection repeatInstance;
 
   // final void Function(int index)? onEdit;
   // final void Function(int index)? onDelete;
@@ -35,7 +37,7 @@ class RepeatTable extends StatefulHookConsumerWidget {
 
 class RepeatTableState extends ConsumerState<RepeatTable> {
   late final RepeatTableDataSource _dataSource;
-  late final RepeatInstance _repeatInstance;
+  late final RepeatSection _repeatInstance;
 
   // late final int tableColumnsLength;
 
@@ -256,7 +258,7 @@ class RepeatTableState extends ConsumerState<RepeatTable> {
   Future<void> _handleSave(
       BuildContext context,
       FormInstance formInstance,
-      RepeatInstance repeatInstance,
+      RepeatSection repeatInstance,
       RepeatItemInstance repeatItem,
       EditActionType action,
       ActivityModel activityModel) async {
@@ -278,7 +280,7 @@ class RepeatTableState extends ConsumerState<RepeatTable> {
   Future<bool> _onTryToClose(
       BuildContext context,
       FormInstance formInstance,
-      RepeatInstance repeatInstance,
+      RepeatSection repeatInstance,
       RepeatItemInstance repeatItem,
       bool itemSaved) async {
     final isNew = repeatItem.uid == null;

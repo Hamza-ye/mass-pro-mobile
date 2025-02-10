@@ -1,9 +1,11 @@
-import 'package:d2_remote/modules/metadatarun/teams/entities/d_team.entity.dart';
+import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
-import 'package:datarun/data_run/d_activity/activity_provider.dart';
-import 'package:datarun/data_run/d_assignment/model/assignment_provider.dart';
+import 'package:datarun/data_run/d_assignment/assignment_provider.dart';
+import 'package:datarun/data_run/d_team/team_model.dart';
+import 'package:datarun/data_run/d_team/team_provider.dart';
 import 'package:datarun/generated/l10n.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -31,7 +33,7 @@ class SearchFilterBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final teamsAsync = ref.watch(teamsProvider());
+    final teamsAsync = ref.watch(teamsProvider(EntityScope.Managed));
     final filterQuery = ref.watch(filterQueryProvider);
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -56,7 +58,7 @@ class SearchFilterBar extends ConsumerWidget {
         const SizedBox(width: 8),
         AsyncValueWidget(
           value: teamsAsync,
-          valueBuilder: (List<DTeam> teams) {
+          valueBuilder: (IList<TeamModel> teams) {
             return DropdownButton<String>(
                 value: filterQuery.filters['teams']?.isNotEmpty == true
                     ? filterQuery.filters['teams'].first
@@ -66,7 +68,7 @@ class SearchFilterBar extends ConsumerWidget {
                   softWrap: true,
                 ),
                 onChanged: onTeamChanged,
-                items: teams.map((DTeam team) {
+                items: teams.map((TeamModel team) {
                   return DropdownMenuItem<String>(
                     value: team.id,
                     child: Text(

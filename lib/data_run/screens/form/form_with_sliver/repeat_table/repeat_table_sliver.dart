@@ -12,7 +12,7 @@ class RepeatTableSliver extends HookConsumerWidget {
     required this.repeatInstance,
   });
 
-  final RepeatInstance repeatInstance;
+  final RepeatSection repeatInstance;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

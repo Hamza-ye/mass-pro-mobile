@@ -1,7 +1,12 @@
 // import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
+// import 'package:d2_remote/modules/datarun/form/shared/field_template/field_template.entity.dart';
+// import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
+// import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
 // import 'package:datarun/data_run/screens/form_module/form/code_generator.dart';
 // import 'package:datarun/data_run/screens/form_module/form_template/form_element_template.dart';
 // import 'package:fast_immutable_collections/fast_immutable_collections.dart';
+//
+// import 'field_state.dart';
 //
 // //<editor-fold desc="Template">
 // class FormTemplate {
@@ -14,41 +19,6 @@
 //       fields: (json['fields'] as List)
 //           .map((field) => FieldTemplate.fromJson(field))
 //           .toList(),
-//     );
-//   }
-// }
-//
-// class FieldTemplate {
-//   final String name;
-//   final String type;
-//   final String path;
-//   final List<FieldTemplate>? fields;
-//   final List<Rule>? rules;
-//   final Map<String, dynamic>? properties;
-//
-//   FieldTemplate({
-//     required this.name,
-//     required this.type,
-//     required this.path,
-//     this.fields,
-//     this.rules,
-//     this.properties,
-//   });
-//
-//   factory FieldTemplate.fromJson(Map<String, dynamic> json) {
-//     return FieldTemplate(
-//       name: json['name'],
-//       type: json['type'],
-//       path: json['path'],
-//       fields: json['fields'] != null
-//           ? (json['fields'] as List)
-//               .map((field) => FieldTemplate.fromJson(field))
-//               .toList()
-//           : null,
-//       rules: json['rules'] != null
-//           ? (json['rules'] as List).map((rule) => Rule.fromJson(rule)).toList()
-//           : null,
-//       properties: json['properties'],
 //     );
 //   }
 // }
@@ -80,7 +50,6 @@
 //     );
 //   }
 //
-//
 //   factory FormState.fromTemplate(FormFlatTemplate template) {
 //     final fields = <String, FieldState>{};
 //     template.fields.forEach((field) {
@@ -98,18 +67,18 @@
 //   // }
 //
 //   static void _initializeValues(
-//       FormElementTemplate template, Map<String, FieldState> fields,
+//       Template template, Map<String, FieldState> fields,
 //       {String? basePath}) {
 //     String fullPath =
 //         basePath != null ? basePath + '.' + template.name! : template.name!;
 //
 //     fields[fullPath] = FieldState(
-//       name: template.name!,
+//       id: template.id!,
 //     );
 //
-//     if (template is SectionElementTemplate ||
+//     if (template is SectionTemplate ||
 //         template is RepeatElementTemplate) {
-//       template.children.forEach((field) {
+//       template.fields.forEach((field) {
 //         _initializeValues(field, fields, basePath: fullPath);
 //       });
 //     }
@@ -128,7 +97,7 @@
 //   }
 //
 //   FormState addItemToRepeatSection(
-//       {required RepeatElementTemplate template, required String uid}) {
+//       {required SectionTemplate template, required String uid}) {
 //     ///
 //     final basePath = template.path!;
 //

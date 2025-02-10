@@ -75,6 +75,11 @@ class FormElementControlBuilder {
           value: initialValue ?? fieldTemplate.defaultValue,
           validators: FieldValidators.getValidators(fieldTemplate),
         );
+      case ValueType.Calculated:
+        return FormControl<dynamic>(
+          value: initialValue ?? fieldTemplate.defaultValue,
+          validators: FieldValidators.getValidators(fieldTemplate),
+        );
       case ValueType.LongText:
       case ValueType.Letter:
         return FormControl<String>(

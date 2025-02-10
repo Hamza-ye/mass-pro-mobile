@@ -34,12 +34,12 @@ class FormInstanceEntryViewSliver extends HookConsumerWidget {
       BuildContext context, WidgetRef ref) {
 
     return elements.map((element) {
-      if (element is SectionInstance) {
+      if (element is Section) {
         return SectionWidget(
           key: Key(element.elementPath!),
           element: element,
         );
-      } else if (element is RepeatInstance) {
+      } else if (element is RepeatSection) {
         return RepeatTableSliver(
           key: Key('${element.elementPath!}_RepeatTableSliver'),
           repeatInstance: element,

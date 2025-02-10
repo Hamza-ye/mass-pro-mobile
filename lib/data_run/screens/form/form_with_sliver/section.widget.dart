@@ -14,7 +14,7 @@ class SectionWidget extends HookConsumerWidget {
     Color? headerColor,
   }) : this.headerColor = headerColor;
 
-  final SectionInstance element;
+  final Section element;
   final Color? headerColor;
 
   @override
@@ -48,13 +48,13 @@ class SectionWidget extends HookConsumerWidget {
     Iterable<FormElementInstance<dynamic>> elements,
   ) {
     return elements.map((element) {
-      if (element is SectionInstance) {
+      if (element is Section) {
         return SectionWidget(
           key: Key(element.elementPath!),
           element: element,
           headerColor: Colors.orange.shade600,
         );
-      } else if (element is RepeatInstance) {
+      } else if (element is RepeatSection) {
         return RepeatTableSliver(
           key: Key('${element.elementPath!}_RepeatTableSliver'),
           repeatInstance: element,
