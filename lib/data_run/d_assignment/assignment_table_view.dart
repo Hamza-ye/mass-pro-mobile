@@ -1,3 +1,4 @@
+import 'package:d2_remote/core/datarun/utilities/date_helper.dart';
 import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_model.dart';
@@ -107,12 +108,11 @@ class AssignmentTableView extends HookConsumerWidget {
                       DataCell(Text(
                           Intl.message(assignment.scope.name.toLowerCase()))),
                       DataCell(Text(assignment.dueDate != null
-                          ? sdk.DDateUtils.uiDateFormat()
-                              .format(assignment.dueDate!)
+                          ? DateHelper.formatForUi(assignment.dueDate!)
                           : '')),
                       DataCell(Text(assignment.rescheduledDate != null
-                          ? sdk.DDateUtils.uiDateFormat()
-                              .format(assignment.rescheduledDate!)
+                          ? DateHelper.formatForUi(
+                              (assignment.rescheduledDate!))
                           : '')),
                     ],
                     onSelectChanged: (_) => onViewDetails(assignment),

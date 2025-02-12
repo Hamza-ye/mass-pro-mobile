@@ -149,7 +149,7 @@
   "maximumAllowedLengthIsError": "The maximum allowed length is ${error}.",
   "logout": "Logout",
   "settings": "Settings",
-  "fetchUpdates": "Fetch From Server",
+  "fetchUpdates": "Sync Configuration",
   "appearance": "Appearance",
   "userSettings": "User Settings",
   "toggleBrightness": "Toggle Brightness",
@@ -282,5 +282,9 @@
   "households": "Households",
   "itns": "ITNs",
   "selectForm": "Select Form",
-  "reported": "Reported"
+  "reported": "Reported",
+  "lastSync": "Last sync time",
+  "to_post": "Last Sync",
+  "to_update": "Last Sync",
+  "synced": "Last Sync"
 }

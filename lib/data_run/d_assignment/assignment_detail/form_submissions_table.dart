@@ -1,3 +1,4 @@
+import 'package:d2_remote/core/datarun/utilities/date_helper.dart';
 import 'package:d2_remote/core/utilities/list_extensions.dart';
 import 'package:d2_remote/modules/datarun/data_value/entities/data_form_submission.entity.dart';
 import 'package:d2_remote/modules/datarun/form/entities/form_version.entity.dart';
@@ -35,8 +36,8 @@ class FormSubmissionsTable extends HookConsumerWidget {
     final selectedSubmissions = useState<IList<DataFormSubmission>>(IList());
     final toSync = selectedSubmissions.value
         .where((s) =>
-    SubmissionListUtil.getSyncStatus(s) == SyncStatus.TO_POST ||
-        SubmissionListUtil.getSyncStatus(s) == SyncStatus.ERROR)
+            SubmissionListUtil.getSyncStatus(s) == SyncStatus.TO_POST ||
+            SubmissionListUtil.getSyncStatus(s) == SyncStatus.ERROR)
         .map((s) => s.id!)
         .toList();
     final activityModel = ActivityInheritedWidget.of(context);
@@ -68,7 +69,7 @@ class FormSubmissionsTable extends HookConsumerWidget {
         value: formAsync,
         valueBuilder: (FormVersion formVersion) {
           final columnHeaders =
-          formVersion.formFlatFields.entries.where((entry) {
+              formVersion.formFlatFields.entries.where((entry) {
             final field = entry.value;
             return !field.type!.isSection && field.mainField;
           }).toList();
@@ -81,10 +82,7 @@ class FormSubmissionsTable extends HookConsumerWidget {
               Text(
                   getItemLocalString(formVersion.label,
                       defaultString: formVersion.name),
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .titleMedium),
+                  style: Theme.of(context).textTheme.titleMedium),
               if (selectedSubmissions.value.isNotEmpty)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -92,15 +90,12 @@ class FormSubmissionsTable extends HookConsumerWidget {
                     ElevatedButton.icon(
                         onPressed: toSync.length > 0
                             ? () async {
-                          await _showSyncDialog(context, toSync, ref);
-                        }
+                                await _showSyncDialog(context, toSync, ref);
+                              }
                             : null,
                         icon: const Icon(Icons.sync),
                         label: Text(
-                            '${S
-                                .of(context)
-                                .send}: ${S.of(context).syncSubmissions(
-                                toSync.length)}'))
+                            '${S.of(context).send}: ${S.of(context).syncSubmissions(toSync.length)}'))
                   ],
                 ),
               Column(
@@ -113,50 +108,42 @@ class FormSubmissionsTable extends HookConsumerWidget {
                       sortColumnIndex: _sortColumnIndex.value,
                       columns: <DataColumn>[
                         DataColumn(
-                          label: Text(S
-                              .of(context)
-                              .status),
+                          label: Text(S.of(context).status),
                           onSort: (columnIndex, ascending) {
                             _sort<String>(
-                                    (d) => d.status!.name, columnIndex,
-                                ascending);
+                                (d) => d.status!.name, columnIndex, ascending);
                           },
                         ),
-                        DataColumn(label: Text(S
-                            .of(context)
-                            .edit)),
-                        ...columnHeaders.map((header) =>
-                            DataColumn(
-                                label: Text(getItemLocalString(
-                                    header.value.label.unlock,
-                                    defaultString: header.key)))),
+                        DataColumn(label: Text(S.of(context).edit)),
+                        ...columnHeaders.map((header) => DataColumn(
+                            label: Text(getItemLocalString(
+                                header.value.label.unlock,
+                                defaultString: header.key)))),
                         // DataColumn(label: Text()),
                         // DataColumn(label: Text()),
                         DataColumn(
-                          label: Text(S
-                              .of(context)
-                              .createdDate),
+                          label: Text(S.of(context).createdDate),
                           onSort: (columnIndex, ascending) {
                             _sort<DateTime>(
-                                    (d) => DateTime.parse(d.createdDate!),
+                                (d) => DateTime.parse(
+                                    DateHelper.fromUiLocalToDbUtcFormat(
+                                        d.createdDate!)),
                                 columnIndex,
                                 ascending);
                           },
                         ),
                         DataColumn(
-                          label: Text(S
-                              .of(context)
-                              .lastmodifiedDate),
+                          label: Text(S.of(context).lastmodifiedDate),
                           onSort: (columnIndex, ascending) {
                             _sort<DateTime>(
-                                    (d) => DateTime.parse(d.lastModifiedDate!),
+                                (d) => DateTime.parse(
+                                    DateHelper.fromUiLocalToDbUtcFormat(
+                                        d.lastModifiedDate!)),
                                 columnIndex,
                                 ascending);
                           },
                         ),
-                        DataColumn(label: Text(S
-                            .of(context)
-                            .delete)),
+                        DataColumn(label: Text(S.of(context).delete)),
                       ],
                       rows: submissions.value.map((submission) {
                         Map<String, dynamic> extractedValues = {};
@@ -172,7 +159,7 @@ class FormSubmissionsTable extends HookConsumerWidget {
 
                         return DataRow(
                           selected:
-                          selectedSubmissions.value.contains(submission),
+                              selectedSubmissions.value.contains(submission),
                           onSelectChanged: (selected) {
                             if (selected == true) {
                               selectedSubmissions.value =
@@ -195,13 +182,12 @@ class FormSubmissionsTable extends HookConsumerWidget {
                               // label: Text(S.of(context).edit),
                             )),
                             ...columnHeaders.map(
-                                  (header) =>
-                                  DataCell(Text(
-                                      extractedValues[header.value.name]
+                              (header) => DataCell(Text(
+                                  extractedValues[header.value.name]
                                           ?.toString() ??
-                                          totalResources[header.value.name]
-                                              ?.toString() ??
-                                          '')),
+                                      totalResources[header.value.name]
+                                          ?.toString() ??
+                                      '')),
                             ),
                             DataCell(Text(_formatDate(submission.createdDate))),
                             DataCell(
@@ -217,9 +203,7 @@ class FormSubmissionsTable extends HookConsumerWidget {
                     ),
                   ),
                   if (submissions.value.isEmpty)
-                    Center(child: Text(S
-                        .of(context)
-                        .noSubmissions))
+                    Center(child: Text(S.of(context).noSubmissions))
                 ],
               ),
               const SizedBox(height: 20),
@@ -245,25 +229,26 @@ class FormSubmissionsTable extends HookConsumerWidget {
           } else if (field.type == ValueType.Progress &&
               data.containsKey(field.name)) {
             final value = ((AssignmentStatus.values
-                .firstOrNullWhere((t) => t.name == data[field.name])
-                ?.name ??
-                data[field.name])
+                        .firstOrNullWhere((t) => t.name == data[field.name])
+                        ?.name ??
+                    data[field.name])
                 ?.toString());
             extractedValues[field.name!] =
-            value != null ? Intl.message(value.toLowerCase()) : '-';
+                value != null ? Intl.message(value.toLowerCase()) : '-';
           } else if (field.type == ValueType.Team &&
               data.containsKey(field.name)) {
             extractedValues[field.name!] = activityModel.managedTeams
-                .firstOrNullWhere((t) => t.id == data[field.name])
-                ?.name ??
+                    .firstOrNullWhere((t) => t.id == data[field.name])
+                    ?.name ??
                 data[field.name];
           } else if (field.type == ValueType.SelectOne &&
               data.containsKey(field.name)) {
-            extractedValues[field.name!] =
-                getItemLocalString(formTemplate.options
+            extractedValues[field.name!] = getItemLocalString(
+                formTemplate.options
                     .firstOrNullWhere((t) => t.name == data[field.name])
                     ?.label
-                    .unlock, defaultString: data[field.name] ?? '');
+                    .unlock,
+                defaultString: data[field.name] ?? '');
           } else if (data.containsKey(field.name)) {
             extractedValues[field.name!] = data[field.name];
           }
@@ -298,8 +283,8 @@ class FormSubmissionsTable extends HookConsumerWidget {
     return subTotals;
   }
 
-  Future<void> _showSyncDialog(BuildContext context, List<String> entityUids,
-      WidgetRef ref) async {
+  Future<void> _showSyncDialog(
+      BuildContext context, List<String> entityUids, WidgetRef ref) async {
     await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -317,32 +302,24 @@ class FormSubmissionsTable extends HookConsumerWidget {
     );
   }
 
-  Future<void> _confirmDelete(BuildContext context, String? uid,
-      WidgetRef ref) async {
+  Future<void> _confirmDelete(
+      BuildContext context, String? uid, WidgetRef ref) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(S
-              .of(context)
-              .confirm),
-          content: Text(S
-              .of(context)
-              .deleteConfirmationMessage),
+          title: Text(S.of(context).confirm),
+          content: Text(S.of(context).deleteConfirmationMessage),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(false),
-              child: Text(S
-                  .of(context)
-                  .cancel),
+              child: Text(S.of(context).cancel),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
-              child: Text(S
-                  .of(context)
-                  .confirm),
+              child: Text(S.of(context).confirm),
             ),
           ],
         );
@@ -354,8 +331,8 @@ class FormSubmissionsTable extends HookConsumerWidget {
     }
   }
 
-  void _showUndoSnackBar(BuildContext context, String? toDeleteUid,
-      WidgetRef ref) {
+  void _showUndoSnackBar(
+      BuildContext context, String? toDeleteUid, WidgetRef ref) {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
     ref
         .read(formSubmissionsProvider(formId).notifier)
@@ -363,13 +340,9 @@ class FormSubmissionsTable extends HookConsumerWidget {
 
     scaffoldMessenger.showSnackBar(
       SnackBar(
-        content: Text(S
-            .of(context)
-            .itemRemoved),
+        content: Text(S.of(context).itemRemoved),
         action: SnackBarAction(
-          label: S
-              .of(context)
-              .undo,
+          label: S.of(context).undo,
           onPressed: () {
             // Code to undo deletion
           },
@@ -396,12 +369,9 @@ Widget buildStatusIcon(SyncStatus? status) {
 
 String _formatDate(String? dateStr) {
   if (dateStr == null) return '';
-  final dateTime = DateTime.tryParse(dateStr);
+  final dateTime = DateTime.tryParse(dateStr)?.toLocal();
   if (dateTime == null) {
     return '';
   }
-  return '${dateTime.year}-${dateTime.month.toString().padLeft(
-      2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour
-      .toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(
-      2, '0')}';
+  return '${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')} ${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
 }

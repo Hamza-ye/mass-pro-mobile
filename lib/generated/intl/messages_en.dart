@@ -150,7 +150,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "everyTwoDays": MessageLookupByLibrary.simpleMessage("Every two days"),
         "failed": MessageLookupByLibrary.simpleMessage("Failed"),
         "fetchUpdates":
-            MessageLookupByLibrary.simpleMessage("Fetch From Server"),
+            MessageLookupByLibrary.simpleMessage("Sync Configuration"),
         "fieldContainErrors":
             MessageLookupByLibrary.simpleMessage("field Contain Errors"),
         "fieldsWithErrorInfo":
@@ -181,6 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastConfigurationSyncTime":
             MessageLookupByLibrary.simpleMessage("Sync Time"),
         "lastName": MessageLookupByLibrary.simpleMessage("Last Name"),
+        "lastSync": MessageLookupByLibrary.simpleMessage("Last sync time"),
         "lastSyncStatus":
             MessageLookupByLibrary.simpleMessage("last sync status"),
         "lastmodifiedDate":
@@ -304,6 +305,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "syncNow": MessageLookupByLibrary.simpleMessage("Sync Now"),
         "syncSettings": MessageLookupByLibrary.simpleMessage("Sync Settings"),
         "syncSubmissions": m6,
+        "synced": MessageLookupByLibrary.simpleMessage("Last Sync"),
         "syncingConfiguration":
             MessageLookupByLibrary.simpleMessage("Syncing Configuration"),
         "syncingData": MessageLookupByLibrary.simpleMessage("Syncing Data"),
@@ -311,6 +313,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "team": MessageLookupByLibrary.simpleMessage("Team"),
         "thisFieldIsRequired":
             MessageLookupByLibrary.simpleMessage("This field is required."),
+        "to_post": MessageLookupByLibrary.simpleMessage("Last Sync"),
+        "to_update": MessageLookupByLibrary.simpleMessage("Last Sync"),
         "toggleBrightness":
             MessageLookupByLibrary.simpleMessage("Toggle Brightness"),
         "toggleListTableView":

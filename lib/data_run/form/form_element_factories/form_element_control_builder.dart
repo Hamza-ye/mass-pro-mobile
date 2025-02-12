@@ -1,3 +1,4 @@
+import 'package:d2_remote/core/datarun/utilities/date_helper.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/field_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/section_template.entity.dart';
 import 'package:d2_remote/modules/datarun/form/shared/field_template/template.dart';
@@ -139,7 +140,8 @@ class FormElementControlBuilder {
                 : <String>[]);
       case ValueType.Reference:
         return FormControl<String>(
-            value: initialValue ?? fieldTemplate.defaultValue/*, disabled: true*/);
+            value: initialValue ??
+                fieldTemplate.defaultValue /*, disabled: true*/);
       case ValueType.ScannedCode:
         return FormControl<String>(
           value: initialValue ?? fieldTemplate.defaultValue,

@@ -17,6 +17,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stack_trace/stack_trace.dart' as stack_trace;
+import 'package:timeago/timeago.dart' as timeago;
+
 // import 'package:sentry_flutter/sentry_flutter.dart';
 
 AuthenticationResult? authenticationResult;
@@ -110,6 +112,13 @@ class App extends ConsumerWidget {
     final language = ref.watch(preferenceNotifierProvider(Preference.language));
 
     Locale locale = Locale(language, language == 'en' ? 'en_US' : '');
+    timeago.setLocaleMessages(
+        language,
+        switch (language) {
+          'ar' => timeago.ArMessages(),
+          'en' => timeago.EnMessages(),
+          String() => timeago.ArMessages(),
+        });
 
     return MaterialApp(
       navigatorKey: navigatorKey,

@@ -1,6 +1,7 @@
 import 'package:d2_remote/modules/datarun_shared/utilities/entity_scope.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/custom_widgets/async_value.widget.dart';
+import 'package:datarun/data_run/d_assignment/assignment_overview_item_new.dart';
 import 'package:datarun/data_run/d_assignment/model/assignment_model.dart';
 import 'package:datarun/data_run/d_assignment/assignment_provider.dart';
 import 'package:datarun/data_run/d_assignment/assignment_overview_item.dart';
@@ -11,7 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AssignmentsCardView extends ConsumerWidget {
-  const AssignmentsCardView({super.key, required this.onViewDetails, this.scope});
+  const AssignmentsCardView(
+      {super.key, required this.onViewDetails, this.scope});
 
   final void Function(AssignmentModel) onViewDetails;
   final EntityScope? scope;
@@ -27,21 +29,25 @@ class AssignmentsCardView extends ConsumerWidget {
           itemCount: assignments.length,
           itemBuilder: (context, index) {
             final assignment = assignments[index];
-            return AssignmentOverviewItem(
-                assignment: assignment,
-                onViewDetails: () => onViewDetails(assignment),
-                onChangeStatus: (AssignmentStatus newStatus) {},
-                onFormSubmission: (createdSubmission) async {
-                  // pop bottomSheet
-                  Navigator.of(context).pop();
-                  // go to createdSubmission's form
-                  _goToDataEntryForm(
-                      context,
-                      FormMetadata(
-                          assignmentModel: assignment,
-                          submission: createdSubmission.id,
-                          formId: createdSubmission.formVersion));
-                });
+            return ProviderScope(
+              overrides: [assignmentProvider.overrideWithValue(assignment)],
+              child: AssignmentOverviewItem(
+                // assignment: assignment,
+                onViewDetails: (assignment) => onViewDetails(assignment),
+                // onChangeStatus: (AssignmentStatus newStatus) {},
+                // onFormSubmission: (createdSubmission) async {
+                //   // pop bottomSheet
+                //   Navigator.of(context).pop();
+                //   // go to createdSubmission's form
+                //   _goToDataEntryForm(
+                //       context,
+                //       FormMetadata(
+                //           assignmentModel: assignment,
+                //           submission: createdSubmission.id,
+                //           formId: createdSubmission.formVersion));
+                // }
+              ),
+            );
           },
         );
       },

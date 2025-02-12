@@ -49,6 +49,7 @@ dependencies:
 #  latlong2: ^0.8.2
   package_info_plus: ^8.1.2
   http: ^0.13.4
+  timeago: ^3.7.0
 #  flutter_barcode_scanner: ^2.0.0
 
 ## for Expression need to override petitparser

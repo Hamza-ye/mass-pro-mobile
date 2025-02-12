@@ -214,23 +214,6 @@ class _FilterAssignmentsProviderElement
   EntityScope? get scope => (origin as FilterAssignmentsProvider).scope;
 }
 
-String _$assignmentsHash() => r'6808ba4c0ecc0a36c2b1d345981c0e029cd1c883';
-
-/// a notifier that retrieves all assignments with their data populated
-///
-/// Copied from [Assignments].
-@ProviderFor(Assignments)
-final assignmentsProvider = AutoDisposeAsyncNotifierProvider<Assignments,
-    List<AssignmentModel>>.internal(
-  Assignments.new,
-  name: r'assignmentsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$assignmentsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$Assignments = AutoDisposeAsyncNotifier<List<AssignmentModel>>;
 String _$assignmentSubmissionsHash() =>
     r'4730a8095f4f5e40edcc38c46837b7b202e948ba';
 

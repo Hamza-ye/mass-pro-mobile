@@ -1,3 +1,5 @@
+import 'package:d2_remote/core/datarun/logging/new_app_logging.dart';
+import 'package:d2_remote/core/datarun/utilities/date_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
@@ -50,7 +52,20 @@ class QDateTimeValueAccessor<T> extends ControlValueAccessor<String, String> {
   /// Converts value from UI data type to [control] data type.
   @override
   String? modelToViewValue(String? modelValue) {
-    return modelValue == null ? null : sdk.DDateUtils.format(modelValue);
+    if (modelValue == null) {
+      return null;
+    }
+
+    String? value;
+    try {
+      // to local formated for the ui
+      value = DateHelper.fromDbUtcToUiLocalFormat(modelValue);
+    } on FormatException catch (e) {
+      logError('Date format Exception, date: $modelValue');
+    }
+
+    // return modelValue == null ? null : sdk.DDateUtils.format(modelValue);
+    return value;
   }
 
   /// Returns the value that must be supplied to the UI widget.
@@ -58,6 +73,9 @@ class QDateTimeValueAccessor<T> extends ControlValueAccessor<String, String> {
   /// Converts value from [control] data type to UI data type.
   @override
   String? viewToModelValue(String? viewValue) {
-    return viewValue == null ? null : sdk.DDateUtils.formatForDb(viewValue);
+    // if picked value is not null convert from local to utc string for db
+    return viewValue != null
+        ? DateHelper.fromUiLocalToDbUtcFormat(viewValue)
+        : viewValue;
   }
 }

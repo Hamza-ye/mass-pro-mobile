@@ -894,10 +894,10 @@ class S {
     );
   }
 
-  /// `Fetch From Server`
+  /// `Sync Configuration`
   String get fetchUpdates {
     return Intl.message(
-      'Fetch From Server',
+      'Sync Configuration',
       name: 'fetchUpdates',
       desc: '',
       args: [],
@@ -2143,6 +2143,46 @@ class S {
     return Intl.message(
       'Reported',
       name: 'reported',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last sync time`
+  String get lastSync {
+    return Intl.message(
+      'Last sync time',
+      name: 'lastSync',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Sync`
+  String get to_post {
+    return Intl.message(
+      'Last Sync',
+      name: 'to_post',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Sync`
+  String get to_update {
+    return Intl.message(
+      'Last Sync',
+      name: 'to_update',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Last Sync`
+  String get synced {
+    return Intl.message(
+      'Last Sync',
+      name: 'synced',
       desc: '',
       args: [],
     );

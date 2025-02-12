@@ -73,22 +73,22 @@ class FormConfiguration {
   FormOption? getOption(String listName, value) =>
       optionLists.get(listName)?.where((t) => t.name == value).firstOrNull;
 
-  dynamic getUserFriendlyValue(String fieldName, dynamic value) =>
-      switch (allFields.get(fieldName)) {
-        FieldTemplate(type: final type, listName: final listName?)
-            when type?.selectTypes == true =>
-          getItemLocalString(getOption(listName, value)?.label.unlockView,
-              defaultString: value),
-        FieldTemplate(type: final type) when type?.isDate == true =>
-          DDateUtils.format(value) ??
-              DDateUtils.uiDateFormat().tryParse(value ?? '') ??
-              value,
-        FieldTemplate(type: final type) when type?.isDateTime == true =>
-          DDateUtils.dateTimeFormat().tryParse(value ?? '') ?? value,
-        FieldTemplate(type: final type) when type?.isTime == true =>
-          DDateUtils.twelveHourTimeFormat().tryParse(value ?? '') ?? value,
-        _ => value
-      };
+  // dynamic getUserFriendlyValue(String fieldName, dynamic value) =>
+  //     switch (allFields.get(fieldName)) {
+  //       FieldTemplate(type: final type, listName: final listName?)
+  //           when type?.selectTypes == true =>
+  //         getItemLocalString(getOption(listName, value)?.label.unlockView,
+  //             defaultString: value),
+  //       FieldTemplate(type: final type) when type?.isDate == true =>
+  //         DDateUtils.format(value) ??
+  //             DDateUtils.uiDateFormat().tryParse(value ?? '') ??
+  //             value,
+  //       FieldTemplate(type: final type) when type?.isDateTime == true =>
+  //         DDateUtils.dateTimeFormat().tryParse(value ?? '') ?? value,
+  //       FieldTemplate(type: final type) when type?.isTime == true =>
+  //         DDateUtils.twelveHourTimeFormat().tryParse(value ?? '') ?? value,
+  //       _ => value
+  //     };
 
   String getFieldDisplayName(String fieldName) =>
       getItemLocalString(allFields.get(fieldName)?.label.unlockView,

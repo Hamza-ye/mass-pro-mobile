@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:d2_remote/core/datarun/utilities/date_helper.dart';
 import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
 import 'package:d2_remote/d2_remote.dart';
 import 'package:d2_remote/modules/auth/user/entities/d_user.entity.dart';
@@ -46,7 +47,7 @@ class FormInstanceService {
       switch (attributeType) {
         AttributeType.uuid => initialValue ?? _uuid,
         AttributeType.today => initialValue ??
-            DDateUtils.databaseDateFormat().format(DateTime.now().toUtc()),
+            DateHelper.nowUtc(),
         AttributeType.username =>
           initialValue ?? await getUserAttribute(AttributeType.username),
         AttributeType.userUid =>

@@ -145,7 +145,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "everyFifteenDays": MessageLookupByLibrary.simpleMessage("كل 15 يوم"),
         "everyTwoDays": MessageLookupByLibrary.simpleMessage("كل يومين"),
         "failed": MessageLookupByLibrary.simpleMessage("فشل"),
-        "fetchUpdates": MessageLookupByLibrary.simpleMessage("تحديث"),
+        "fetchUpdates": MessageLookupByLibrary.simpleMessage("مزامنة إعدادات"),
         "fieldContainErrors":
             MessageLookupByLibrary.simpleMessage("يحوي أخطاء"),
         "fieldsWithErrorInfo": MessageLookupByLibrary.simpleMessage(
@@ -176,6 +176,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "lastConfigurationSyncTime":
             MessageLookupByLibrary.simpleMessage("آخر تحديث"),
         "lastName": MessageLookupByLibrary.simpleMessage("اللقب"),
+        "lastSync": MessageLookupByLibrary.simpleMessage("وقت آخر مزامنة"),
         "lastSyncStatus":
             MessageLookupByLibrary.simpleMessage("حالة آخر تحديث"),
         "lastmodifiedDate":
@@ -301,6 +302,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "syncSettings":
             MessageLookupByLibrary.simpleMessage("التحديث التلقائي"),
         "syncSubmissions": m6,
+        "synced": MessageLookupByLibrary.simpleMessage("مزامنة"),
         "syncingConfiguration":
             MessageLookupByLibrary.simpleMessage("إعدادات المزامنة"),
         "syncingData": MessageLookupByLibrary.simpleMessage("مزامنة بيانات"),
@@ -309,6 +311,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "team": MessageLookupByLibrary.simpleMessage("الفريق"),
         "thisFieldIsRequired":
             MessageLookupByLibrary.simpleMessage("هذا الحقل مطلوب."),
+        "to_post": MessageLookupByLibrary.simpleMessage("نهائية"),
+        "to_update": MessageLookupByLibrary.simpleMessage("مسودة"),
         "toggleBrightness":
             MessageLookupByLibrary.simpleMessage("تبديل الإضاءة"),
         "toggleListTableView":

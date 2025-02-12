@@ -1,10 +1,9 @@
-import 'package:d2_remote/core/datarun/utilities/date_utils.dart';
+import 'package:d2_remote/core/datarun/utilities/date_helper.dart';
 import 'package:datarun/data_run/screens/form/element/form_element.dart';
 import 'package:datarun/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class ScannedItemPreview extends StatelessWidget {
-
   const ScannedItemPreview({
     Key? key,
     required this.item,
@@ -41,7 +40,6 @@ class ScannedItemPreview extends StatelessWidget {
 }
 
 class ScannedItemsDetailsTable extends StatelessWidget {
-
   const ScannedItemsDetailsTable({
     required this.item,
     Key? key,
@@ -55,7 +53,11 @@ class ScannedItemsDetailsTable extends StatelessWidget {
       MapEntry(S.of(context).gtin, item.gtin ?? 'N/A'),
       MapEntry(S.of(context).batch, item.batchLot ?? 'N/A'),
       MapEntry(S.of(context).serial, item.serialNumber ?? 'N/A'),
-      MapEntry(S.of(context).productionDate, item.productionDate != null ? DDateUtils.uiDateFormat().format(item.productionDate!) : '-'),
+      MapEntry(
+          S.of(context).productionDate,
+          item.productionDate != null
+              ? DateHelper.formatForUi(item.productionDate!)
+              : '-'),
       MapEntry(S.of(context).count, item.count?.toString() ?? 'N/A'),
       // Add more fields if required
     ];

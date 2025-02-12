@@ -1,3 +1,4 @@
+import 'package:d2_remote/core/datarun/utilities/date_helper.dart';
 import 'package:d2_remote/modules/datarun/form/shared/value_type.dart';
 import 'package:d2_remote/shared/enumeration/assignment_status.dart';
 import 'package:datarun/commons/extensions/list_extensions.dart';
@@ -207,7 +208,9 @@ class RepeatTableDataSource extends DataTableSource {
   }
 
   String? modelToViewValue(String? modelValue) {
-    return modelValue == null ? null : sdk.DDateUtils.format(modelValue);
+    return modelValue == null
+        ? null
+        : DateHelper.fromDbUtcToUiLocalFormat(modelValue);
   }
 
   @override

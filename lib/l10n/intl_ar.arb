@@ -109,7 +109,7 @@
   "maximumAllowedLengthIsError": "الحد الأقصى للطول المسموح به هو ${error}.",
   "logout": "تسجيل الخروج",
   "settings": "إعدادات",
-  "fetchUpdates": "تحديث",
+  "fetchUpdates": "مزامنة إعدادات",
   "appearance": "المظهر",
   "userSettings": "إعدادات المستخدم",
   "toggleBrightness": "تبديل الإضاءة",
@@ -244,5 +244,9 @@
   "households": "منازل",
   "itns": "ناموسيات",
   "selectForm": "اختر استمارة",
-  "reported": "مرسل"
+  "reported": "مرسل",
+  "lastSync": "وقت آخر مزامنة",
+  "to_post": "نهائية",
+  "to_update": "مسودة",
+  "synced": "مزامنة"
 }
